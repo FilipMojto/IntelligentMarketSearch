@@ -13,6 +13,9 @@ class MarketViewer:
     DELIMITER = ','
     PRODUCT_COL_COUNT = 5
 
+    def get_count(self) -> int:
+        return self.__market_count
+
     def load_markets(self):
 
         # first, we need to load all registered shops from the
@@ -32,6 +35,7 @@ class MarketViewer:
 
                 market = Market(int(record[0]), record[1])
                 self.__markets.append(market)
+                self.__market_count += 1
         
         print(f"Succesfully loaded {len(self.__markets)} markets!")
 
@@ -48,20 +52,18 @@ class MarketViewer:
                 if len(record) != self.PRODUCT_COL_COUNT:
                     raise InvalidFileFormatError("Invalid amount of columns in the product file!")
                 
-                market = ''
                 found = False
 
                 for market in self.__markets:
                     if market.get_ID() == int(record[-1]):
                         market.register_product(Product(ID=int(record[0]), ean=EAN(record[1]), name=record[2], price=float(record[3])))
-                        print("FOUND!")
                         found = True
                         break
                 
                 if not found:
                     print(f"No market found for Product {record[0]}")
 
-    def get_market(self, index : int) -> Market:
+    def get_market_by_index(self, index : int) -> Market:
        return self.__markets[index]
 
     def get_market(self, name : str) -> Market:
@@ -111,10 +113,10 @@ class MarketViewer:
             alternatives_file_path: str = "./resources/alternatives.csv",
             DELIMITER=',') -> None: 
     
-
         self.__MARKETS_FILE_PATH = markets_file_path
         self.__PRODUCTS_FILE_PATH = products_file_path
         self.__ALTERNATIVES_FILE_PATH = alternatives_file_path
         self.__DELIMITER = DELIMITER
         
         self.__markets: List[Market] = []
+        self.__market_count = 0
