@@ -1,25 +1,10 @@
 import requests
 from shopping import *
 from bs4 import BeautifulSoup
+from thefuzz import fuzz
+from tkinter import *
+#import tkinter as tk
 #import math
-
-
-def compare(str1: str, str2 : str) -> float:
-    len_1 = len(str1)
-    len_2 = len(str2)
-
-    min_len = min(len_1, len_2)
-    fragment = 1/max(len_1, len_2)
-
-    #min_len = min(len_1, len_2)
-    i = 0
-    match = 0
-
-    for i in range(0, min_len):
-        if str1[i] == str2[i]:
-            match += fragment
-
-    return round(match, 2)
 
 
 
@@ -37,25 +22,30 @@ def compare(str1: str, str2 : str) -> float:
 
 
 if __name__ == "__main__":
+    root = Tk()
+    root.title("AOSS Application v2.0.1")
 
-    print("Launching new market...")
+    #print(algorithm.match_strings("tesco", "TesCo", case_sensitive=True))
+    # ha = " tesco"
+    # ha2 = "tesco"
+    # print(f"similarity: {fuzz.ratio(ha, ha2)}")
+    #print("Launching new market...")
 
     market_base = MarketViewer()
     market_base.load_markets()
     
-    for market in market_base.search_market("bill"):
-        print(f"Name: {market['market']}")
-        print(f"Match: {market['match']}")
+    root.mainloop()
+    #for market in market_base.search_market("bill"):
+    #    print(f"Name: {market['market']}")
+    #    print(f"Match: {market['match']}")
+
+    #print(algorithm.match_strings('tesco', ' tesco'))
+
+    #market_base.search_market(' tesco')
+
+    #print(market_base.get_market('lidddsdsdsdl tesco').name)
 
 
-    #market = Market("Tesco")
-
-    #print(f"Market \"{market.name}\" successfully launched!")
-
-    #market.register_product
-
-    print("now")
-
-
+    print("Program terminated successfully!")
 
 
