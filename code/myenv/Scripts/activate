@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\fmojt\Desktop\AOSS_src\myenv"
+VIRTUAL_ENV="C:\Users\fmojt\Documents\Software Projects\AOSS_app\code\myenv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
