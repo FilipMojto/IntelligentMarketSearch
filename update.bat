@@ -1,7 +1,13 @@
 @echo off
 
 rem Specify the path to your requirements.txt file
-set requirements_path=.\myenv\requirements.txt
+
+if "%1" == "" (
+    set requirements_path=.\code\myenv\requirements.txt
+) else (
+    set requirements_path="%1"
+)
+
 
 rem Run the pip install command
 pip install -r "%requirements_path%"
