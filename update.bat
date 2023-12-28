@@ -3,7 +3,7 @@
 rem Specify the path to your requirements.txt file
 
 if "%1" == "" (
-    set requirements_path=.\code\myenv\requirements.txt
+    set requirements_path=.\.venv\requirements.txt
 ) else (
     set requirements_path="%1"
 )

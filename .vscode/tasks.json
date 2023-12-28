@@ -4,7 +4,7 @@
       {
         "label": "Run Python Script",
         "type": "shell",
-        "command": "${workspaceFolder}/code/myenv/Scripts/python.exe", // Path to your virtual environment's Python interpreter
+        "command": "${workspaceFolder}/.venv/Scripts/python.exe",
         "args": [
           "-m",
           "main"
