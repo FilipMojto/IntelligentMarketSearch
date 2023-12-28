@@ -1,5 +1,5 @@
 thefuzz
 rapidfuzz
 packaging
-wxpython
+requests
 beautifulsoup4
