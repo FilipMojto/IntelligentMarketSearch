@@ -1,0 +1,5 @@
+thefuzz
+rapidfuzz
+packaging
+wxpython
+beautifulsoup4
