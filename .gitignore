@@ -1,3 +1,4 @@
-./uninstall.bat
-./update.bat
-./gitupdate.bat
+# Exclude batch script files
+*.uninstall.bat
+*.update.bat
+*.gitupdate.bat
