@@ -52,8 +52,8 @@ class Product:
     def get_ID(self) -> int:
         return self.__ID
 
-    def get_EAN(self) -> EAN:
-        return self.__EAN
+    # def get_EAN(self) -> EAN:
+    #     return self.__EAN
 
     def get_name(self) -> str:
         return self.__name
@@ -61,12 +61,11 @@ class Product:
     def get_price(self) -> float:
         return self.__price
 
-    def __init__(self, ean : EAN, ID: int = 0, name: str = "unspecified", price: int = -1) -> None:
-        if not isinstance(ean, EAN) or not isinstance(ID, int) or not isinstance(name, str) or not isinstance(price, float):
+    def __init__(self, ID: int = 0, name: str = "unspecified", price: float = -1) -> None:
+        if not isinstance(ID, int) or not isinstance(name, str) or not isinstance(price, float):
             raise TypeError("Invalid type of a parameter for a Product object!")
         
         self.__ID : int = ID
-        self.__EAN : EAN = ean
         self.__name : str = name
         self.__price : float = price
         
