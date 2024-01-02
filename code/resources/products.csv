@@ -1,14 +1,660 @@
-ID,Name,Price,Market_ID
-0,"Mineralna voda",0.8,0
-1,"Rozok biely",0.6,1
-2,"Jogurt malinovy",0.12,0
-3,"Mlieko Pilos 1.5% tuku 1L",1.29,1
-4,"Chlieb Ryzovy celozrnny 500g",0.99,0
-5,"Kava Arabica 250g",4.49,2
-6,"Pivo Zlaty Bazant 0.5L",1.79,3
-7,"Praci prasok Persil Color 2kg",7.99,4
-8,"Jogurt natural 150g",0.79,5
-9,"Maslo Laptevske 250g",2.99,2
-10,"Cukor krupica 1kg",1.49,5
-11,"Dezinfekcny gel 100ml",2.29,4
-12,"Syr Eidam 200g",3.99,3
+name,price,approximation,market_ID
+Kuracie rezne chladené (cca 1050g),7.97 €,1,1
+Kuracie rezne (cca 625g),4.74 €,1,1
+Kuracie rezne (cca 650g),5.52 €,1,1
+Kuracie Soté (cca 500g),3.55 €,1,1
+Kurča bez drobkov chladené chladené (cca 1600g),7.18 €,1,1
+Kuracie stehná celé chladené (cca 500g),2.30 €,1,1
+Kuracie stehná horné chladené (cca 600g),2.93 €,1,1
+Kuracie stehná dolné chladené (cca 600g),2.93 €,1,1
+BILLA Bravčová šunka 100g,1.59 €,0,1
+BILLA Kuracia šunka 100g,1.59 €,0,1
+BILLA Morčacia šunka 100g,1.59 €,0,1
+BILLA Debrecínska pečienka 150g,2.89 €,0,1
+BILLA Vidiecka šunka 100g,1.59 €,0,1
+Billa Toastová Šunka 100G,1.59 €,0,1
+BILLA Extra jemná saláma 100g,1.89 €,0,1
+BILLA Prosciutto crudo 90g,1.99 €,0,1
+BILLA Schwarzwaldská šunka 100g,1.55 €,0,1
+BILLA Jamón serrano 80g,1.99 €,0,1
+Berger Wellness bravčová šunka 100 g,2.45 €,0,1
+Berger Morčacia šunka - plátky 100 g,2.45 €,0,1
+Berger Jemná saláma 150g,2.59 €,0,1
+Berger Jemná saláma 500g,4.59 €,0,1
+Berger Kuracia šunka 100g,2.45 €,0,1
+Berger Pečená šunka 100g,2.45 €,0,1
+Berger Tradičná bravčová šunka 100 g,2.45 €,0,1
+Berger Wellness jemná saláma 100g,1.89 €,0,1
+Le & Co Pražská šunka 100g,1.69 €,0,1
+Le & Co Morčacia šunka 100g,1.69 €,0,1
+Le & Co Šunka špeciál 100g,1.69 €,0,1
+Le & Co Šunka dusená v pare 100g,1.69 €,0,1
+Le & Co Šunka pre deti krájaná 100 g,1.69 €,0,1
+KURACIA ŠUNKA 200G LECO,2.59 €,0,1
+Tauris Zipser šunka orginál 250g,3.59 €,0,1
+Mäsokombinát Púchov Sľub pioniera dusená šunka 100g,1.59 €,0,1
+Mortadella Bologna I.G.P. 150g,2.49 €,0,1
+Berto Karpaty šunka 100 g,2.09 €,0,1
+Clever Šunková saláma 100g,0.99 €,0,1
+Clever Bravčová šunka 100g,0.93 €,0,1
+Clever Lyonská saláma 200g,1.29 €,0,1
+Cesnakový bok 250g,2.79 €,0,1
+Berger Pikantná saláma 150g,2.59 €,0,1
+Medvedík mortadella 90g,1.79 €,0,1
+Berto Macík jemná saláma 90g,2.49 €,0,1
+Berger Wellness sekaná 100g,1.69 €,0,1
+BILLA maslo 84% 250g,1.99 €,0,1
+Rajo Tradičné maslo z lahodnej smotany 250 g,3.29 €,0,1
+Tami Tatranské maslo 250 g,3.29 €,0,1
+Babička Maslo z poctivej smotany 250 g,2.19 €,0,1
+Liptov Maslo 250 g,3.49 €,0,1
+Clever maslo 82% 250g,1.99 €,0,1
+Koliba Tradičné maslo 250 g,3.39 €,0,1
+Rajo Tradičné maslo z lahodnej smotany 125 g,2.09 €,0,1
+Tami Tatranské maslo 125 g,0.99 €,0,1
+BILLA BIO maslo 125g,2.39 €,0,1
+Clever maslo 82% 125g,1.09 €,0,1
+Rama alternatíva masla olivová 200g,1.39 €,0,1
+Rama Maslová príchuť 400 g,3.99 €,0,1
+Rama Classic 400 g,3.99 €,0,1
+Rama Slaná príchuť 400 g,3.99 €,0,1
+Rama Maslová príchuť 225 g,2.69 €,0,1
+Rama Tuková nátierka 79% 250 g,1.99 €,0,1
+Rama Crema 31% 200 ml,1.59 €,0,1
+Rama Crema 15% 200 ml,1.59 €,0,1
+Flora Gold 400 g,4.29 €,0,1
+Flora Original 400 g,4.29 €,0,1
+Flora Light 400 g,4.29 €,0,1
+Palma Veto výhodné s maslovou príchuťou 500 g,1.39 €,0,1
+Palma Veto Maslové 1% 450 g,1.59 €,0,1
+Perla Maslová príchuť 450 g,2.29 €,0,1
+Hera Classic 250 g,1.89 €,0,1
+Palma Palmarin 250 g,1.39 €,0,1
+Palma Cera na polevy 250 g,1.19 €,0,1
+Kváskový slovenský chlieb 405g,1.79 €,0,1
+Gazdovský kváskový chlieb 405g,1.89 €,0,1
+Chlieb Lomidrevo 405g,1.75 €,0,1
+Rustikálny semolinový chlieb 405g,1.35 €,0,1
+Pšeničný chlieb s kváskom 410g,1.79 €,0,1
+Bochník s kváskom a cmarom 500g,1.59 €,0,1
+Oskar kváskový slnečnicový chlieb 505g,2.69 €,0,1
+KVASKO RASCOVÝ CHLIEB 505G,1.99 €,0,1
+Tekvicový chlieb z materského kvásku 400g,2.19 €,0,1
+Chlieb tmavý voľný 1000g,1.89 €,0,1
+Penam Fit deň Celozrnný ražný chlieb 250 g,2.29 €,0,1
+Chlieb multicereálny 500g,2.29 €,0,1
+Kváskový chlieb svetlý 400g,2.09 €,0,1
+Kváskový chlieb ražný balený 400g,1.75 €,0,1
+Penam Protein Energy chlebík proteínový tmavý 200 g,3.49 €,0,1
+Penam Slovanský zemiakový chlieb 400 g,1.85 €,0,1
+Penam Slovanský krajec tmavý 400 g,2.19 €,0,1
+Slatinská Pekáreň Slatinský chlieb celozrnný krájaný 400 g,1.59 €,0,1
+Chlieb večerný bielkovinový 350g,2.59 €,0,1
+Chlieb Gazdovský 500g,2.45 €,0,1
+Chlieb tekvicový 250g,2.29 €,0,1
+Chlieb rascový 450g,2.25 €,0,1
+Clever Konzumný chlieb krájaný 500g,0.99 €,0,1
+BILLA Chlieb toastový chlieb tmavý 500g,2.35 €,0,1
+Ölz Sendvič americký krájaný 750g,3.45 €,0,1
+Ölz Super soft sandwich 375g,2.59 €,0,1
+Ölz Viaczrnný toastový chlieb 250 g,1.99 €,0,1
+Penam Protein Energy proteínový toust 240 g,2.55 €,0,1
+Roberto Toast krájaný natur 400g,2.49 €,0,1
+Veka 400g,1.29 €,0,1
+Mestemacher Chlieb slnečnicový balený 500g,2.45 €,0,1
+Vitacelia Celio chlebík bezgluténový 250 g,4.29 €,0,1
+Chlieb bezgluténový z múky quinoa 350g (gluten free),3.59 €,0,1
+Schär Maestro Classic chlieb bezgluténový krájaný 300 g,4.15 €,0,1
+BILLA BIO banány (cca 1kg),1.99 €,1,1
+Čučoriedky 125g,1.79 €,0,1
+Jablká balené 1kg,1.69 €,0,1
+Clever Jablká červené gala 2kg,1.99 €,0,1
+Clever Jablká zelené golden delicious 2kg,1.99 €,0,1
+Jablká golden delicious ukladané voľné kus,0.34 €,1,1
+Clever hrušky 1kg,1.99 €,0,1
+Clever citróny 500g,0.79 €,0,1
+Jablká červené voľné kus,0.15 €,1,1
+Pomaranče voľné kus,0.70 €,1,1
+Mandarínky voľné kus,0.21 €,1,1
+Kiwi kus,0.69 €,0,1
+Stolové hrozno biele 500g,2.49 €,0,1
+Stolové hrozno 500g červené,3.49 €,0,1
+Mango kus,2.69 €,0,1
+Granátové jablko kus,1.99 €,0,1
+Hrušky zelené voľné kus,0.44 €,1,1
+Clever pomaranče navelina 2kg,3.49 €,0,1
+Morčacie prsia bez kosti a kože chladené (cca 750g),6.74 €,1,1
+Bravčová krkovička bez kosti chladená (cca 1100g),8.57 €,1,1
+Losos filet s kožou (cca 300g),6.57 €,1,1
+Údený losos divoký plátky Vici 100g,3.59 €,0,1
+Vici Losos porcie bez kože 250g,5.79 €,0,1
+Mylord Divoký losos gorbuša filety 500 g,6.99 €,0,1
+Kimbex Žralok steak 350g,2.99 €,0,1
+Kimbex Makrela pitvana 800g,4.99 €,0,1
+BILLA Lovecká saláma 75g,1.49 €,0,1
+BILLA Pikador saláma 75g,1.49 €,0,1
+BILLA Salame Campagnolo saláma 100g,3.19 €,0,1
+BILLA Salame Milano 120g,3.29 €,0,1
+Billa Malokarpatská saláma 75g Krahulík,1.49 €,0,1
+Billa Nitran saláma 75g Krahulík,1.49 €,0,1
+Nitran Saláma bez chémie 100g,1.69 €,0,1
+Nitran Saláma 75g,2.29 €,0,1
+Malokarpatská saláma 75g,2.29 €,0,1
+Tauris Toreador saláma 75 g,2.19 €,0,1
+Pick Zimná saláma krájaná 70 g,3.29 €,0,1
+Kmotr Paprikáš saláma 75g,1.99 €,0,1
+Kostelecké Uzeniny Kostelecký uherák 0100 kg,2.49 €,0,1
+Kmotr Malokarpatská saláma 490g,6.49 €,0,1
+Pick Zimná saláma 400 g,8.99 €,0,1
+BILLA Lovecká saláma 500g,4.99 €,0,1
+BILLA Premium maďarská saláma 380g,8.29 €,0,1
+Kostelecké Uzeniny Premium Kostelecký uherák 380 g,6.45 €,0,1
+Kostelecké Uzeniny Premium Křemešník 380 g,6.45 €,0,1
+Kmotrová vysočina 300g,3.55 €,0,1
+BILLA Fuet extra 170g,3.49 €,0,1
+Leerdaamer Original 160 g,2.59 €,0,1
+Leerdammer plátky 100g,1.39 €,0,1
+Leerdammer Lightlife 5 plátkov 100 g,1.39 €,0,1
+BILLA Ementáler strúhaný 150g,1.99 €,0,1
+Liptov Eidam - porciované plátky neúdené 100 g,1.49 €,0,1
+Liptov Eidam - porciované plátky údené 100 g,1.49 €,0,1
+Kerrygold White cheddar 150g,3.19 €,0,1
+Karička Eidam 45 % plátky klasik 100 g,1.89 €,0,1
+Veselá Kráva Črievko 120 g,1.59 €,0,1
+Billa Premium Syr S Prích.Hľuzoviek 150G,3.29 €,0,1
+Clever Eidam 45% 250g,2.49 €,0,1
+Clever Eidam 30% 250g,1.99 €,0,1
+Clever Gouda 45% syr plátky 250g,2.39 €,0,1
+Clever Gouda syr strúhaný 200g,2.59 €,0,1
+Clever Eidam 30% syr plátky 150g,1.79 €,0,1
+Clever Eidam 45% syr plátky 150g,1.45 €,0,1
+BILLA Mozzarella 125g,1.39 €,0,1
+MOZZARELLA GALBANI 125G LACTALIS,0.99 €,0,1
+Galbani Mozzarella light 125g,0.99 €,0,1
+Zott Zottarella Mozzarella Classic 125 g,1.69 €,0,1
+Zott Zottarella Mozzarella Basilikum 125 g,1.69 €,0,1
+Mozzarella v náleve 120g,1.59 €,0,1
+Clever Mozzarella syr 125g,0.99 €,0,1
+BILLA Mozzarella mini 125g,1.99 €,0,1
+Rožok 50g,0.14 €,0,1
+Rožok grahamový 60g,0.20 €,0,1
+Kaiserka natural 55g,0.15 €,0,1
+Bageta malá svetlá 50g,0.21 €,0,1
+Francúzska bageta stredná 110g,0.29 €,0,1
+Kornbageta stredná 115g,0.45 €,0,1
+Tekvicová bulka 65g,0.54 €,0,1
+Gazdovská žemľa so šunkou 75g,0.99 €,0,1
+Pizza šunková 181g,1.25 €,0,1
+Hot dog 96g,0.65 €,0,1
+Syrový pagáč 72g,0.79 €,0,1
+Pagáč oškvarkový 85g,0.79 €,0,1
+Pagáč so zníženým obsahom sacharidov 70g,0.55 €,0,1
+Cesnaková Bageta 165G,0.69 €,0,1
+ŠPALDOVÁ BAGETA 123G,0.59 €,0,1
+Tyčinka so zelenými olivami 70g,0.99 €,0,1
+Bageta sedliacka stredná tmava 115g,0.79 €,0,1
+Viaczrnná Maxi tyčinka 82g,0.79 €,0,1
+Svetlá bulka so zemiakmi 80g,0.49 €,0,1
+Croissant šunka-syr 88g,0.79 €,0,1
+Podplamenník slanina-smotana 75g,0.99 €,0,1
+Rohliky hot dog 4ks 250g,2.25 €,0,1
+Slané tyčinky so syrom a rascou 250g,2.75 €,0,1
+Tyčinky špaldové s ľanom 60g,1.39 €,0,1
+Uhorka poľná kus,0.90 €,1,1
+BILLA BIO Uhorka kus,1.39 €,0,1
+Clever Zemiaky neskoré typ B 5kg,4.79 €,0,1
+Zemiaky žlté neskoré prané typ A 25kg,3.99 €,0,1
+Clever Cibuľa 1kg,1.69 €,0,1
+Cibuľa červená 500g,1.29 €,0,1
+Cibuľa šalotka 250g,1.29 €,0,1
+Cesnak balený 3ks,1.59 €,0,1
+Clever Paprika zeleninová 500g,2.59 €,0,1
+Paprika červená voľná kus,0.84 €,1,1
+Petržlen praný balený 350g,2.49 €,0,1
+Rajčiaky Plum 500g,2.99 €,0,1
+Zeler praný voľný,1.27 €,1,1
+Sedáno zeler stopkatý kus,1.69 €,0,1
+Baklažán voľný kus,1.22 €,1,1
+Pór voľný kus,1.02 €,1,1
+Polievková zmes 500g,1.69 €,0,1
+Kel voľný,1.86 €,1,1
+Kapusta biela voľná kus,2.02 €,1,1
+Kapusta pekinská voľná,2.08 €,1,1
+Kapusta Kvasená 1kg,1.59 €,0,1
+Andaco Kvasená kapusta 1200 g,2.49 €,0,1
+Čalamáda 850g,1.89 €,0,1
+Šalát ľadový kus,0.99 €,0,1
+Milsy Bánovecký pološtiepok neúdený 190 g,3.09 €,0,1
+Milsy Bánovecký pološtiepok údený 190 g,3.09 €,0,1
+Babybel Original 5 x 20 g,2.69 €,0,1
+Lunter Tofu údené 180 g,0.89 €,0,1
+Lunter Tofu naturálne 180 g,0.89 €,0,1
+Lunter Tofu marinované 180 g,0.89 €,0,1
+Violife Blok grécky biely 230 g,4.09 €,0,1
+Nurishh Mozzarella vegánska potravinová špecialita 120 g,2.49 €,0,1
+Nurishh Cheddar vegánska potravinová špecialita plátkovaná 120 g,2.49 €,0,1
+Rajo Vegan Krém 250 g,2.19 €,0,1
+Rajo Vegan Greek Natur s rastlinným tukom 160g,1.59 €,0,1
+Rajo Vegan Greek chilli s rastlinným tukom 160 g,1.59 €,0,1
+Clever Toastový syr plátky 200g,1.89 €,0,1
+Bambino Toast & Burger čedar 130 g,1.99 €,0,1
+Bambino Originál 100 g,1.59 €,0,1
+Bambino Originál Maxi 140 g,1.99 €,0,1
+Bambino Originál 8 ks 120 g,1.85 €,0,1
+Karička črievko Tavený syr 100 g,1.59 €,0,1
+Karička črievko Maxi tavený syr 140 g,1.39 €,0,1
+Karička črievko s ementálom 100 g,1.59 €,0,1
+Karička črievko Rodinné balenie 3 x 100 g,3.99 €,0,1
+KARIČKA MAXI 240g,3.39 €,0,1
+Karička Maxi so šunkou 240 g,3.39 €,0,1
+Karička Klasik 125 g,1.59 €,0,1
+Karička s pažítkou 125 g,1.59 €,0,1
+Syrokrém Klasik 80 g,0.99 €,0,1
+Syrokrém S pažítkou 80 g,0.99 €,0,1
+Pravý Syrokrém Smotanela XXL 4 ks 200 g,1.99 €,0,1
+Pravý Syrokrém Smotanela 3 ks 150 g,2.19 €,0,1
+Kiri Roztierateľný tavený syr 12 ks 200 g,2.99 €,0,1
+NIVA Roztierateľný tavený syr 100 g,1.19 €,0,1
+Clever Jemný tavený syr 3x50g,1.19 €,0,1
+Veselá Kráva Lahodná tavený syr 120 g,1.59 €,0,1
+Veselá Kráva Sýr a Křup Lahodný syr & chrumkavé tyčinky 4 x 35 g (140 g),2.79 €,0,1
+Veselá Kráva Sýr a Křup Lahodný syr & chrumkavé tyčinky 35 g,0.99 €,0,1
+Lunex Klasik tavený syr 90 g,0.89 €,0,1
+Schär Pain Campagnard chlieb bezgluténový krájaný 240 g,3.99 €,0,1
+Schär Focaccia pečivo bežné bezgluténové 200 g,4.29 €,0,1
+Schär Ciabatta pečivo bežné bezgluténové 200 g,3.89 €,0,1
+Schär Salinis praclíky bezgluténové 60 g,1.55 €,0,1
+Schär Wraps pečivo bežné bezgluténové 160 g,3.99 €,0,1
+Schär Orangino jemné pečivo bezgluténové polomáčané v čokoláde s náplňou s príchuťou pomaranča 150 g,2.39 €,0,1
+Schär Choco chip cookie bezlepkové 100g,1.99 €,0,1
+Schär Wafers al cacao bezlepkové 125g,2.39 €,0,1
+Croissant s maslom 54g,0.49 €,0,1
+Croissant zakrivený 85g,0.99 €,0,1
+Donut s čokoládovou príchuťou 55g,0.45 €,0,1
+Donut škoricový s jablkovou náplňou 65g,0.65 €,0,1
+Donut s čokoládovou polevou Milka 55g,0.99 €,0,1
+Mini šiška s nugátom 25g,0.45 €,0,1
+Šiška s marhuľovou náplňou 70g,0.69 €,0,1
+Čokoládová rolka 58g.,0.49 €,0,1
+Taštička tvaroh - marhuľa 85g,0.59 €,0,1
+MARHUĽ.TAŠTIČKA LA LORRA. 85G,0.59 €,0,1
+Zákusok puding a ríbezle 85g,0.75 €,0,1
+Hrebeň so slivkovým lekvárom 85g,0.65 €,0,1
+Hrebeň mak - med 68g,0.59 €,0,1
+Mriežka krémová s granátovým jablkom 85g,0.79 €,0,1
+Koláč mix 75g,0.79 €,0,1
+BILLA Závin s orechovou náplňou 400g,2.69 €,0,1
+BILLA Závin tvarohový 200g,1.79 €,0,1
+BILLA Závin s tvarohovou náplňou 400g,2.69 €,0,1
+BILLA Závin s kakaovou náplňou 400g,2.69 €,0,1
+BILLA Premium Závin s makovou náplňou 300g,2.29 €,0,1
+BILLA Premium Závin s orechovou náplňou 300g,2.29 €,0,1
+BILLA Premium Bratislavský Rožok Makový 200g,2.45 €,0,1
+BILLA Premium Bratislavský Rožok Orechový 200g,2.45 €,0,1
+Ölz Závin s makovou náplňou 350 g,2.95 €,0,1
+TEKOVSKÝ SYR Delakto roztierateľný tavený syr 100 g,1.89 €,0,1
+BILLA Mlieko čerstvé 36% 1L,0.99 €,0,1
+Clever Polotučné mlieko čerstvé 15% 1L,0.95 €,0,1
+Rajo Mlieko plnotučné 35% 1 l,1.65 €,0,1
+Rajo Mlieko polotučné 15% 1 l,1.55 €,0,1
+Tami Tatranské mlieko plnotučné vysokopasterizované 1 l,0.99 €,0,1
+Tami Tatranské horské bio plnotučné mlieko 1 l,1.75 €,0,1
+Tami Tatranské horské bio polotučné mlieko 1 l,1.59 €,0,1
+Rajo Mlieko polotučné 15% 1 l,1.45 €,0,1
+Rajo Mlieko nízkotučné 05% 1 l,1.19 €,0,1
+Clever Trvanlivé plnotučné mlieko 35% 1L,0.95 €,0,1
+Clever Trvanlivé polotučné mlieko 15% 1l,0.69 €,0,1
+Tami Tatranské mlieko plnotučné 1 l,1.39 €,0,1
+Rajo Mliekoplus trvanlivé plnotučné mlieko s vápnikom 1 l,1.89 €,0,1
+Rajo Mlieko Plus Trvanlivé polotučné mlieko s vápnikom 1 l,1.69 €,0,1
+Rajo Barista mlieko 35% tuku 1 l,1.79 €,0,1
+Tami Barista latte trvanlivé plnotučné mlieko s vysokým obsahom bielkovín 1 l,1.49 €,0,1
+Rajo Active Protein Mlieko polotučné 15% 1 l,2.09 €,0,1
+Free Mlieko bezlaktózové 35% 1L (lactose free),1.65 €,0,1
+Free Mlieko bezlaktózové 15% 1L (lactose free),1.45 €,0,1
+Rajo Lakto Free Mlieko polotučné 15% 1 l,1.99 €,0,1
+Rajo Lakto Free Mlieko plnotučné 35% 1 l,2.19 €,0,1
+Zott Pure Joy Barista nápoj z fermentovaného ovsa 1 l,2.79 €,0,1
+Lactel Konzumné trvanlivé kozie mlieko polotučné 1 l,3.19 €,0,1
+Croissant Grana s vanilkovou a kakaovou náplňou 60g,0.65 €,0,1
+Bauli Kváskový croissant s marhuľovou náplňou 50 g,0.75 €,0,1
+Bauli Croissant čokoládový 6x50g 300g,3.29 €,0,1
+Bauli Croissant vanilkový 6x50g 300g,3.29 €,0,1
+Dijo Tortilla grilovaná 250 g,1.85 €,0,1
+Dijo Tortilla viaczrnná 250 g,2.49 €,0,1
+Strúhanka 500g,2.19 €,0,1
+BILLA Kukurična struhanka 200g,1.29 €,0,1
+Strúhanka vitaflóra paniero 750g,1.15 €,0,1
+BILLA Oravská slanina 200g,3.29 €,0,1
+BILLA Anglická slanina 200g,3.29 €,0,1
+Oravská slanina 200 g,2.29 €,0,1
+Anglická slanina špeciál 200 g,2.79 €,0,1
+Clever Anglická slanina 100g,1.29 €,0,1
+Billa Slaninové Kocky 250G,2.29 €,0,1
+Tauris Zipser párky originál 500 g,8.25 €,0,1
+Tauris Zipser párky 165g,3.25 €,0,1
+Billa Spišské Párky 250G,2.59 €,0,1
+Mäsokombinát Púchov Matelkové párky 250g,2.99 €,0,1
+Berto Poctivé párky 180 g,2.49 €,0,1
+Berto Podracké viršle 270 g,2.49 €,0,1
+DEBRECÍNSKE PÁRKY 360G GREISINGER,4.99 €,0,1
+Bilbo Viedenské párky pre deti 0300 kg,3.35 €,0,1
+Kostelecké Uzeniny Poctivý viedenský párok pre deti 0180 kg,3.69 €,0,1
+Berger Frankfurtské párky 3 x 375g,4.99 €,0,1
+Pick Frankfurtské párky 180g,2.49 €,0,1
+Greisinger Mini Berner Würstel mini bravčové párky so syrom obalené v plátkoch slaniny 0250 kg,3.69 €,0,1
+Greisinger Berner Würstel bravčové párky so syrom obalené v plátkoch slaniny 0300 kg,4.49 €,0,1
+Cvikla Praná 1kg,1.69 €,0,1
+Zázvor voľný kus,6.90 €,0,1
+Reďkovka červená zväzok,0.49 €,0,1
+Kaleráb s vňaťou kus,0.99 €,0,1
+BILLA Jadrá kešu orechov 200g,2.99 €,0,1
+BILLA Jadrá vlašských orechov 200g,2.99 €,0,1
+BILLA Jadrá lieskových orechov 200g,3.49 €,0,1
+BILLA Jadrá sladkých mandlí 200g,2.99 €,0,1
+Zmes brusnic a pražených lieskovcov 200g,2.59 €,0,1
+Ovocno Orechová zmes 200g,2.29 €,0,1
+Tekvicové jadrá pražené solené nel.150g,1.49 €,0,1
+BILLA Fit zmes 150g,3.79 €,0,1
+BILLA Hrozienka 500g,2.69 €,0,1
+Sézam 150g,1.09 €,0,1
+Tina Chia semienka 150g,2.49 €,0,1
+Slivky sušené vykôstkované 300g,3.09 €,0,1
+BILLA sušené slivky odkôskované 500g,4.99 €,0,1
+Passion brusnice 125g,1.49 €,0,1
+Ananás plátky 250g,1.69 €,0,1
+Brusnice mix 150g,1.79 €,0,1
+Naše Gaštany pečené lúpané 100 g,1.99 €,0,1
+Kokos chips natural 200g,1.39 €,0,1
+BILLA Kráľovská klobása 580g,6.49 €,0,1
+BILLA Jemná údená klobása 370g,4.99 €,0,1
+BILLA Premium Mangalica klobása pár 280g,4.19 €,0,1
+Kmotr Kmotrova klobása trio 75 g,1.99 €,0,1
+BILLA čabajská klobása 250g,4.39 €,0,1
+KARPATSKÁ KLOBÁSA 450G BERTO,7.49 €,0,1
+Naša Slovenská Gombasecká klobása 230g,3.15 €,0,1
+Greisinger Snack klobásky 0080 kg,2.85 €,0,1
+Morčacie Mini klobásky 70g,1.45 €,0,1
+Stastnik Mini klobásky á la kabanos 70 g,1.49 €,0,1
+Greisinger Snack ostré bravčové klobásky 0080 kg,2.69 €,0,1
+Pick Pickstick Snack lahôdková klobáska 60 g,2.09 €,0,1
+Pick Pickstick Snack štipľavá klobáska 60 g,2.09 €,0,1
+Clever Špekačky 600g,3.99 €,0,1
+BILLA Špekačky  400g,4.29 €,0,1
+PRETO Ryba Žilina Treska Exklusiv 200 g,2.59 €,0,1
+PRETO Ryba Žilina Treska Exklusiv 140 g,0.85 €,0,1
+Ryba Košice Treska treskoslovenská v majonéze 140 g,1.59 €,0,1
+PRETO Ryba Žilina Treska Exklusiv 400 g,4.49 €,0,1
+Ryba More Zdravia Treska v majonéze Exklusiv 140 g,1.59 €,0,1
+Ryba Žilina Preto treska 140g,0.89 €,0,1
+PRETO Ryba Žilina Treska Exklusiv feferónový šalát 145 g,1.59 €,0,1
+PRETO Ryba Žilina Treska Exklusiv nepravý losos 145 g,1.59 €,0,1
+PRETO Ryba Žilina Rybí šalát Exklusiv 140 g,1.49 €,0,1
+Parížsky šalát 500g,3.69 €,0,1
+Lahôdkový šalát 400g,2.99 €,0,1
+Piknik Ruské vajce duo 240 g,2.39 €,0,1
+Piknik Ruské vajce duo pikant 240 g,2.39 €,0,1
+Actimel jogurtový nápoj s vitamínmi jahoda 8 x 100 g,4.65 €,0,1
+Actimel jogurtový nápoj s vitamínmi biely 8 x 100 g,4.65 €,0,1
+Actimel jogurtový nápoj s vitamínmi biely 4 x 100 g,2.55 €,0,1
+Actimel jogurtový nápoj s vitamínmi jahoda 4 x 100 g,2.55 €,0,1
+Müller Müllermilch Mliečny nápoj s čokoládovou príchuťou 400 g,0.99 €,0,1
+Müller Müllermilch Mliečny nápoj s banánovou príchuťou 400 g,0.99 €,0,1
+Müller Müllermilch Mliečny nápoj s jahodovou príchuťou 400 g,0.99 €,0,1
+Müller Müllermilch Limited mliečny nápoj s príchuťou jahodového cheesecake 400 g,0.99 €,0,1
+YoPro Protein mliečny nápoj s vanilkovou príchuťou 250 ml,1.69 €,0,1
+YoPro Protein mliečny nápoj s čokoládovou príchuťou 250 ml,1.69 €,0,1
+Rajo Active Protein Čokoláda 250 ml,1.59 €,0,1
+Rajo Active Protein Vanilka 250 ml,1.59 €,0,1
+Rajo Active Protein Banán 250 ml,1.59 €,0,1
+Rajo Active Protein Kokos 250 ml,1.59 €,0,1
+Activia Probiotický jogurtový nápoj lesné plody 280 g,1.39 €,0,1
+Activia Probiotický jogurtový nápoj jahoda a kiwi 280 g,1.39 €,0,1
+Rajo Probia Nature Jahoda 430 g,1.49 €,0,1
+Rajo Probia Nature Mango 430 g,1.49 €,0,1
+Rajo Probia Nature Vanilka Bourbon 430 g,1.49 €,0,1
+Rajo Probia Imuno Čučoriedka 430 g,1.49 €,0,1
+Rajo Acidko Biele 36% 950 g,1.89 €,0,1
+Rajo Acidko Biele 1% 950 g,1.89 €,0,1
+Rajo Acidko Biele 36% 450 g,1.09 €,0,1
+Rajo Acidko Biele 1% 450 g,1.09 €,0,1
+BILLA Kukuričný chlebík mliečna čokoláda 90g,1.19 €,0,1
+Racio Polomáčané ryžové chlebíčky jogurtová poleva 100 g,1.29 €,0,1
+Racio Tenké chlebíčky ryžové s mliečnokakaovou polevou 100 g,1.29 €,0,1
+Malokarpatský chlebíček ryža - kakao 60 g,0.69 €,0,1
+Malokarpatský chlebíček ryža - jogurt 60 g,0.69 €,0,1
+Racio Cornies kukuričné chlebíčky s ľanovým semienkom 115 g,0.99 €,0,1
+Racio Cornies kukuričné chlebíčky s medvedím cesnakom 115 g,0.99 €,0,1
+Racio Cornies polomáčané kukuričné chlebíčky s horkou čokoládou 75 g,0.99 €,0,1
+Racio Cornies kukuričné chlebíčky s morskou soľou 115 g,0.99 €,0,1
+Racio Bio špaldové chlebíčky 140 g,1.39 €,0,1
+Racio Free Style Ryžové chlebíčky s príchuťou paradajky a bazalky 25 g,0.59 €,0,1
+Racio Free Style Ryžové chlebíčky s príchuťou syra 25 g,0.59 €,0,1
+Racio Chlebíčky ryžové 130 g,0.99 €,0,1
+Racio Chlebíčky pšeničné 130 g,0.99 €,0,1
+Racio Raciolky Minichlebíčky ryžové s mliečnokakaovou polevou 60 g,0.99 €,0,1
+Racio Raciolky Jogurtové 60 g,1.05 €,0,1
+Racio Polomáčané kukuričné chlebíčky mliečnokakaová poleva 100 g,1.09 €,0,1
+Racio Chlebíčky ryžové so sójou 130 g,1.05 €,0,1
+Racio Bio ryžové chlebíčky 140 g,1.39 €,0,1
+Druid Celpo Celozrnné extra jemné chlebíčky 100 % špalda 80 g,0.99 €,0,1
+Celpo 100% celozrnné extra jemné chlebíčky šošovica s morskou soľou 90 g,1.09 €,0,1
+MINI TOPINKY SLANINA 150G  BONAVITA,1.79 €,0,1
+MINI TOPINKY HORČICA 150G,1.79 €,0,1
+CELOZRNNÉ SUCHÁRIKY 140G BONAVITA,1.79 €,0,1
+BILLA BIO Sojový nápoj natural 1l,1.59 €,0,1
+BILLA BIO Mandľový nápoj nesladený 1l,2.19 €,0,1
+BILLA BIO Kokosový nápoj 1l,1.99 €,0,1
+BILLA BIO Ovsený nápoj barista 1l,1.99 €,0,1
+BILLA BIO Ryžový nápoj s vápnikom 1l,1.89 €,0,1
+Body&Future Mandľový nápoj s vitamínom D3 a vápnikom 1 l,2.19 €,0,1
+BILLA BIO Sójový nápoj vanilka 1l,1.85 €,0,1
+BILLA BIO Ovsenný nápoj s vápnikom 1l,1.79 €,0,1
+Body&Future Kokosový nápoj s vitamínom D3 a vápnikom 1 l,2.19 €,0,1
+Zott Pure Joy Nápoj z kokosového mlieka a fermentovanej ryže s vápnikom 1 l,2.79 €,0,1
+Tami Kaukazský kefír 500 ml,0.99 €,0,1
+Babička Kefír 450 g,0.79 €,0,1
+Babička Kefír delaktózovaný 450 g,1.39 €,0,1
+Tradičný sójový originál sušený nápoj 350 g,3.29 €,0,1
+Pribináček Vanilka 125 g,1.35 €,0,1
+Pribináček Kakao 125 g,1.35 €,0,1
+Pribináček Mixík kakao-vanilka 125 g,1.35 €,0,1
+Pribináček Tvarrrohový vanilka 125 g,1.45 €,0,1
+Pribináček Banán 125 g,1.35 €,0,1
+Pribináček Jahoda 125 g,1.35 €,0,1
+Pribináček Kakao 70 g,0.69 €,0,1
+Pribináček Vanilka 70 g,0.95 €,0,1
+Madeta Lipánek Maxi vanilkový 130 g,1.19 €,0,1
+Madeta Lipánek Maxi kakaový 130 g,1.19 €,0,1
+Madeta Lipánek Maxi vanilka-kakao 130g,1.19 €,0,1
+Tami Maškrtko Maxi čokoláda 125 g,0.65 €,0,1
+Tami Maškrtko Maxi vanilka 125 g,0.65 €,0,1
+Tami Dráčik Bezlaktózový vanilka 80 g,0.79 €,0,1
+Mlékárna Kunín Termix tvarohový dezert s príchuťou vanilky 90 g,0.33 €,0,1
+Nika Termix do vrecka kakaový 80 g,0.99 €,0,1
+Tami Paťa XXL termizovaná tvarohovo smotanová pena kakaová 100 g,0.99 €,0,1
+BILLA Termix kakaový 90g,0.32 €,0,1
+BILLA Puding čokoláda-vanilka,0.59 €,0,1
+BILLA Termix vanilkový 90g,0.32 €,0,1
+Olma Míša Tvarohový mls 130 g,0.99 €,0,1
+Milko Maťko kakaový tvarohový krém 130 g,0.59 €,0,1
+Milko Maťko vanilkový tvarohový krém 130 g,0.59 €,0,1
+Zott Monte Maxi mliečny dezert čokoládový s lieskovými orieškami 4 x 100 g (400 g),1.59 €,0,1
+Chlebíček s kúskami čokolády 400g,2.05 €,0,1
+Bona Vita Active Kváskový knäckebrot s tekvicovými semienkami a syrom 180 g,3.39 €,0,1
+Racio Knäckebrot ražný s vysokým obsahom vlákniny 250 g,1.89 €,0,1
+Racio Knäckebrot celozrnný ražný 250 g,1.99 €,0,1
+Bona Vita Active Mini knäckebrot tekvica a syr 100g,2.39 €,0,1
+Bona Vita Active Kváskový miniknäckebrot s paradajkami a syrom 100 g,2.39 €,0,1
+Maces bezkvasové pečivo 500g,4.49 €,0,1
+Mini maces 40g,1.05 €,0,1
+Bona Vita Active Krehké rožteky s celozrnnou múkou 250 g,2.05 €,0,1
+Bonavita krehké plátky grahamové 70g,0.69 €,0,1
+Bona Vita Active Bio Knäckebrot kváskový s celozrnnou špaldovou múkou a semienkami slnečnice 110 g,2.39 €,0,1
+Bona Vita Active Krehké rožteky so špaldovou múkou 250 g,2.29 €,0,1
+Vepy Špaldové placky 100 g,1.79 €,0,1
+Vepy Kukuričné placky 100 g,1.69 €,0,1
+BILLA Sucháre 250g,3.15 €,0,1
+Bona Vita Active Pšenično-ražný krehký suchár 180 g,1.69 €,0,1
+Bona Vita Active Krehký suchár s celozrnnou múkou 180 g,1.69 €,0,1
+Marlenka Medová torta s vlašskými orechmi 800 g,13.49 €,0,1
+Marlenka Medová torta s kakaom 800 g,13.49 €,0,1
+Marlenka Medové guličky 235 g,4.49 €,0,1
+Marlenka Medové guličky s kakaom 235 g,4.49 €,0,1
+Marlenka Napoleonky 6 ks 300 g,5.99 €,0,1
+Bábovka mramorová 400g,1.99 €,0,1
+BILLA Tiramisu torta 400g,2.99 €,0,1
+Dobošové rezy 400g,4.99 €,0,1
+KOKOSKY PLNENÉ 200G  ERVIN,2.59 €,0,1
+Grilážky 210g,3.19 €,0,1
+Dr. Oetker Krtkova torta 435 g,3.69 €,0,1
+BILLA Oškvarková nátierka 140g,1.99 €,0,1
+BILLA Tuniaková nátierka 140g,1.99 €,0,1
+Family nátierka 160g,2.29 €,0,1
+Cesnaková nátierka 160g,2.29 €,0,1
+Šmak Nátierka šmak 130g,1.49 €,0,1
+Šmak Nátierka vajcová 130g,1.49 €,0,1
+Šmak Nátierka cesnakovo-syrová 144g,1.49 €,0,1
+Mecom Francúzska nátierka 300 g,1.55 €,0,1
+Tauris Miško šunková pena s pažítkou 100 g,1.19 €,0,1
+Tauris Maťko šunková pena 100 g,1.19 €,0,1
+Ryba Košice More Zdravia Sleďové očká v oleji s kapiou 150 g,2.99 €,0,1
+Ryba Košice Sleďové očká v oleji s olivou 150 g,2.99 €,0,1
+BILLA Papričky plnené ovčím syrom 140g,3.49 €,0,1
+Pribináček Tyčinka s tvarohom a kakaovou polevou 38 g,0.69 €,0,1
+BILLA Milk snack med 28g,0.49 €,0,1
+BILLA Milk snack kakao 30g,0.49 €,0,1
+Zott Monte Snack 29 g,0.39 €,0,1
+Zott Monte Snack White 29 g,0.39 €,0,1
+Billa Premium Chocolate Dessert 60G,1.29 €,0,1
+Billa Premium Tiramisu 2X90G,1.99 €,0,1
+BILLA BIO Kokosový dezert natural 140g,1.29 €,0,1
+Alpro Sójový dezert s vanilkovou príchuťou 125 g,0.85 €,0,1
+Alpro Sójový dezert s čokoládovou príchuťou 125 g,0.85 €,0,1
+BILLA BIO Kokosový dezert mango 140g,1.29 €,0,1
+Zvolenský Smotanový jogurt jahoda 145 g,0.37 €,0,1
+Zvolenský Smotanový jogurt čokoláda 145 g,0.37 €,0,1
+Zvolenský Smotanový jogurt čučoriedka 145 g,0.37 €,0,1
+Zvolenský Smotanový jogurt stracciatella 145 g,0.37 €,0,1
+Zvolenský Smotanový jogurt vanilka 145 g,0.37 €,0,1
+Rajo Mňam Smotanový jogurt jahoda 145 g,0.65 €,0,1
+Rajo Mňam Smotanový jogurt čokoláda 145 g,0.65 €,0,1
+Rajo Mňam Smotanový jogurt čučoriedka 145 g,0.65 €,0,1
+Rajo Probia Nature Vanilka Bourbon 135 g,0.45 €,0,1
+Rajo Probia Nature Jahoda 135 g,0.45 €,0,1
+Rajo Active Protein Grécky typ jogurtu jahoda 150 g,0.99 €,0,1
+Rajo Vegan dezert mango-maracuja 135 g,1.39 €,0,1
+Rajo Vegan dezert višňa-čierna ríbezľa 135 g,1.39 €,0,1
+Rajo Lakto Free Smotanový jogurt čokoláda 145 g,0.69 €,0,1
+Rajo Lakto Free Smotanový jogurt jahoda 145 g,0.69 €,0,1
+Rajo Lakto Free Smotanový jogurt vanilka 145 g,0.69 €,0,1
+Rajo Lakto Free Smotanový jogurt čučoriedka 145 g,0.69 €,0,1
+Milsy Bánovecký smotanový jogurt jahoda 145 g,0.37 €,0,1
+Milsy Bánovecký smotanový jogurt čokoláda 145 g,0.37 €,0,1
+Milsy Bánovecký smotanový jogurt vanilka 145 g,0.37 €,0,1
+Fantasia jogurt s mliečnou čokoládou 110 g,0.99 €,0,1
+Fantasia jogurt s čokoládovými guľôčkami 100 g,0.99 €,0,1
+Fantasia Jogurt s čokovločkami 102g,0.99 €,0,1
+Fantasia Jahoda 122 g,0.99 €,0,1
+Gašparík Kačacia pečeňová paštéta 140 g,1.99 €,0,1
+Gašparík Pečeňová paštéta 140 g,1.99 €,0,1
+Gašparík Husacia pečeňová paštéta 140 g,1.99 €,0,1
+Bravčová paštéta s brusnicami 125g,2.29 €,0,1
+Paštéta z bravčovej pečene 125g,1.79 €,0,1
+Gašparík Husacia pečeň v husacej masti 140 g,3.59 €,0,1
+Gašparík Kačacia pečeň v kačacej masti 140 g,3.55 €,0,1
+Tatrakon Tatárska zmes 110 g,1.59 €,0,1
+Tatrakon Pali Pikantná pochúťka 75 g,0.89 €,0,1
+Rajo Tvaroh jemný hrudkovitý 250 g,1.39 €,0,1
+Rajo Tvaroh odtučnený hrudkovitý 180 g,1.65 €,0,1
+Babička Tvaroh mäkký hrudkovitý 250 g,1.49 €,0,1
+Babička Tvaroh mäkký hrudkovitý 500 g,2.79 €,0,1
+Babička Tvaroh tučný hrudkovitý delaktózovaný 250 g,2.39 €,0,1
+Milko Tvaroh odtučnený 250g,0.85 €,0,1
+Milko Tvaroh polotučný 250g,1.29 €,0,1
+BILLA Tvaroh tučný hrudkovitý 250g,1.09 €,0,1
+BILLA Bio Tvaroh odtučnený 250g,1.29 €,0,1
+Tami Tvaroh 200 g,1.09 €,0,1
+Clever Tvaroh tučný 250g,1.09 €,0,1
+Rajo Ochutený tvaroh hrozienka a vanilka 250 g,1.89 €,0,1
+Rajo Fit tvaroh jablko-mrkva 200 g,1.19 €,0,1
+Rajo Fit tvaroh mango mrkva pomaranč 200 g,1.19 €,0,1
+Rajo Ochutený tvaroh jablko a škorica 250 g,1.29 €,0,1
+Rajo Active Protein Tvaroh horká čokoláda 200 g,2.05 €,0,1
+Liptov Bryndza 125g,1.99 €,0,1
+BILLA Plnotučná Bryndza 250g,3.19 €,0,1
+Clever Bryndza 125g,1.49 €,0,1
+Rajo Cottage Cheese biely 180 g,0.99 €,0,1
+Rajo Cottage Cheese pažítka 180 g,0.99 €,0,1
+Rajo Cottage Cheese chilli 180 g,0.99 €,0,1
+Rajo Cottage Cheese Yummy vanilka 180 g,0.99 €,0,1
+BILLA Cottage cheese chilli 180g,1.29 €,0,1
+BILLA Cottage cheese pažítka 200g,1.29 €,0,1
+Clever Cottage cheese natural 200g,0.89 €,0,1
+Jav Škvarená bravčová masť 500 g,2.49 €,0,1
+Clever Bravčová masť 250g,1.29 €,0,1
+Jav Husacia masť 150 g,1.55 €,0,1
+Jav Mleté bravčové oškvarky 250 g,2.59 €,0,1
+Milsy Bánovecká nátierka tradičná natur 200 g,0.99 €,0,1
+Milsy Bánovecká nátierka s jogurtom a vlákninou 200 g,0.99 €,0,1
+Lučina Svěží 180 g,1.99 €,0,1
+Lučina Svěží 120 g,1.99 €,0,1
+Lučina S pažítkou 120 g,1.99 €,0,1
+Lučina Nadýchaná so smotanou 140 g,2.29 €,0,1
+Lučina Šalátová jemne slaná 150 g,2.65 €,0,1
+Rajo Ľahšie roztierateľné maslo 225 g,2.69 €,0,1
+BILLA Čerstvý syr bylinky 200g,1.75 €,0,1
+Karička Chutná smotanová nátierka s pažítkou 120 g,1.89 €,0,1
+Karička Chutná smotanová nátierka čistá 120 g,1.89 €,0,1
+Karička Chutná smotanová nátierka s cesnakom a cibuľkou 120 g,1.89 €,0,1
+Tami Enciánka nátierka 150 g,1.49 €,0,1
+Nika Nátierka 130 g,1.69 €,0,1
+Nika Nátierka 130 g,1.69 €,0,1
+Lunter Škvarková rastlinná nátierka 100 g,0.99 €,0,1
+Lunter Mexická rastlinná nátierka 100 g,0.99 €,0,1
+Lunter Francúzska rastlinná nátierka 100 g,0.99 €,0,1
+Lunter Cícerová rastlinná nátierka 100 g,0.99 €,0,1
+Lunter Tofu krémová nátierka pažítková 140 g,1.69 €,0,1
+Lunter Tofu šqvarková nátierka premium 150 g,1.59 €,0,1
+Nurishh Nátierka s príchuťou cesnak a bylinky 130 g,2.19 €,0,1
+Nurishh Vegánska potravinová špecialita 130 g,2.19 €,0,1
+Taverna Hummus oriental 200g,2.49 €,0,1
+BILLA Smotana na šľahanie 33% 200g,1.09 €,0,1
+Rajo Smotana na šľahanie 33% 250 ml,1.79 €,0,1
+Rajo Smotana na šľahanie 30 % 250 ml,1.49 €,0,1
+Rajo Smotana na šľahanie 33% 180 ml,1.39 €,0,1
+Tami Trvanlivá smotana na šľahanie 250 ml,1.59 €,0,1
+Clever Smotana na šľahanie 30% 250ml,1.39 €,0,1
+Rajo Lakto Free Smotana na šľahanie 30% 200 ml,2.19 €,0,1
+BILLA Smotana na varenie 12% 200g,0.59 €,0,1
+Rajo Smotana na varenie 10% 180 ml,0.99 €,0,1
+Rajo Smotana na varenie 10 % 250 ml,1.39 €,0,1
+Rajo Smotana na varenie 10 % 500 ml,2.19 €,0,1
+Kunín smotana na varenie 12% 375g,1.09 €,0,1
+Clever Smotana na varenie 10% 500ml,1.49 €,0,1
+Rajo Lakto Free Bezlaktózová smotana na varenie 10% 200 ml,1.25 €,0,1
+Alpro sójová alternatíva smotany na varenie 250 ml,1.99 €,0,1
+Rajo Vegan Krém na varenie 15% 250 ml,1.35 €,0,1
+BILLA Smotana kyslá 16% 200g,0.75 €,0,1
+Rajo Smotana pochúťková kyslá 14 % 180 g,0.69 €,0,1
+Rajo Smotana pochúťková kyslá 14% 250 g,1.39 €,0,1
+Rajo Smotana pochúťková kyslá 14 % 375 g,1.85 €,0,1
+Agro Tami Nitrianska smotana kyslá 16 % 175 g,0.79 €,0,1
+Babička Smotana pochúťková kyslá 14 % 200 g,0.69 €,0,1
+Milsy Smotana pochúťková kyslá 16% 200 g,0.59 €,0,1
+Babička Smotana kyslá 14 % Delakto 200 g,1.09 €,0,1
+Hellmann's Majolenka originál 210 ml,1.49 €,0,1
+Doma Bezvaječná mayo omáčka vegan 225 g,1.79 €,0,1
+Hellmann's Tatárska omáčka 405 ml,4.09 €,0,1
+Hellmann's Tatárska omáčka delikátna 405 ml,2.79 €,0,1
+Hellmann's Tatárska omáčka 210 ml,1.49 €,0,1
+Doma Bezvaječná tatárska omáčka vegan 225 g,1.79 €,0,1
+Doma Tatarská omáčka premium 250ml,1.75 €,0,1
+Doma Tatárska omáčka 270g,1.69 €,0,1
+Clever Tatárska omáčka 380ml,1.99 €,0,1
+Šmak Tatárska omáčka 400ml,2.49 €,0,1
+Tatra Piknik Zahustené sladené mlieko 150 g,1.59 €,0,1
+Tatra Piknik Zahustené sladené mlieko 75 g,1.29 €,0,1
+Tatra Pikao Sladené zahustené mlieko kakaové 150 g,1.59 €,0,1
+Tatra Pikao Sladené zahustené mlieko kakaové 75 g,1.29 €,0,1
+Tatra Jesenka Zahustená sladená smotana 75 g,1.29 €,0,1

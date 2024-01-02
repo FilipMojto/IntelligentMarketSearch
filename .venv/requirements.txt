@@ -3,3 +3,4 @@ rapidfuzz
 packaging
 requests
 beautifulsoup4
+selenium
