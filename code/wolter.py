@@ -138,18 +138,14 @@ def scrape_data(category: Literal['ovocie-zelenina-103', 'pecivo-111', 'maso-ryb
                         approximation = 1
                         price[0] = price[0][1:]
 
-                    #if len(price) > 1 and price[1] != '':
                     csv_record += price[0] + '€'
-                    #else:
-                     #   csv_record += price[0] + '€'
 
                     csv_record += DELIMITER
                     csv_record += str(approximation)
 
                     csv_record += DELIMITER
                     
-                    
-                    #csv_record += DELIMITER
+                
                     csv_record += str(MARKET_ID)
                     csv_record += '\n'
 
