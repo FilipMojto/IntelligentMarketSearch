@@ -5,7 +5,7 @@
         "name": "Python: Main",
         "type": "python",
         "request": "launch",
-        "program": "${workspaceFolder}/code/main.py",
+        "program": "${workspaceFolder}/code/marketing.py",
         "cwd": "${workspaceFolder}/code",
         "console": "integratedTerminal"
       }

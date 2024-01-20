@@ -1,173 +1,186 @@
-from bs4 import BeautifulSoup
-import requests
-import sys
-import io
-import argparse
-import os
-import threading
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 import time
-from typing import Literal
+import argparse
+from selenium.webdriver.chrome.service import Service
+from enum import Enum
+from collections import OrderedDict
+import threading
 
-#   HTTP CONFIGURATION
-
-PROXY_URL = 'https://proxy.scrapeops.io/v1/'
-#API_KEY = '7e801fe4-49da-4ddb-9043-913bf7218c27'
-API_KEY = '5b747c45-d035-48c8-abda-e1047835e5dc'
-
-#   SRC FILE CONFIGURATION
-
-FILE_PATH = './resources/products.csv'
-DELIMITER = ','
-HEADER = 'name,price,approximation,market_ID'
-#   MARKET CONFIGURATION
-
-MARKET_CATEGORIES = ('vianoce', 'ovocie-a-zelenina', 'mliecne-vyrobky-a-vajcia', 'pecivo', 'maso-ryby-a-lahodky',
-                     'trvanlive-potraviny', 'specialna-a-zdrava-vyziva', 'mrazene-potraviny', 'napoje', 'alkohol',
-                     'starostlivost-o-domacnost', 'zdravie-a-krasa', 'starostlivost-o-dieta', 'chovatelske-potreby',
-                     'domov-a-zabava')
-MARKET_ID=0
+class Category(Enum):
+    FRUIT_VEGETABLE = 1
+    BAKERY_PRODUCTS = 2
+    MEAT_FISH = 3
+    SMOKED_MEAT = 4
+    DAIRY_PRODUCTS = 5
+    EGGS_YEAST = 6
+    READY_MEALS = 7
+    DURABLES = 8
+    SWEETS = 9
+    SALTY_SNACKS = 10
+    NON_ALCOHOLIC_DRINKS = 11
+    BEER_CIDER = 12
+    
+    
 
 
-#   SCRIPT ARGUMENTS
+categories = {
+    Category.FRUIT_VEGETABLE: 'ovocie-zelenina-103',
+    Category.BAKERY_PRODUCTS: 'pecivo-111',
 
-parser = argparse.ArgumentParser(
-                    prog='Shopping product parser',
-                    description="""The parser establishes connection with a hypermarket\'s online leaflet page
-                                and scrapes all provided products or the filtered ones based on a product name or category.""",
-                    epilog='Text at the bottom of help')
+}
 
-parser.add_argument('-p', '--product')
-parser.add_argument('-c', '--category', choices=['napoje', 'pecivo'])
-parser.add_argument('-a', '--all', action='store_true')
-parser.add_argument('-f', '--file')
-parser.add_argument('-m', '--market', type=int)
-parser.add_argument('-o', '--overwrite', action='store_true')
+URL = 'https://wolt.com/sk/svk/bratislava/venue/billa-segnerova/items/'
+APPROXIMATION_SIGN = '~'
+CURRENCY_SIGN = '€'
 
+INPUT_FILE = './resources/markets.csv'
+INPUT_FILE_CHUNK_SIZE = 200
+
+OUTPUT_FILE = './output.csv'
+OUTPUT_FILE_LOCK = threading.Lock()
+HEADER = 'product_ID,name,price,approximation,market_ID'
+FILE_DELIMITER = ','
+DELIM_REPLACEMENT = '.'
+MARKET_ID = 1
+
+def load_product_ID() -> int:
+    with open(file=INPUT_FILE, mode='r') as file:
+
+        data = file.read(INPUT_FILE_CHUNK_SIZE)
+        lines = data.split('\n')
+
+        for line in lines:
+            record = line.split(FILE_DELIMITER)
+
+            if record[0] == str(MARKET_ID):
+                return int(record[2])
+    
+    raise ValueError("No record found for the provided market ID!")
+
+PRODUCT_ID = load_product_ID()
+PRODUCT_ID_LOCK = threading.Lock()
+
+
+def save_product_ID():
+    global PRODUCT_ID
+    with PRODUCT_ID_LOCK:
+        data = ""
+
+        with open(file=INPUT_FILE, mode='r') as file:
+            data = file.read(INPUT_FILE_CHUNK_SIZE)
+        
+        lines = data.split('\n')
+        data = ""
+
+        for line in lines:
+            record = line.split(FILE_DELIMITER)
+
+            if record[0] == str(MARKET_ID):
+                data += record[0] + FILE_DELIMITER + record[1] + FILE_DELIMITER + str(PRODUCT_ID) + '\n'
+            else:
+                data += line + '\n'
+        
+        with open(file=INPUT_FILE, mode='w', encoding='utf-8') as file:
+            file.write(data)
+     
+def save_to_output_file(data):
+    with OUTPUT_FILE_LOCK:
+        with open(file=OUTPUT_FILE, mode='a', encoding='utf-8') as _file:
+            _file.write(data)
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-dp', '--driver_path', required=False)
+parser.add_argument('-c', '--clear_data', required=False, action='store_true')
 args = parser.parse_args()
 
-if sum([bool(args.product), bool(args.category), bool(args.all)]) != 1:
-    parser.error("Precisely one of -p/--product or -c/--category must be provided.")
+if args.clear_data:
+    with open(file=OUTPUT_FILE, mode='a') : pass
+    with open(file=OUTPUT_FILE, mode='w') : pass
 
+# Function to get the total scroll height using JavaScript
+def get_total_scroll_height(_driver):
+    return _driver.execute_script("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );")
 
-if(args.market):
-    MARKET_ID = args.market
+def scrape_data(driver, height_pos: int = 0, dataset: OrderedDict = OrderedDict(), sleep_=3):
+    driver.execute_script(f"window.scrollTo(0, {height_pos});")
+    time.sleep(sleep_)
 
-args.file if args.file else FILE_PATH
+    products = driver.find_elements(By.CSS_SELECTOR, '.sc-a8239ffe-4.gOfKkf')
 
+    # Now you can interact with the located sub-elements
+    for index, sub_element in enumerate(products):
+        name: str = sub_element.find_element(By.CSS_SELECTOR, '[data-test-id="ImageCentricProductCard.Title"]').text.replace(FILE_DELIMITER, DELIM_REPLACEMENT)
+        price: str = sub_element.find_element(By.CSS_SELECTOR, '[data-test-id="ImageCentricProductCardPrice"]').text.replace(FILE_DELIMITER, DELIM_REPLACEMENT)
 
-# Function to get the soup object
-def get_soup(url, params):
-    response = requests.get(url, params=params)
-    # Encoding the response to utf-8 to handle special characters
-    response.encoding = 'utf-8'
-    return BeautifulSoup(response.text, 'html.parser')
+        approximation = '0'
 
-if args.file:
+        if(price[0] == APPROXIMATION_SIGN):
+            price = price[1:]
+            approximation = '1'
 
-    match os.path.splitext(args.file)[1]:
-        case '.tsv':
-            DELIMITER = '\t'
-        case '.csv':
-            pass
-        case _:
-            raise TypeError("Invalid or unsupported file extension!")
+        price = price.split(CURRENCY_SIGN)[0].strip()
 
-def scrape_data(name: str, file, lock: threading.Lock = threading.Lock, data_type: Literal['product', 'category'] = 'product'):
-    url = ''
-    page_i = 1
-    print(f'{name}')
-    print(f'{data_type}')
-
-    while True:
-        print(f"Currently processed page: {page_i}")
-
-        if data_type == 'product':
-            url = f'https://potravinydomov.itesco.sk/groceries/sk-SK/search?query={name}&page={str(page_i)}&count=48'
-        elif data_type == 'category':
-            url = f"https://potravinydomov.itesco.sk/groceries/sk-SK/shop/{name}/all?page={str(page_i)}&count=48"
-
-
-        params = {
-            'api_key': API_KEY,
-            'url': url, 
-        }
+        print(name)
         
-
-        # Getting the soup object
-        soup = get_soup(PROXY_URL, params)
-
-        if requests.get(PROXY_URL, params=params).status_code != 200:
-            print(requests.get(PROXY_URL, params=params).status_code)
-            print(f"Request failed for page {page_i}. Exiting the loop.")
-            break
-
-        try:
-            product_grid = soup.find('ul', class_="product-list grid").find_all('li')
-
-        except AttributeError:
-            print(f"Error parsing page {page_i}. Exiting the loop.")
-            break
-
-        # Printing the soup object
-        
-        if product_grid == None:
-            print(f"No product grid found on page {page_i}. Exiting the loop.")
-            break
-        
-        with lock:
-            for index, item in enumerate(product_grid):
-                print(f"Currently processed product: {index + 1}")
-
-                try:
-                    csv_record: str = item.find('span', class_='styled__Text-sc-1i711qa-1 xZAYu ddsweb-link__text').get_text().replace(',', '')
-                except (AttributeError):
-                    print("Processed product has no product name text! Skipping...")
-                    continue
-            
-                csv_record += DELIMITER
+        # Check if the name is not already in the dataset before adding
+        if name not in dataset:
+            global PRODUCT_ID
+            with PRODUCT_ID_LOCK:
                 
-                try:
-                    csv_record += item.find('p', class_='styled__StyledHeading-sc-119w3hf-2 jWPEtj styled__Text-sc-8qlq5b-1 lnaeiZ beans-price__text').get_text().replace(',', '.')
-                except (AttributeError):
-                    print("Processed product has no price text! Skipping...")
-                    continue
+                dataset[name] = str(PRODUCT_ID) + FILE_DELIMITER + price + FILE_DELIMITER + approximation + FILE_DELIMITER + str(MARKET_ID)
+                PRODUCT_ID += 1
 
-                
-                csv_record += DELIMITER
-                csv_record += str(MARKET_ID)
-                csv_record += '\n'
+    return dataset
 
-                file.write(csv_record)
-        page_i += 1
+def update_category(category: Category, to_file: bool = False, scrolldown: int = 2000):
+    url = URL + categories[category]
+
+    # Set Chrome options to run in headless mode
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+
+    if(args.driver_path):
+        driver = webdriver.Chrome(service=Service(args.driver_path), options=options)
+    else:
+        driver = webdriver.Chrome(options=options)
+
+    driver.get(url=url)
+
+
+
+    cur_height_pos = 0
+    total_height = get_total_scroll_height(_driver=driver)
+
+    products = OrderedDict()
+
+    while cur_height_pos < total_height:
+        products = scrape_data(driver=driver, height_pos=cur_height_pos, dataset=products, sleep_=1.5)
+        cur_height_pos += scrolldown
+
+    if to_file:
+        with open(file=OUTPUT_FILE, mode='a', encoding='utf-8') as _file:
+            for name, data in products.items():
+
+                elements = data.split(FILE_DELIMITER)
+                save_to_output_file(elements[0] + FILE_DELIMITER + name + FILE_DELIMITER + elements[1] + FILE_DELIMITER + elements[2] + FILE_DELIMITER + elements[3] + '\n')
+                #_file.write(elements[0] + FILE_DELIMITER + name + FILE_DELIMITER + elements[1] + FILE_DELIMITER + elements[2] + FILE_DELIMITER + elements[3] + '\n')
+
+    driver.quit()
+    return products
+
+
+
+threads = []
+
+for category in categories:
+    thread = threading.Thread(target=update_category, args=(category, True, 1500))
+    thread.start()
+    threads.append(thread)
+
+#update_category(category=Category.FRUIT_VEGETABLE, to_file=True, scrolldown=1500)
     
-    print(f"Succesfully scraped {page_i - 1} pages!")
+for thread in threads:
+    thread.join()
 
-if(args.overwrite):
-    with open(args.file if args.file else FILE_PATH, mode='w', encoding='utf-8') as file:
-        file.write("name,price,market_ID")
-
-
-file = open(args.file if args.file else FILE_PATH, mode='a', encoding='utf-8')
-lock = threading.Lock()
-
-
-# with open(args.file if args.file else FILE_PATH, mode='a', encoding='utf-8') as file: 
-if(args.all):
-
-    for category in MARKET_CATEGORIES:
-
-        thread = threading.Thread(target=scrape_data, args=(category, file, lock, 'category'))
-        thread.start()
-        time.sleep(3)
-        #scrape_data(name=category, file=file, type='category')
-elif args.category:
-    scrape_data(name=args.category, file=file, data_type='category')
-elif args.product:
-    scrape_data(name=args.product, file=file, data_type='product')
-
-
-while threading.active_count() > 1:
-    time.sleep(1)
-    print("Main thread waiting...")
-
-print("Script finished successfully!")
+save_product_ID()

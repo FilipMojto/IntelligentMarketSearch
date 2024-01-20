@@ -1,101 +1,86 @@
-from typing import List, Dict
 
-class EAN:
-    # --- EAN configuration ---
+import csv
 
-    # -- Constant static variables --
-    __EAN_LEN = 13
-    __SUBCODE_COUNT = 4
-    __COUNTRY_CODE_LEN = 2
-    __MANUFACTURER_CODE_LEN = 5
-    __PRODUCT_ITEM_CODE_LEN = 5
-    __CHECK_DIGIT_LEN = 1
-
-    # -- Configurable static variables --
-    __DELIMITER = '-'
-    
-
-    def get_code(self):
-        return self.__CODE
-
-    def set_delimiter(self, delimiter: str):
-        if not isinstance(delimiter, str):
-            raise ValueError("Invalid type for delimiter, provide a string!")
-
-        self.__DELIMITER = delimiter
-
-    def __init__(self, code : str):
-        
-        if not isinstance(code, str):
-            raise TypeError("Invalid parameter type of an EAN object!")
-
-        if len(code) != (self.__EAN_LEN + 3):
-            raise ValueError(f"Invalid length for EAN code! Valid length: {self.__EAN_LEN}")
-
-        subcodes = code.split(self.__DELIMITER)
-
-        if len(subcodes) != self.__SUBCODE_COUNT:
-            raise ValueError("Invalid EAN structure!")
-        
-        if len(subcodes[0]) != self.__COUNTRY_CODE_LEN or not subcodes[0].isdigit():
-            raise ValueError("Invalid country code structure!")
-        elif len(subcodes[1]) != self.__MANUFACTURER_CODE_LEN or not subcodes[1].isdigit():
-            raise ValueError("Invalid manufacturer code structure!")
-        elif len(subcodes[2]) != self.__PRODUCT_ITEM_CODE_LEN or not subcodes[2].isdigit():
-            raise ValueError("Invalid product item structure!")
-        elif len(subcodes[3]) != self.__CHECK_DIGIT_LEN or not subcodes[3].isdigit():
-            raise ValueError("Invalid check digit structure!")
-        
-        self.__CODE = code
-        
-class Product:
-    def get_ID(self) -> int:
-        return self.__ID
-
-    # def get_EAN(self) -> EAN:
-    #     return self.__EAN
-
-    def get_name(self) -> str:
-        return self.__name
-
-    def get_price(self) -> float:
-        return self.__price
-
-    def __init__(self, ID: int = 0, name: str = "unspecified", price: float = -1) -> None:
-        if not isinstance(ID, int) or not isinstance(name, str) or not isinstance(price, float):
-            raise TypeError("Invalid type of a parameter for a Product object!")
-        
-        self.__ID : int = ID
-        self.__name : str = name
-        self.__price : float = price
-        
 class Market:
-
-    def get_ID(self) -> int:
+    
+    def ID(self) -> int:
         return self.__ID
-
-    def can_register(self, product: Product) -> bool:
+    
+    def name(self) -> str:
+        return self.__name
+    
+    def store_name(self) -> str:
+        return self.__store_name
+    
+    def product_ID(self) -> ID:
+        return self.__product_ID
+    
+    def register_product(self) -> int:
+        original_val = self.__product_ID
+        self.__product_ID += 1
+        return original_val
         
-        for prod in self.__products:
-            if product.get_ID() == prod.get_ID() or product.get_EAN() == prod.get_EAN():
-                return False
-        
-        return True
+    def categories(self) -> tuple[str]:
+        return self.__categories
 
-    def register_product(self, product: Product):
-
-        if not self.can_register(product=product):
-            raise ValueError("Not unique Product ID or EAN!")
-        
-        self.__products.append(product)
-
-    def __init__(self, ID: int = 0, name: str = "Unspecified") -> None:
-        
-        if not isinstance(ID, int) or not isinstance(name, str):
-            raise TypeError("Invalid type of a parameter for a Market object!")
-
+    def __init__(self, ID: int, name: str, store_name: str, product_ID: int, categories: tuple[str]) -> None:
         self.__ID = ID
-        self.__products: List[Product] = []
-        self.name = name
+        self.__name = name
+        self.__store_name = store_name
+        self.__product_ID = product_ID
+        self.__categories = categories
+        pass
+
+
+
+class MarketManager:
+    ID_INDEX = 0
+    NAME_INDEX = ID_INDEX + 1
+    STORE_NAME_INDEX = NAME_INDEX + 1
+    PRODUCT_ID_INDEX = STORE_NAME_INDEX + 1
+    CATEGORIES_ID_INDEX = PRODUCT_ID_INDEX + 1
+
+    CATEGORIES_DELIMITER=';'
+
+    def __init__(self, src_file: str) -> None:
+        self.__src_file = src_file
+        pass
+
+    def get_market(self, ID: int) -> Market:
+        with open(self.__src_file, 'r', newline='') as file:
+            reader = csv.reader(file)
+            lines = list(reader)
+
+        for line in lines:
+            if line[MarketManager.ID_INDEX] == str(ID):
+                return Market(ID=ID,name=line[MarketManager.NAME_INDEX], store_name=line[MarketManager.STORE_NAME_INDEX], product_ID=int(line[MarketManager.PRODUCT_ID_INDEX]),
+                              categories=line[MarketManager.CATEGORIES_ID_INDEX].split(MarketManager.CATEGORIES_DELIMITER))
+        
+        return None
+    
+    def update_market(self, market: Market):
+        with open(self.__src_file, 'r', newline='') as file:
+            reader = csv.reader(file)
+            lines = list(reader)
+
+        for line in lines:
+            if line[self.ID_INDEX] == str(market.ID()):
+                line[self.PRODUCT_ID_INDEX] = market.product_ID()
+                break
+        else:
+            raise ValueError("Market is not officially registered!")
+
+        with open(self.__src_file, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(lines)    
+
 
     
+
+if __name__ == "__main__":
+    ha = MarketManager("../resources/markets.csv")
+    market = ha.get_market(1)
+    market.register_product()
+
+    ha.update_market(market)
+    print("HAHA")
