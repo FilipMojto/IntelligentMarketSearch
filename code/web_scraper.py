@@ -6,6 +6,8 @@ from selenium.webdriver.chrome.service import Service
 from enum import Enum
 from collections import OrderedDict
 import threading
+from utils import ThreadPool
+
 
 class Category(Enum):
     FRUIT_VEGETABLE = 1
@@ -174,6 +176,9 @@ def update_category(category: Category, to_file: bool = False, scrolldown: int =
 threads = []
 
 for category in categories:
+
+    with ThreadPool()
+
     thread = threading.Thread(target=update_category, args=(category, True, 1500))
     thread.start()
     threads.append(thread)
