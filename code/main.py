@@ -3,7 +3,7 @@ from tkinter import *
 from typing import List, Literal
 from product_grid import ProductGrid
 from utils import TextEditor
-
+import os
 
 class EnterProductWindow(Toplevel):
 
@@ -312,12 +312,33 @@ class ToggleMenu(Frame):
         #self.rowconfigure(1, weight=1)
 
 
-
+from scraping import ProductScraper
+from marketing import Market
+import json
 
 if __name__ == '__main__':
 
-    app = Application()
-    print("continuing")
+    CONFIG_FILE_PATH = "./.config.json"
+
+    with open(file=CONFIG_FILE_PATH, mode='r') as config_file:
+        data = json.load(config_file)
+    
+    MARKETS_PATH = data["resources"]["data"]["markets"]
+    PRODUCTS_PATH = data["resources"]["data"]["products"]
+    PRODUCT_HASHES = data['resources']["data"]["product_hashes"]
+
+    market: Market = Market.get_market(ID=3, market_file=MARKETS_PATH, product_file=PRODUCTS_PATH, hash_file=PRODUCT_HASHES)
+
+    assert(market is not None)
+
+    scraper = ProductScraper(market=market, session_limit=6)
+    scraper.scrape_all(register=True, _print=True)
+    
+    scraper.quit()
+    market.register_products()
+
+    #app = Application()
+    #print("continuing")
     #app.mainloop()
 
     #app = Tk()

@@ -1,0 +1,14 @@
+{
+    "resources":  {
+        "path": "./resources",
+        "data": {
+            "path": "./resources/data",
+            "markets": "./resources/data/markets.csv",
+            "products": "./resources/data/products.csv",
+            "product_hashes": "./resources/data/product_hashes.csv"            
+        },
+        "gui": {
+            "path": "./resources/GUI"
+        }
+    }
+}

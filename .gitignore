@@ -2,3 +2,4 @@
 *.uninstall.bat
 *.update.bat
 *.gitupdate.bat
+.bvenv
