@@ -3,6 +3,7 @@ import threading
 from typing import List
 import hashlib
 
+
 class TextEditor:
     def __init__(self) -> None:
         pass

@@ -8,7 +8,9 @@
             "product_hashes": "./resources/data/product_hashes.csv"            
         },
         "gui": {
-            "path": "./resources/GUI"
+            "path": "./resources/GUI",
+            "new_item_icon": "./resources/GUI/new_item_icon.png",
+            "shopping_cart_icon": "./resources/GUI/shopping_cart_icon.png"
         }
     }
 }

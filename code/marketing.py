@@ -7,22 +7,42 @@ from utils import hash_string
 
 class Product:
 
-    def __init__(self, name: str, price: float, approximation: bool, ID: int = -1, category: str = "unspecified") -> None:
+    ATTRIBUTE_COUNT = 6
+
+    @staticmethod
+    def to_product(row: str):
+        attributes = row.split(Market.PF_ATTR_DELIMITER)
+
+        if len(attributes) != Product.ATTRIBUTE_COUNT:
+            raise ValueError("Provided row contains invalid amount of attributes!")
+
+        return Product(ID=int(attributes[Market.PF_ID_INDEX]),
+                       name=attributes[Market.PF_NAME_INDEX],
+                       price=float(attributes[Market.PF_PRICE_INDEX]),
+                       approximation=int(attributes[Market.PF_APPROXIMATION_INDEX]),
+                       category=attributes[Market.PF_CATEGORY_INDEX],
+                       market_ID=attributes[Market.PF_MARKET_ID_INDEX])
+
+
+    def __init__(self, name: str, price: float, approximation: bool, ID: int = -1, category: str = "unspecified", market_ID: int = -1) -> None:
         self.__ID = ID
         self.__name = name
         self.__price = price
         self.__aproximation = approximation
         self.__category = category
         self.__hash = hash_string(self.__name)
+        self.__market_ID = market_ID
+        
     
-    def __str__(self):
-        print("{{ID: {}, name: {}, price: {}, approximation: {}, category: {}}}".format(
+    def __str__(self, end = '\n'):
+        print("{{ID: {}, name: {}, price: {}, approximation: {}, category: {}, market: {}}}".format(
             self.__ID,
             self.__name,
             self.__price,
             self.__aproximation,
-            self.__category
-        ))
+            self.__category,
+            self.__market_ID
+        ), end=end)
 
     def ID(self, ID: int = None) -> int:
         if ID is not None:
@@ -50,35 +70,43 @@ class Product:
             self.__category = category
         return self.__category
 
+    def market_ID(self, ID: int = None) -> int:
+        if ID is not None:
+            self.__market_ID = ID
+        
+        return self.__market_ID
+
+
 class Market:
     
     # --- Product File Configuration --- #
 
-    __PF_ID_INDEX = 0
-    __PF_NAME_INDEX = __PF_ID_INDEX + 1
-    __PF_PRICE_INDEX = __PF_NAME_INDEX + 1
-    __PF_APPROXIMATION_INDEX = __PF_PRICE_INDEX + 1
-    __PF_MARKET_ID_INDEX = __PF_APPROXIMATION_INDEX + 1
+    PF_ID_INDEX = 0
+    PF_NAME_INDEX = PF_ID_INDEX + 1
+    PF_PRICE_INDEX = PF_NAME_INDEX + 1
+    PF_APPROXIMATION_INDEX = PF_PRICE_INDEX + 1
+    PF_CATEGORY_INDEX = PF_APPROXIMATION_INDEX + 1
+    PF_MARKET_ID_INDEX = PF_CATEGORY_INDEX + 1
 
-    __PF_ATTR_DELIMITER = ','
-    __PF_ROW_DELIMITER = '\n'
+    PF_ATTR_DELIMITER = ','
+    PF_ROW_DELIMITER = '\n'
 
     # --- Market File Configuration --- #
 
-    __MF_ID_INDEX = 0
-    __MF_NAME_INDEX = __MF_ID_INDEX + 1
-    __MF_STORE_NAME_INDEX = __MF_NAME_INDEX + 1
-    __MF_NEXT_PRODUCT_INDEX = __MF_STORE_NAME_INDEX + 1
-    __MF_CATEGORIES_INDEX = __MF_NEXT_PRODUCT_INDEX + 1
+    MF_ID_INDEX = 0
+    MF_NAME_INDEX = MF_ID_INDEX + 1
+    MF_STORE_NAME_INDEX = MF_NAME_INDEX + 1
+    MF_NEXT_PRODUCT_INDEX = MF_STORE_NAME_INDEX + 1
+    MF_CATEGORIES_INDEX = MF_NEXT_PRODUCT_INDEX + 1
 
-    __MF_ATTR_DELIMITER = ','
-    __MF_CATEGORIES_DELIMITER = ';'
+    MF_ATTR_DELIMITER = ','
+    MF_CATEGORIES_DELIMITER = ';'
 
     # --- Hash File Configuration --- #
 
-    __HF_ID_INDEX = 0
-    __HF_MARKET_ID_INDEX = __HF_ID_INDEX + 1
-    __HF_HASH_INDEX = __HF_MARKET_ID_INDEX + 1
+    HF_ID_INDEX = 0
+    HF_MARKET_ID_INDEX = HF_ID_INDEX + 1
+    HF_HASH_INDEX = HF_MARKET_ID_INDEX + 1
 
     __HF_ATTR_DELIMITER = ','
     __HF_ROW_DELIMITER = '\n'
@@ -90,13 +118,13 @@ class Market:
             lines = list(reader)
 
         for line in lines:
-            if line[Market.__MF_ID_INDEX] == str(ID):
+            if line[Market.MF_ID_INDEX] == str(ID):
                 return Market(ID=ID,
-                              name=line[Market.__MF_NAME_INDEX],
-                              store_name=line[Market.__MF_STORE_NAME_INDEX],
-                              product_ID=int(line[Market.__MF_NEXT_PRODUCT_INDEX]),
-                              categories=line[Market.__MF_CATEGORIES_INDEX]
-                              .split(Market.__MF_CATEGORIES_DELIMITER),
+                              name=line[Market.MF_NAME_INDEX],
+                              store_name=line[Market.MF_STORE_NAME_INDEX],
+                              product_ID=int(line[Market.MF_NEXT_PRODUCT_INDEX]),
+                              categories=line[Market.MF_CATEGORIES_INDEX]
+                              .split(Market.MF_CATEGORIES_DELIMITER),
                               market_file=market_file,
                               product_file=product_file,
                               hash_file=hash_file)
@@ -115,14 +143,14 @@ class Market:
                 line = file.readline()
 
             while(line):
-                record_vals = line.split(Market.__MF_ATTR_DELIMITER)
+                record_vals = line.split(Market.MF_ATTR_DELIMITER)
 
-                list.append(Market(ID=record_vals[Market.__PF_MARKET_ID_INDEX],
-                                   name=line[Market.__MF_NAME_INDEX],
-                                    store_name=line[Market.__MF_STORE_NAME_INDEX],
-                                    product_ID=int(line[Market.__MF_NEXT_PRODUCT_INDEX]),
-                                    categories=line[Market.__MF_CATEGORIES_INDEX]
-                                    .split(Market.__MF_CATEGORIES_DELIMITER), product_file=product_file))
+                list.append(Market(ID=record_vals[Market.PF_MARKET_ID_INDEX],
+                                   name=line[Market.MF_NAME_INDEX],
+                                    store_name=line[Market.MF_STORE_NAME_INDEX],
+                                    product_ID=int(line[Market.MF_NEXT_PRODUCT_INDEX]),
+                                    categories=line[Market.MF_CATEGORIES_INDEX]
+                                    .split(Market.MF_CATEGORIES_DELIMITER), product_file=product_file))
                 
                 line = file.readline()
         
@@ -174,11 +202,34 @@ class Market:
                 lines = list(reader)
 
             for line in lines:
-                if line[self.__HF_MARKET_ID_INDEX] == self.__ID and (line[self.__HF_ID_INDEX] == product.ID() or line[self.__HF_HASH_INDEX] == product.hash()):
+                if line[self.HF_MARKET_ID_INDEX] == self.__ID and (line[self.HF_ID_INDEX] == product.ID() or line[self.HF_HASH_INDEX] == product.hash()):
                     raise ValueError("Product already registered!")
             
             # Finally, we can add the product for registration
             self.__unregistered_products.append(product)
+    
+
+    def get_product(self, ID: int):
+
+        with open(file=self.__product_file, mode='r', encoding='utf-8') as file:
+            line = file.readline()
+
+            while(line):
+                attributes = line.split(sep=self.PF_ATTR_DELIMITER)
+
+                if attributes[self.PF_ID_INDEX] == str(ID) and self.__ID == int(attributes[self.PF_MARKET_ID_INDEX]):
+                    return Product(ID=int(attributes[self.PF_ID_INDEX]),
+                                   name=attributes[self.PF_NAME_INDEX],
+                                   price=float(attributes[self.PF_PRICE_INDEX]),
+                                   approximation=int(attributes[self.PF_APPROXIMATION_INDEX]),
+                                   category=attributes[self.PF_CATEGORY_INDEX],
+                                   market_ID=attributes[self.PF_MARKET_ID_INDEX].rstrip())
+
+
+                line = file.readline()
+        
+        return None
+
 
     def register_products(self):
 
@@ -207,9 +258,9 @@ class Market:
                     # let's get the last product and register it
                     #product = self.__unregistered_products[_len - 1 - i]
                     
-                    file.write(str(self.__product_ID) + self.__PF_ATTR_DELIMITER + product.name() + self.__PF_ATTR_DELIMITER + str(product.price())
-                                + self.__PF_ATTR_DELIMITER + str(int(product.approximation())) + self.__PF_ATTR_DELIMITER + product.category() +
-                                self.__PF_ATTR_DELIMITER + str(self.__ID) + self.__PF_ROW_DELIMITER)
+                    file.write(str(self.__product_ID) + self.PF_ATTR_DELIMITER + product.name() + self.PF_ATTR_DELIMITER + str(product.price())
+                                + self.PF_ATTR_DELIMITER + str(int(product.approximation())) + self.PF_ATTR_DELIMITER + product.category() +
+                                self.PF_ATTR_DELIMITER + str(self.__ID) + self.PF_ROW_DELIMITER)
 
                     product.ID(ID=self.__product_ID)
                     self.__product_ID += 1
@@ -223,8 +274,8 @@ class Market:
                 lines = list(reader)
 
             for line in lines:
-                if line[self.__MF_ID_INDEX] == str(self.ID()):
-                    line[self.__MF_NEXT_PRODUCT_INDEX] = self.product_ID()
+                if line[self.MF_ID_INDEX] == str(self.ID()):
+                    line[self.MF_NEXT_PRODUCT_INDEX] = self.product_ID()
                     break
             else:
                 raise ValueError("Market is not officially registered!")

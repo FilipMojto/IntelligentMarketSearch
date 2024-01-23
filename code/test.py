@@ -1,15 +1,48 @@
-from utils import fnv1a_hash
-import hashlib
+from tkinter import Tk, Menu
 
+def file_new():
+    print("New File")
 
-def hash_string(s, algorithm='sha256'):
-    # Create a hash object using the specified algorithm
-    hash_object = hashlib.new(algorithm)
+def file_open():
+    print("Open File")
 
-    # Update the hash object with the bytes representation of the string
-    hash_object.update(s.encode('utf-8'))
+def file_save():
+    print("Save File")
 
-    # Get the hexadecimal representation of the hash
-    return hash_object.hexdigest()
+# def edit_cut():
+#     print("Cut")
 
-print(hash_string("HAHeweweweweweewweweA"))
+# def edit_copy():
+#     print("Copy")
+
+# def edit_paste():
+#     print("Paste")
+
+# Create the main application window
+app = Tk()
+app.title("Menu Example")
+
+# Create a Menu widget
+main_menu = Menu(app)
+app.config(menu=main_menu)
+
+# Create a File menu
+file_menu = Menu(main_menu, tearoff=0)
+main_menu.add_cascade(label="File", menu=file_menu)
+
+file_menu.add_command(label="New", command=file_new)
+file_menu.add_command(label="Open", command=file_open)
+file_menu.add_command(label="Save", command=file_save)
+file_menu.add_separator()
+file_menu.add_command(label="Exit", command=app.quit)
+
+# # Create an Edit menu
+# edit_menu = Menu(main_menu, tearoff=0)
+# main_menu.add_cascade(label="Edit", menu=edit_menu)
+
+# edit_menu.add_command(label="Cut", command=edit_cut)
+# edit_menu.add_command(label="Copy", command=edit_copy)
+# edit_menu.add_command(label="Paste", command=edit_paste)
+
+# Start the Tkinter event loop
+app.mainloop()

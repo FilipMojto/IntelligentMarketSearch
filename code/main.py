@@ -314,28 +314,47 @@ class ToggleMenu(Frame):
 
 from scraping import ProductScraper
 from marketing import Market
+from matching import ProductMatcher
 import json
+import config_paths
+import time
+import rapidfuzz.fuzz as fuzz
+from gui import application
+
 
 if __name__ == '__main__':
+    app = application.Application()
 
-    CONFIG_FILE_PATH = "./.config.json"
 
-    with open(file=CONFIG_FILE_PATH, mode='r') as config_file:
-        data = json.load(config_file)
+    #print(fuzz("Broskyna", "Mrkva"))
+
+    # pm = ProductMatcher(product_file=config.PRODUCT_FILE_PATH)
+
+    # start = time.time()
+    # products = pm.match(text="Hell", headerless=False, limit=10)
+    # end = time.time()
+
+    # print(f"Time: {end - start}")
+
+    # for product in products:
+    #     for key,value in product.items():
+    #         key.__str__(end=': ')
+    #         print(value) 
+
+
+    # # market = Market.get_market(market_file=config.MARKET_FILE_PATH, product_file=config.PRODUCT_FILE_PATH, hash_file=config.PRODUCT_HASH_FILE_PATH,
+    # #                            ID=2)
     
-    MARKETS_PATH = data["resources"]["data"]["markets"]
-    PRODUCTS_PATH = data["resources"]["data"]["products"]
-    PRODUCT_HASHES = data['resources']["data"]["product_hashes"]
+    # # start = time.time()
+    # # product = market.get_product(ID=21579)
+    # # end = time.time()
 
-    market: Market = Market.get_market(ID=3, market_file=MARKETS_PATH, product_file=PRODUCTS_PATH, hash_file=PRODUCT_HASHES)
+    # # print(f"Total time: {end - start}")
 
-    assert(market is not None)
+    # print("Terminated")
 
-    scraper = ProductScraper(market=market, session_limit=6)
-    scraper.scrape_all(register=True, _print=True)
-    
-    scraper.quit()
-    market.register_products()
+    # pm = ProductMatcher(product_file=config.PRODUCT_FILE_PATH)
+    # pm.match(text="Broskyna", headerless=False)
 
     #app = Application()
     #print("continuing")
