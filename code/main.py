@@ -1,7 +1,7 @@
 
 from tkinter import *
 from typing import List, Literal
-from product_grid import ProductGrid
+from code.gui.product_grid import ProductGrid
 from utils import TextEditor
 import os
 
@@ -312,19 +312,18 @@ class ToggleMenu(Frame):
         #self.rowconfigure(1, weight=1)
 
 
-from scraping import ProductScraper
-from marketing import Market
-from matching import ProductMatcher
+
 import json
 import config_paths
 import time
 import rapidfuzz.fuzz as fuzz
 from gui import application
 
+from shopping import Market, Product
 
 if __name__ == '__main__':
     app = application.Application()
-
+    
 
     #print(fuzz("Broskyna", "Mrkva"))
 

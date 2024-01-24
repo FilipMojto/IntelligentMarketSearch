@@ -1,4 +1,4 @@
-from marketing import Market, Product
+from shopping import Market, Product
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
@@ -44,7 +44,7 @@ class ProductScraper:
         self.__driver.execute_script(f"window.scrollTo(0, {height_pos});")
         time.sleep(sleep_)
 
-        product_entries = self.__driver.find_elements(By.CSS_SELECTOR, '.sc-a8239ffe-4.gOfKkf')
+        product_entries = self.__driver.find_elements(By.CSS_SELECTOR, '[data-test-id="ItemCard"]') #'.sc-a8239ffe-4.gOfKkf')
 
         # Now we can interact with the located sub-elements
         for index, entry in enumerate(product_entries):
@@ -75,7 +75,7 @@ class ProductScraper:
 
             if _print:
                 print("Scraped successfully:", end=" ")
-                new_product.__str__()
+                print(new_product.__repr__())
 
             if products is not None:
                 products.append(new_product)
@@ -87,8 +87,14 @@ class ProductScraper:
         if category not in self.__market.categories():
             raise ValueError("Specified category not found!")
         
+        url_to_visit = self.__URL + category
+        self.__driver.get(url=url_to_visit)
         
-        self.__driver.get(url=self.__URL + category)
+        # # Check if the navigation was successful
+        # if url_to_visit != self.__driver.current_url:
+        #     raise ConnectionError(f"Failed to navigate to: {url_to_visit}")
+        # else:
+        #     print(f"Failed to navigate to: {url_to_visit}")
 
         cur_height_pos = 0
         total_height = self.__driver.execute_script("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );")
@@ -103,7 +109,7 @@ class ProductScraper:
             cur_height_pos += scrolldown
             
             for product in product_data:
-                _products[product.name()] = product
+                _products[product.name] = product
 
 
         if signal:
@@ -113,7 +119,7 @@ class ProductScraper:
         if register:
             
             for product in _products.values():
-                product.category(category=category)
+                product.category = category
 
                 with self.__MARKET_LOCK:
                     try:
@@ -121,7 +127,7 @@ class ProductScraper:
                         #self.__market.register_products(product=product)
                     except ValueError:
                         if _print:
-                            print("Product already registered: " + str(product.ID()) + ',' + ' ' + product.name())
+                            print("Product already registered: " + str(product.ID) + ',' + ' ' + product.name)
 
                         
         

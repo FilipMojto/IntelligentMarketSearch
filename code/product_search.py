@@ -1,9 +1,9 @@
 import rapidfuzz.fuzz as fuzz
-from marketing import Market, Product
+from shopping import Market, Product
 from typing import List, Dict
 
 class ProductMatcher:
-
+    
     def __init__(self, product_file: str, adjust_at: int = 1000) -> None:
         self.__product_file = product_file
         self.__adjust_at = adjust_at
@@ -14,6 +14,7 @@ class ProductMatcher:
             self.__adjust_at = matches
         
         return self.adjust_at
+
 
     def match(self, text: str, category: str = None, headerless: bool = True, limit: int = 5):
 
@@ -29,7 +30,7 @@ class ProductMatcher:
                 line = file.readline()
         
             while(line):
-                product = Product.to_product(row=line)
+                product = Product.to_obj(row=line)
                 self.__matches.append( (product, fuzz.partial_ratio(product.name().lower(), text.lower())) )
                 
                 if len(self.__matches) > self.__adjust_at:
