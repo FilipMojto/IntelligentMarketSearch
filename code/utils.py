@@ -68,23 +68,6 @@ def hash_string(s, algorithm='sha256'):
     # Get the hexadecimal representation of the hash
     return hash_object.hexdigest()
 
-# def fnv1a_hash(string):
-#     """
-#     FNV-1a hash function for string hashing.
-#     """
-#     # FNV-1a constants
-#     FNV_PRIME = 16777619
-#     offset_basis = 2166136261
-
-#     # Initialize hash value to the offset basis
-#     hash_value = offset_basis
-
-#     # Hash each byte of the string
-#     for byte in string.encode('utf-8'):
-#         hash_value ^= byte
-#         hash_value *= FNV_PRIME
-
-#     return hash_value
 
 class ThreadPool:
 
@@ -109,21 +92,18 @@ class ThreadPool:
     def wait_until_complete(self, task = None, timeout: int = 3, *args, **kwargs):
 
         with self.__thread_lock:
-            #for future in concurrent.futures.as_completed(self.__futures):
+
             for future in self.__futures:
-                print('CHECKING FUTURE!')
                 if task:
                    while(True): 
                         try:
                             future.result(timeout=timeout)
                         except concurrent.futures.TimeoutError as e:
-                            print("FINALLY EXECUTING!")
                             task(*args, **kwargs)
                             continue
                         break
 
                 else:
-                    print("NO TASK!")
                     future.result()
 
         self.__futures.clear()

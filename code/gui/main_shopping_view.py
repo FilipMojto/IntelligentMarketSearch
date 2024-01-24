@@ -4,7 +4,7 @@ from tkinter import *
 from tkinter import ttk
 
 import config_paths
-from matching import ProductMatcher
+from code.product_search import ProductMatcher
 
 # --- ShoppingListItem - Class Declaration&Definition --- #
 
