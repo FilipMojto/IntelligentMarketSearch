@@ -1,74 +1,63 @@
-from shopping import Market, Product, ProductCategory
-from product_scraping import ProductScraper
-from product_search import ProductMatcher
-from marrec import MarketExplorer
-import config_paths
-import rapidfuzz.fuzz as fuzz
+import tkinter as tk
+import tkinter.ttk as ttk
+from typing import List
 
-import shopping as shopping
-import polars as pl
+class ScrallableCanvas(tk.Tk):
 
-explorer = MarketExplorer(markets=shopping.markets(market_file=config_paths.MARKET_FILE_PATH, header=True) )
-explorer.explore(products=[Product(name="Rozok biely", category=ProductCategory.PECIVO)])
+    def add_frame(self):
+        frame = tk.Frame(self.canvas, bg="red", width=50, height=50)
 
-markets = explorer.best_market()
+        self.canvas.create_window(len(self.__frames) * 60, 0, window=frame, anchor="nw")
+        self.__frames.append(frame)
 
-for market in markets.keys():
-    print(str(market))
+    def __init__(self, *args, **kw):
+        super(ScrallableCanvas, self).__init__(*args,)
+        self.__frames: List[tk.Frame] = []
 
+        self.title("Canvas with Frame")
+        #ttk.Scrollbar(self, orient="horizontal")
 
+        self.canvas = tk.Canvas(self, bg='blue', width=400, height=300)
+        self.canvas.pack(side='top', fill='both', expand=True)
 
-#markets = explorer.best_market()
+        self.scrollbar = tk.Scrollbar(self, orient='horizontal', command=self.canvas.xview)
+        self.scrollbar.pack(side='top', fill='x', expand=False)
 
-#print(str(markets))
+        self.scrollbar.config(command=self.canvas.xview)
 
-# pl_df = pl.read_csv(config_paths.PRODUCT_FILE_PATH)
+        self.__interior = tk.Frame(self.canvas, bg='red')
+        self.__interior.bind('<Configure>', self.configure_interior)
+        self.__interior.bind('<Configure>', self.configure_canvas)
+        self.__interior_ID =  self.canvas.create_window(0, 0, window=self.__interior, anchor='nw')
 
+        self.canvas.configure(xscrollcommand=self.scrollbar.set)
+        #self.canvas.bind("<Configure>", self.on_frame_configure)
 
+        for i in range(10):
+            self.add_frame()
+    
+    def configure_interior(self, event):
+        size = (self.__interior.winfo_reqwidth(), self.__interior.winfo_reqheight())
+        self.canvas.config(scrollregion=(0, 0, size[0], size[1]))
 
-# market = Market.market(ID=1, market_file=config_paths.MARKET_FILE_PATH, header=True)
-
-# scraper = ProductScraper(market=market)
-# scraper.scrape_category(category="pecivo-111", register=True, _print=True)
-
-# market.register_products()
-# print("END")
-
-# print(ProductCategory.NEALKOHOLICKE_NAPOJE.value)
-
-# markets = shopping.markets(market_file=config_paths.MARKET_FILE_PATH, header=True)
-
-# for market in markets:
-#     print(market.__repr__())
-
-# print(shopping.are_compatible(markets=markets))
-
-# matcher = ProductMatcher(markets=markets)
-# matches = matcher.match(text="rozok", category=ProductCategory.PECIVO, limit=15)
-
-# for match in matches:
-#     print(f"{match[0].__repr__()}: {match[1]}")
+        if self.__interior.winfo_reqwidth() != self.canvas.winfo_width():
+            self.canvas.config(width=self.__interior.winfo_reqwidth())
 
 
+    def configure_canvas(self, event):
+        if self.__interior.winfo_reqwidth() != self.canvas.winfo_width():
+            self.canvas.itemconfigure(self.__interior_ID, width=self.canvas.winfo_width())
+
+    # def on_frame_configure(self, event):
+    #     canvas_height = self.canvas.winfo_height()
+    #     for frame in self.__frames:
+    #         self.canvas.itemconfig(frame, height=canvas_height)
+
+    #     self.canvas.update_idletasks()
+    #     self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
 
-
-# matcher = ProductMatcher(product_file=(config_paths.PRODUCT_FILE_PATH, True), adjust_at=500)
-# matches = matcher.match(text='popcorn', category=ProductCategory.SLANE_SNACKY_SEMIENKA, limit=100)
-
-
-# for match in matches:
-#     print(f"{match[0].__repr__()} : {match[1]}")
-
-# print(fuzz.partial_token_ratio("penne cestoviny este nieco", "BILLA Penne rigate 500g".lower()))
-# print("TERMINATED")
-
-
-#product.__repr__()
-
-# markets = Market.markets(market_file=config_paths.MARKET_FILE_PATH, MF_header=True, CF_header=True)
-
-# for market in markets:
-#     market.__str__()
-
-
+if __name__ == "__main__":
+    app = ScrallableCanvas()
+    app.geometry("500x400")
+    app.mainloop()

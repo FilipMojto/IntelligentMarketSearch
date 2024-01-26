@@ -1,8 +1,8 @@
 import rapidfuzz.fuzz as fuzz
-from shopping import Market, Product
+from AOSS.structure.shopping import Market, Product
 from typing import List, Dict
-import shopping
-from shopping import ProductCategory
+import AOSS.structure.shopping as shopping
+from AOSS.structure.shopping import ProductCategory
 from unidecode import unidecode
 
 class ProductMatcher:
@@ -48,7 +48,7 @@ class ProductMatcher:
             while(line):
                 product = Product.to_obj(row=line)
 
-                match = fuzz.partial_token_ratio(unidecode(product.name.lower()), processed_text)
+                match = fuzz.token_sort_ratio(unidecode(product.name.lower()), processed_text)
 
                 if match >= min_match:
                     self.__matches.append( (product, match) )

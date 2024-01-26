@@ -3,8 +3,8 @@ __AUTHOR__ = "Evenining Programmer"
 __VERSION__ = "0.0.1"
 
 from typing import List, Dict
-from shopping import Market, Product
-from product_search import ProductMatcher
+from code.AOSS.shopping import Market, Product
+from code.components.product_search import ProductMatcher
 
 class MarketExplorer:
     def __init__(self, markets: List[Market], matcher: ProductMatcher = None) -> None:
@@ -46,10 +46,15 @@ class MarketExplorer:
 
             for match in best_matches:
                 
-                for market, products in self.__product_lists.items():
+                for market, product_list in self.__product_lists.items():
                     if market.ID() == match[0].market_ID:
-                        products.append(match[0])
+                        product_list.append(match[0])
                         break
+            
+            best_matches.clear()
+        
+        for product_list in self.__product_lists.values():
+            assert(len(product_list) <= len(products))
     
     def best_market(self) -> Dict[Market, List[Product]]:
         min_sum = -1
