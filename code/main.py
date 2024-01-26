@@ -1,14 +1,16 @@
 
 from tkinter import *
 from typing import List, Literal
-from code.gui.product_grid import ProductGrid
-from utils import TextEditor
+from AOSS.gui.product_grid import ProductGrid
+from AOSS.utils import TextEditor
 import os
 
 class EnterProductWindow(Toplevel):
 
     def __init__(self, parent, *args, **kwargs) -> None:
         super().__init__(parent, *args, **kwargs)
+
+        
 
         self.__label = Label(self, text="Enter product name:")
         self.__label.grid(row=0, column=0, sticky="NSEW")
@@ -317,9 +319,9 @@ import json
 import config_paths
 import time
 import rapidfuzz.fuzz as fuzz
-from gui import application
+from AOSS.gui import application
 
-from shopping import Market, Product
+from AOSS.structure.shopping import Market, Product
 
 if __name__ == '__main__':
     app = application.Application()

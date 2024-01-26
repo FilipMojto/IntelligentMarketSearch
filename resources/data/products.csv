@@ -16552,3 +16552,1539 @@ ID,name,price,approximation,category,market_ID
 12543,Bauli Croissant vanilkový 6x50g 300g,3.29,0,pecivo,1
 12544,BILLA Parená knedľa 500g,1.85,0,pecivo,1
 12545,BILLA Bábovka piškótová 350g,4.39,0,pecivo,1
+11342,COOP Voda pramenitá nesýtená 1.5L DC,0.29,0,nealkoholicke_napoje,3
+11343,COOP Voda pramenitá sýtená 1.5L DC,0.29,0,nealkoholicke_napoje,3
+11344,Jana Vitamin Immuno nízkoenergetický nesýtený nápoj s arómou citróna 500 ml,1.39,0,nealkoholicke_napoje,3
+11345,Jana Nízkoenergetický nesýtený nápoj s príchuťou citrón-limetka 1.5 l,1.09,0,nealkoholicke_napoje,3
+11346,Natura Nesýtená 1.5 l,0.75,0,nealkoholicke_napoje,3
+11347,Natura Jemne sýtená 1.5 l,0.75,0,nealkoholicke_napoje,3
+11348,Natura Sýtená 1.5 l,0.75,0,nealkoholicke_napoje,3
+11349,Natura Nesýtená 500 ml,0.79,0,nealkoholicke_napoje,3
+11350,Natura Jemne sýtená 500 ml,0.79,0,nealkoholicke_napoje,3
+11351,Mitická Prírodná minerálna voda tichá 0.5 l,0.55,0,nealkoholicke_napoje,3
+11352,Mitická Prírodná minerálna voda jemne perlivá 0.5 l,0.55,0,nealkoholicke_napoje,3
+11353,Mitická Prírodná minerálna voda perlivá 0.5 l,0.55,0,nealkoholicke_napoje,3
+11354,Magnesia Red Minerálna voda s príchuťou malina sýtená 0.5 l,0.79,0,nealkoholicke_napoje,3
+11355,Magnesia Neperlivá prírodná minerálna voda 0.5 l,0.69,0,nealkoholicke_napoje,3
+11356,Gemerka Botanica s príchuťou citrón a mäta jemne perlivá 1.5 l,1.05,0,nealkoholicke_napoje,3
+11357,Rajec Čaj ľadová bylinka nechtík 1.5 l,1.19,0,nealkoholicke_napoje,3
+11358,Rajec Čaj ľadová bylinka mäta 1.5 l,1.19,0,nealkoholicke_napoje,3
+11359,Rajec Čaj ľadová bylinka rakytník 1.5 l,1.19,0,nealkoholicke_napoje,3
+11360,Kofola Original 250 ml,0.65,0,nealkoholicke_napoje,3
+11361,Kofola Original 500 ml,1.09,0,nealkoholicke_napoje,3
+11362,Kofola Original 0.5 l,0.89,0,nealkoholicke_napoje,3
+11363,Kofola Original 1 l,1.59,0,nealkoholicke_napoje,3
+11364,Kofola Original 1.5 l,1.39,0,nealkoholicke_napoje,3
+11365,Kofola Original 2 l,0.99,0,nealkoholicke_napoje,3
+11366,Kofola Original 2.25 l,1.09,0,nealkoholicke_napoje,3
+11367,Kofola Bez cukru 2 l,0.99,0,nealkoholicke_napoje,3
+11368,Kofola Citrus 0.5 l,0.89,0,nealkoholicke_napoje,3
+11369,Kofola Citrus 2 l,0.99,0,nealkoholicke_napoje,3
+11370,Kofola Višňa 2 l,0.99,0,nealkoholicke_napoje,3
+11371,Coca-Cola 330 ml,0.99,0,nealkoholicke_napoje,3
+11372,Coca-Cola 4 x 330 ml,2.99,0,nealkoholicke_napoje,3
+11373,Coca-Cola 500 ml,1.19,0,nealkoholicke_napoje,3
+11374,Coca-Cola 1.5 l,1.39,0,nealkoholicke_napoje,3
+11375,Coca-Cola 2 l,1.99,0,nealkoholicke_napoje,3
+11376,Coca-Cola Zero 2 l,1.19,0,nealkoholicke_napoje,3
+11377,Coca-Cola Zero 330 ml,0.99,0,nealkoholicke_napoje,3
+11378,Coca-Cola Zero 4 x 330 ml,2.99,0,nealkoholicke_napoje,3
+11379,Coca-Cola Zero 500 ml,1.19,0,nealkoholicke_napoje,3
+11380,Coca-Cola Zero 1.5 l,1.39,0,nealkoholicke_napoje,3
+11381,Pepsi Cola 330 ml,0.69,0,nealkoholicke_napoje,3
+11382,Pepsi Cola 0.5 l,1.05,0,nealkoholicke_napoje,3
+11383,Pepsi Cola 1 l,1.49,0,nealkoholicke_napoje,3
+11384,Pepsi Cola 1.5 l,0.99,0,nealkoholicke_napoje,3
+11385,Pepsi Cola 2.25 l,1.39,0,nealkoholicke_napoje,3
+11386,Pepsi Max 330 ml,0.69,0,nealkoholicke_napoje,3
+11387,Pepsi Max 0.5 l,1.05,0,nealkoholicke_napoje,3
+11388,Pepsi Max 1 l,1.49,0,nealkoholicke_napoje,3
+11389,Pepsi Max 1.5 l,0.99,0,nealkoholicke_napoje,3
+11390,Pepsi Max 2.25 l,1.39,0,nealkoholicke_napoje,3
+11391,Pepsi Lime 330 ml,0.69,0,nealkoholicke_napoje,3
+11392,Pepsi Lime 0.5 l,1.05,0,nealkoholicke_napoje,3
+11393,Pepsi Lime 1.5 l,0.99,0,nealkoholicke_napoje,3
+11394,Pepsi Lime 2.25 l,1.39,0,nealkoholicke_napoje,3
+11395,Pepsi Mango 2.25 l,1.39,0,nealkoholicke_napoje,3
+11396,Budiš Cola 1.5 l,0.99,0,nealkoholicke_napoje,3
+11397,Lokálka Klasik 2 l,1.19,0,nealkoholicke_napoje,3
+11398,Nápoj Lokálka slivka 2L,1.19,0,nealkoholicke_napoje,3
+11399,Royal Crown Cola Classic 330 ml,0.79,0,nealkoholicke_napoje,3
+11400,Royal Crown Cola 1.33 l,1.69,0,nealkoholicke_napoje,3
+11401,COOP Limonáda Bublinky cola 2L PET VÝHRADNE,0.69,0,nealkoholicke_napoje,3
+11402,Fanta Pomaranč 330 ml,0.99,0,nealkoholicke_napoje,3
+11403,Fanta Pomaranč 4 x 330 ml,2.99,0,nealkoholicke_napoje,3
+11404,Fanta Pomaranč 500 ml,1.19,0,nealkoholicke_napoje,3
+11405,Fanta Pomaranč 1.5 l,1.39,0,nealkoholicke_napoje,3
+11406,Fanta Pomaranč 2 l,1.99,0,nealkoholicke_napoje,3
+11407,Mirinda Orange 330 ml,0.69,0,nealkoholicke_napoje,3
+11408,Mirinda Orange 0.5 l,1.05,0,nealkoholicke_napoje,3
+11409,Mirinda Orange 1 l,1.49,0,nealkoholicke_napoje,3
+11410,Mirinda Orange 1.5 l,0.99,0,nealkoholicke_napoje,3
+11411,Mirinda Orange 2.25 l,1.79,0,nealkoholicke_napoje,3
+11412,Sprite Citrón limetka 330 ml,0.99,0,nealkoholicke_napoje,3
+11413,Sprite Citrón limetka 500 ml,1.19,0,nealkoholicke_napoje,3
+11414,Sprite Citrón limetka 1.5 l,1.39,0,nealkoholicke_napoje,3
+11415,Sprite Citrón limetka 2 l,1.99,0,nealkoholicke_napoje,3
+11416,7UP 330 ml,0.69,0,nealkoholicke_napoje,3
+11417,7UP 1.5 l,0.99,0,nealkoholicke_napoje,3
+11418,7UP 2.25 l,1.79,0,nealkoholicke_napoje,3
+11419,Vinea Biela 500 ml,1.09,0,nealkoholicke_napoje,3
+11420,Vinea Biela 0.5 l,0.89,0,nealkoholicke_napoje,3
+11421,Vinea Biela 1.5 l,1.39,0,nealkoholicke_napoje,3
+11422,Vinea Červená 1.5 l,1.39,0,nealkoholicke_napoje,3
+11423,Vinea Frizzante 1.5 l,1.39,0,nealkoholicke_napoje,3
+11424,Márka Original 2 l,1.19,0,nealkoholicke_napoje,3
+11425,Hroznový mušter 1.5 l,1.39,0,nealkoholicke_napoje,3
+11426,Kinley Tonic Water 1.5 l,1.79,0,nealkoholicke_napoje,3
+11427,Kinley Pink Aromatic Berry 1.5 l,1.79,0,nealkoholicke_napoje,3
+11428,Original River tonic 2l PET,1.09,0,nealkoholicke_napoje,3
+11429,Kubík Waterrr Príchuť jahoda 250 ml,0.79,0,nealkoholicke_napoje,3
+11430,Kubík Waterrr Príchuť pomaranč 250 ml,0.79,0,nealkoholicke_napoje,3
+11431,Mazagrande Forte nealkoholický sýtený nápoj s kávovou zložkou a citrusovou príchuťou 250 ml,1.49,0,nealkoholicke_napoje,3
+11432,Relax Always Lucky sýtená limonáda príchuť kaktus 330 ml,0.89,0,nealkoholicke_napoje,3
+11433,Relax Party Mood sýtená limonáda príchuť mango 330 ml,0.89,0,nealkoholicke_napoje,3
+11434,Targa Florio Arancia sýtená pomarančová limonáda 330 ml,0.79,0,nealkoholicke_napoje,3
+11435,Targa Florio Limone sýtená citrónová limonáda 330 ml,0.79,0,nealkoholicke_napoje,3
+11436,Xixo Tutti Fruity Soft Drink 250 ml,0.55,0,nealkoholicke_napoje,3
+11437,βG KILLER Alcohol Killer 250 ml,2.39,0,nealkoholicke_napoje,3
+11438,COOP Jednota limonáda bublinky zel.Jablko 2l pet výhradne,0.69,0,nealkoholicke_napoje,3
+11439,COOP Jednota nápoj citrón ovocný sýtený 1.5l pet,0.89,0,nealkoholicke_napoje,3
+11440,COOP Jednota nápoj multivitamín ovocný nesýtený 2l pet,1.49,0,nealkoholicke_napoje,3
+11441,COOP Jednota nápoj pomaranč ovocný sýtený 1.5l,0.89,0,nealkoholicke_napoje,3
+11442,COOP Jednota nápoj energeťák sýtený 1l pet,1.05,0,nealkoholicke_napoje,3
+11443,COOP Limonáda Bublinky citrón 2L PET VÝHRADNE,0.69,0,nealkoholicke_napoje,3
+11444,COOP Limonáda Bublinky hrozno 2L PET VÝHRADNE,0.69,0,nealkoholicke_napoje,3
+11445,COOP Nápoj Aloe vera jemne sýtený 1.5L TK,0.77,0,nealkoholicke_napoje,3
+11446,COOP Nápoj Aloe Vera a brusnica 1.5l TK,0.77,0,nealkoholicke_napoje,3
+11447,Disney Frozen Detský nealkoholický ovocný nápoj 0.75 l,2.99,0,nealkoholicke_napoje,3
+11448,Disney Mickey Mouse & Friends Detský nealkoholický nápoj ochutený 0.75 l,3.19,0,nealkoholicke_napoje,3
+11449,Disney-Pixar Cars 2 Sýtený ovocný nápoj s jahodovou a jablkovou šťavou 0.75 l,3.19,0,nealkoholicke_napoje,3
+11450,Robby Bubble Peach sýtený nealkoholický nápoj ochutený 0.75 l,1.89,0,nealkoholicke_napoje,3
+11451,Robby Bubble Strawberry sýtený nealkoholický nápoj ochutený 0.75 l,1.89,0,nealkoholicke_napoje,3
+11452,Schweppes Pink Tonic 1.5 l,1.79,0,nealkoholicke_napoje,3
+11453,Tchibo Coffizz Marakuja voda 0.5l,1.39,0,nealkoholicke_napoje,3
+11454,Tchibo Coffizz Citrón a mäta voda 0.5l,1.39,0,nealkoholicke_napoje,3
+11455,Coca-Cola 1 l,1.49,0,nealkoholicke_napoje,3
+11456,Coca-Cola Zero 1 l,1.49,0,nealkoholicke_napoje,3
+11457,Sprite Citrón limetka 1 l,1.49,0,nealkoholicke_napoje,3
+11458,Fanta Pomaranč 1 l,1.49,0,nealkoholicke_napoje,3
+11459,Kinley Citrus & Ylang Ylang 1.5 l,1.79,0,nealkoholicke_napoje,3
+11460,Xixo Tutti Fruity Apple Soft Drink 250 ml,0.55,0,nealkoholicke_napoje,3
+11461,Xixo Tutti Fruity Cactus sýtený nealkoholický nápoj s príchuťou opuncie. kivi 250 ml,0.55,0,nealkoholicke_napoje,3
+11462,Sanpellegrino Naturali Aranciata Rossa sýtený nealkoholický nápoj 330 ml,1.09,0,nealkoholicke_napoje,3
+11463,Sanpellegrino Naturali citrón & mäta sýtený nealkoholický nápoj 330 ml,1.19,0,nealkoholicke_napoje,3
+11464,Budiš Citrón 0.33 l,1.19,0,nealkoholicke_napoje,3
+11465,Budiš Pomaranč 0.33 l,1.19,0,nealkoholicke_napoje,3
+11466,Royal Crown Cola No Sugar 1.33 l,1.69,0,nealkoholicke_napoje,3
+11467,Royal Crown Cola No Sugar 330 ml,0.79,0,nealkoholicke_napoje,3
+11468,Targa Florio Tonica Originale sýtený nealkoholický nápoj 330 ml,0.79,0,nealkoholicke_napoje,3
+11469,Targa Florio Tonica Rosa sýtený nealkoholický nápoj 330 ml,0.79,0,nealkoholicke_napoje,3
+11470,DrWitt Elements príchuť ružový grapefruit 250 ml,0.99,0,nealkoholicke_napoje,3
+11471,DrWitt Elements príchuť biela broskyňa 250 ml,0.99,0,nealkoholicke_napoje,3
+11472,Carpe Diem Kombucha 0.75 l,2.99,0,nealkoholicke_napoje,3
+11473,Nápoj aloe vera 0.5l pet,1.29,0,nealkoholicke_napoje,3
+11474,Nápoj Aloe Vera light 0.5l PET,1.29,0,nealkoholicke_napoje,3
+11475,Aloe Vera Original 1.5 l,1.99,0,nealkoholicke_napoje,3
+11476,COOP Nápoj Šašo pomaranč 0.2L Junior,0.59,0,nealkoholicke_napoje,3
+11477,COOP Nápoj Šašo multi 0.2L Junior,0.59,0,nealkoholicke_napoje,3
+11478,COOP Nápoj detský jahoda 20% 300ml Junior,0.69,0,nealkoholicke_napoje,3
+11479,COOP Nápoj detský multivitamín 20% 300ml Junior,0.69,0,nealkoholicke_napoje,3
+11480,COOP Nápoj detský pomar.+mandar.20% 300ml Junior,0.69,0,nealkoholicke_napoje,3
+11481,COOP Nápoj Mrkva-jablko 1L TK,1.25,0,nealkoholicke_napoje,3
+11482,DrWitt Antiox granátové jablko a acai 750 ml,1.49,0,nealkoholicke_napoje,3
+11483,DrWitt Elements kolagén s príchuťou jahody 750 ml,1.49,0,nealkoholicke_napoje,3
+11484,DrWitt Fit mango. citrón a zelený čaj 750 ml,1.49,0,nealkoholicke_napoje,3
+11485,DrWitt Power-C pomaranč-pomelo 0.75L PET,1.49,0,nealkoholicke_napoje,3
+11486,Jupík Aqua Citrón 500 ml,1.09,0,nealkoholicke_napoje,3
+11487,Jupík Aqua Jablko 500 ml,1.09,0,nealkoholicke_napoje,3
+11488,Jupík Aqua Jahoda 500 ml,1.09,0,nealkoholicke_napoje,3
+11489,Jupík Aqua Malina 500 ml,1.09,0,nealkoholicke_napoje,3
+11490,Jupík Ovocík 20% Pomaranč 330 ml,0.89,0,nealkoholicke_napoje,3
+11491,Jupík Ovocík 20% Multivitamín 330 ml,0.89,0,nealkoholicke_napoje,3
+11492,Jupík Ovocík 20% Cherry Cola 330 ml,0.89,0,nealkoholicke_napoje,3
+11493,Jupík Ovocík 20% Jablko jahoda 330 ml,0.89,0,nealkoholicke_napoje,3
+11494,Kubík Play! Mrkva červený pomaranč jablko-limetka 400 ml,0.59,0,nealkoholicke_napoje,3
+11495,Kubík Play! Malina mrkva jablko-limetka 400 ml,0.59,0,nealkoholicke_napoje,3
+11496,Kubík Waterrr Príchuť citrón 500 ml,0.59,0,nealkoholicke_napoje,3
+11497,Kubík Waterrr Príchuť jahoda 500 ml,0.59,0,nealkoholicke_napoje,3
+11498,COOP Jednota čaj ľadový broskyňa 1.5l,1.29,0,nealkoholicke_napoje,3
+11499,COOP Jednota čaj ľadový citrón 1.5l,1.29,0,nealkoholicke_napoje,3
+11500,Lipton Green Ice Tea ľadový čaj s príchuťou limety a mäty 1.5 l,1.79,0,nealkoholicke_napoje,3
+11501,Lipton Green Ice Tea ľadový čaj zelený 1.5 l,1.79,0,nealkoholicke_napoje,3
+11502,Lipton Green Ice Tea ľadový čaj zelený 500 ml,1.19,0,nealkoholicke_napoje,3
+11503,Lipton Ice Tea ľadový čaj s citrónovou príchuťou 1.5 l,1.79,0,nealkoholicke_napoje,3
+11504,Lipton Ice Tea ľadový čaj s príchuťou broskyne 1.5 l,1.79,0,nealkoholicke_napoje,3
+11505,Lipton Ice Tea ľadový čaj s príchuťou broskyne 500 ml,1.19,0,nealkoholicke_napoje,3
+11506,Lipton Ice Tea s príchuťou malín 1.5 l,1.79,0,nealkoholicke_napoje,3
+11507,Lipton Lemon Ice Tea ľadový čaj s citrónovou príchuťou 500 ml,1.19,0,nealkoholicke_napoje,3
+11508,Lipton Zero Green Ice Tea s citrónovou príchuťou 1.5 l,1.79,0,nealkoholicke_napoje,3
+11509,Nestea Čierny ľadový čaj s príchuťou broskyne 1.5 l,1.69,0,nealkoholicke_napoje,3
+11510,Nestea Zelený ľadový čaj s príchuťou citrusov 1.5 l,1.69,0,nealkoholicke_napoje,3
+11511,Rauch My Tea Čajový nápoj s broskyňovou príchuťou 1.5 l,2.19,0,nealkoholicke_napoje,3
+11512,Rauch Sport Isotonic Citrus sýtený nealkoholický nápoj 0.5 l,1.69,0,nealkoholicke_napoje,3
+11513,Rio H2O Vitamínová voda citrón s dužinou 400 ml,0.99,0,nealkoholicke_napoje,3
+11514,Teeekanne Ľadový nápoj s príchuťou broskyne 0.5 l,1.29,0,nealkoholicke_napoje,3
+11515,Teekanne Ľadový čaj s príchuťou citrónu 0.5 l,1.29,0,nealkoholicke_napoje,3
+11516,Teekanne Nealkoholický nápoj s príchuťou granátového jablka a broskyne 0.5 l,1.29,0,nealkoholicke_napoje,3
+11517,Xixo Broskyňový ľadový čaj s 1% obsahom ovocnej šťavy 250 ml,0.55,0,nealkoholicke_napoje,3
+11518,Xixo Citrus Green Tea s 1% obsahom ovocnej šťavy 250 ml,0.55,0,nealkoholicke_napoje,3
+11519,Xixo Ice Tea Raspberry and Blueberry nealkoholický nápoj s príchuťou maliny a čučoriedky 250 ml,0.55,0,nealkoholicke_napoje,3
+11520,Xixo Jahodový ľadový čaj s 1% obsahom ovocnej šťavy 250 ml,0.55,0,nealkoholicke_napoje,3
+11521,Rochester Dickensian Recipe Ginger nealkoholický nápoj so zázvorom 725 ml,7.69,0,nealkoholicke_napoje,3
+11522,Red Bull Green Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11523,Red Bull Apricot Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11524,Kofola Original 4 x 2 l,5.19,0,nealkoholicke_napoje,3
+11525,Schweppes Indian tonic 1.5 l,1.79,0,nealkoholicke_napoje,3
+11526,Magnesia Plus Antistress 0.7 l,1.29,0,nealkoholicke_napoje,3
+11527,Magnesia Plus Focus 0.7 l,1.29,0,nealkoholicke_napoje,3
+11528,Gemerka jemne perlivá 2 l,0.75,0,nealkoholicke_napoje,3
+11529,Gemerka perlivá 2 l,0.75,0,nealkoholicke_napoje,3
+11530,Magnesia Extra 0.7 l,1.29,0,nealkoholicke_napoje,3
+11531,Hochwald Ľadová káva eiskaffee 500ml,1.49,0,nealkoholicke_napoje,3
+11532,Monster Energy Ultra sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11533,Starbucks Caramel Macchiato 220 ml,2.49,0,nealkoholicke_napoje,3
+11534,Starbucks Frappuccino 250 ml,2.99,0,nealkoholicke_napoje,3
+11535,Oshee Vitamin Water nesytený nápoj s prichuťou citronóvo-pomarančovou 555 ml,1.49,0,nealkoholicke_napoje,3
+11536,Arizona Pomegranate Green Tea nealkoholický ochutený nápoj 450 ml,1.49,0,nealkoholicke_napoje,3
+11537,Limeňita Pomarančová Šťava 1L,2.99,0,nealkoholicke_napoje,3
+11538,Rio Cold Press 100% ovocný mix s jahodami 200 ml,0.85,0,nealkoholicke_napoje,3
+11539,Rio Jablko cvikla 1 l,1.49,0,nealkoholicke_napoje,3
+11540,Kukkonia Iced Coffee 0.5 l,1.19,0,nealkoholicke_napoje,3
+11541,Rio Cold Press Greponade Grapefruit 400 ml,1.49,0,nealkoholicke_napoje,3
+11542,Rio H2O Vitamínová voda grapefruit s dužinou 400 ml,0.99,0,nealkoholicke_napoje,3
+11543,Body&Future Vitamin Water Antiox 400 ml,2.39,0,nealkoholicke_napoje,3
+11544,Body&Future Vitamin Water Collagen 400 ml,2.39,0,nealkoholicke_napoje,3
+11545,Rio Bubble Tea mango 400 ml,3.29,0,nealkoholicke_napoje,3
+11546,Rio Bubble Tea s liči a broskyňou 400 ml,3.29,0,nealkoholicke_napoje,3
+11547,Surprise Drinks Cars nesýtený ovocný nápoj 300 ml,1.29,0,nealkoholicke_napoje,3
+11548,Surprise Drinks Star Wars ovocný nápoj 300 ml,1.29,0,nealkoholicke_napoje,3
+11549,Disney Minnie Mouse prekvapenie jahoda 300 ml,1.29,0,nealkoholicke_napoje,3
+11550,Relax Pomaranč mandarínka maracuja mango 1 l,1.29,0,nealkoholicke_napoje,3
+11551,Semtex Extrem Guarana & Matcha 250 ml,0.99,0,nealkoholicke_napoje,3
+11552,Red Bull Summer Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11553,Red Bull The Winter Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11554,Maresi Vienna Ice Coffee cappucine 230ml,1.69,0,nealkoholicke_napoje,3
+11555,Rauch Sport Isotonic Berry sýtený nealkoholický nápoj 0.5 l,1.69,0,nealkoholicke_napoje,3
+11556,Rauch Juice Bar 100% pomarančová šťava 800 ml,2.99,0,nealkoholicke_napoje,3
+11557,Rauch Juice Bar 100% jablkovo-hroznovo-malinová šťava 800 ml,2.99,0,nealkoholicke_napoje,3
+11558,Rauch Juice Bar 100% ananás-pomaranč-marakuja 800 ml,3.19,0,nealkoholicke_napoje,3
+11559,Rauch Sport Isotonic Grapefruit sýtený nealkoholický nápoj 0.5 l,1.49,0,nealkoholicke_napoje,3
+11560,Rauch Happy Day 100% jablková šťava 330 ml,1.29,0,nealkoholicke_napoje,3
+11561,Rauch Happy Day 100% multivitamin 330 ml,1.29,0,nealkoholicke_napoje,3
+11562,Rauch Happy Day Pomarančový nektár 1.5 l,2.99,0,nealkoholicke_napoje,3
+11563,Rauch Happy Day Multivitamín 1.5 l,2.49,0,nealkoholicke_napoje,3
+11564,BIO šťava pomarančová Limenita 1L PET,4.39,0,nealkoholicke_napoje,3
+11565,Cappy 100% pomaranč 1 l,1.99,0,nealkoholicke_napoje,3
+11566,Cappy 100% jablko 1 l,1.99,0,nealkoholicke_napoje,3
+11567,Cappy Multivitamin 1 l,1.89,0,nealkoholicke_napoje,3
+11568,Capri-Sun Multivitamin nesýtený nealkoholický ovocný nápoj 200 ml,0.39,0,nealkoholicke_napoje,3
+11569,Capri-Sun Mystic Dragon nesýtený nealkoholický ovocný nápoj 200 ml,0.39,0,nealkoholicke_napoje,3
+11570,Capri-Sun Orange nesýtený nealkoholický ovocný nápoj 200 ml,0.39,0,nealkoholicke_napoje,3
+11571,Caprio Plus Pomaranč 2 l,1.79,0,nealkoholicke_napoje,3
+11572,Caprio Plus Jablko 2 l,1.29,0,nealkoholicke_napoje,3
+11573,Caprio Plus Multivitamín 2 l,1.29,0,nealkoholicke_napoje,3
+11574,Caprio Plus Party Mix ananás mango 2 l,1.29,0,nealkoholicke_napoje,3
+11575,COOP Šťava pomarančová 100% 1L TK,1.89,0,nealkoholicke_napoje,3
+11576,COOP Šťava Jablko 100% 1L TK,0.89,0,nealkoholicke_napoje,3
+11577,COOP Jednota jablko-baza 1l tp,1.09,0,nealkoholicke_napoje,3
+11578,COOP Jednota multivitamín 45% 1l tradičná kvalita,1.49,0,nealkoholicke_napoje,3
+11579,COOP Šťava Paradajka 100% 1L AL,1.39,0,nealkoholicke_napoje,3
+11580,Hello 100% jablko 250ml TPP,0.49,0,nealkoholicke_napoje,3
+11581,Hello 100% jablko-broskyňa 250ml TPP,0.49,0,nealkoholicke_napoje,3
+11582,Hello Smoothie jahoda 100% 200ml,0.75,0,nealkoholicke_napoje,3
+11583,Kubík 100% jablko 300 ml,0.75,0,nealkoholicke_napoje,3
+11584,Kubík 100% multivitamín 300 ml,0.75,0,nealkoholicke_napoje,3
+11585,Matyšák 100% hroznová šťava biela 0.75 l,3.99,0,nealkoholicke_napoje,3
+11586,Matyšák 100% hroznová šťava červená 0.75 l,3.99,0,nealkoholicke_napoje,3
+11587,Rauch Happy Day 100% pomaranč 1 l,2.49,0,nealkoholicke_napoje,3
+11588,Rauch Happy Day 100% pomarančová šťava s dužinou 1 l,2.49,0,nealkoholicke_napoje,3
+11589,Rauch Happy Day 100% multivitamín 1 l,2.29,0,nealkoholicke_napoje,3
+11590,Rauch Happy Day Multivitamín 100% 2 l,3.49,0,nealkoholicke_napoje,3
+11591,Rauch Happy Day 100% jablko 1 l,2.29,0,nealkoholicke_napoje,3
+11592,Rauch Happy Day Family ananás 1 l,1.79,0,nealkoholicke_napoje,3
+11593,Rauch Happy Day Family jablkovo-jahodový nápoj 1 l,1.79,0,nealkoholicke_napoje,3
+11594,Rauch Happy Day Family Multivitamin ovocný nápoj 1 l,1.79,0,nealkoholicke_napoje,3
+11595,Rauch Happy Day Immun Plus Orange. Mango & Lemon 1 l,2.29,0,nealkoholicke_napoje,3
+11596,Relax Jablko kaktus limetka 250 ml,0.99,0,nealkoholicke_napoje,3
+11597,Relax Jablko melón 250 ml,0.99,0,nealkoholicke_napoje,3
+11598,Relax Mango jablko pomaranč citrón 250 ml,0.99,0,nealkoholicke_napoje,3
+11599,Relax Džús 100% pomaranč 1 l,2.69,0,nealkoholicke_napoje,3
+11600,Relax Džús 100% jablko 1 l,1.39,0,nealkoholicke_napoje,3
+11601,Relax Džús 100% multivitamín 1 l,1.39,0,nealkoholicke_napoje,3
+11602,Relax Multivitamín červené ovocie 1 l,1.49,0,nealkoholicke_napoje,3
+11603,Relax Ananás 1 l,1.69,0,nealkoholicke_napoje,3
+11604,Relax Broskyňa 1 l,1.49,0,nealkoholicke_napoje,3
+11605,Relax Brusnica 1 l,1.49,0,nealkoholicke_napoje,3
+11606,Relax Hruška 1 l,1.69,0,nealkoholicke_napoje,3
+11607,Relax Exotica Kaktus 1 l,1.69,0,nealkoholicke_napoje,3
+11608,Relax Džús 100% červený grapefruit 1 l,1.39,0,nealkoholicke_napoje,3
+11609,Relax Frozen jablko arónia višňa lesná jahoda 200 ml,0.49,0,nealkoholicke_napoje,3
+11610,Relax Disney multivitamín 200 ml,0.49,0,nealkoholicke_napoje,3
+11611,Relax Pixar jablko. broskyňa. jahoda 200 ml,0.49,0,nealkoholicke_napoje,3
+11612,Relax Immuno 100% džús multivitamín 1 l,1.69,0,nealkoholicke_napoje,3
+11613,Relax Immuno 100% džús pomaranč maracuja 1 l,2.19,0,nealkoholicke_napoje,3
+11614,Rio 100% jablko 1 l,1.49,0,nealkoholicke_napoje,3
+11615,Rio Brusnica so zníženým obsahom cukru 1 l,1.79,0,nealkoholicke_napoje,3
+11616,Rio Cold Press 100% pomarančová šťava lisovaná za studena. s dužinou 200 ml,1.49,0,nealkoholicke_napoje,3
+11617,Rio Cold Press 100% ananásová šťava lisovaná za studena 180 ml,1.39,0,nealkoholicke_napoje,3
+11618,Rio Cold Press 100% jablko 1 l,1.99,0,nealkoholicke_napoje,3
+11619,Rio Cold Press 100% hruška 1 l,2.99,0,nealkoholicke_napoje,3
+11620,Rio Cold Press 100% Costa Rica ananás 1 l,2.99,0,nealkoholicke_napoje,3
+11621,Rio Cold Press 100% jablko cvikla 1 l,1.99,0,nealkoholicke_napoje,3
+11622,Rio Cold Press 100% karotka 1 l,1.99,0,nealkoholicke_napoje,3
+11623,Rio Cold Press 100% malina hrozno jablko 1 l,2.99,0,nealkoholicke_napoje,3
+11624,Rio Cold Press 100% Costa Rica pomaranč s dužinou 1 l,3.99,0,nealkoholicke_napoje,3
+11625,Rio Cold Press 100% šťava z jabĺk a cvikly lisovaná za studena 200 ml,1.09,0,nealkoholicke_napoje,3
+11626,Rio Cold Press Ginger Shot Apple 180 ml,1.59,0,nealkoholicke_napoje,3
+11627,Rio Cold Press Ginger Shot Orange 180 ml,1.59,0,nealkoholicke_napoje,3
+11628,Rochester Organic Root Ginger nealkoholický nápoj zo zázvoru 725 ml,7.69,0,nealkoholicke_napoje,3
+11629,Toma Jablko 250 ml,0.55,0,nealkoholicke_napoje,3
+11630,Toma Jahoda 250 ml,0.55,0,nealkoholicke_napoje,3
+11631,Toma Pomaranč 250 ml,0.55,0,nealkoholicke_napoje,3
+11632,Body&Future Detox viacdruhový ovocno-zeleninový nápoj 200 ml,1.69,0,nealkoholicke_napoje,3
+11633,Zdravo 100 % broskyňovo jablková šťava 0.75 l,2.79,0,nealkoholicke_napoje,3
+11634,Zdravo 100% cviklovo-jablková šťava 0.75 l,3.39,0,nealkoholicke_napoje,3
+11635,Zdravo 100% jablková šťava 0.75 l,2.69,0,nealkoholicke_napoje,3
+11636,Zdravo 100% šťava z cvikly a jabĺk 0.20 l,1.19,0,nealkoholicke_napoje,3
+11637,Zdravo 100% šťava z cvikly. jabĺk a čučoriedok 0.75 l,5.59,0,nealkoholicke_napoje,3
+11638,Zdravo 100% šťava z jabĺk a arónie 0.75 l,4.59,0,nealkoholicke_napoje,3
+11639,Rauch Happy Day 100% pomarančová šťava 330 ml,1.79,0,nealkoholicke_napoje,3
+11640,Caprio Hustý Jahoda 700 ml,1.69,0,nealkoholicke_napoje,3
+11641,Caprio Hustý Malina 700 ml,1.69,0,nealkoholicke_napoje,3
+11642,Caprio Hustý Pomaranč 700 ml,1.69,0,nealkoholicke_napoje,3
+11643,COOP Jednota sirup s príchuťou lesná zmes 0.7l pet,1.39,0,nealkoholicke_napoje,3
+11644,COOP Jednota sirup s príchuťou pomaranč 0.7l pet,1.39,0,nealkoholicke_napoje,3
+11645,COOP Jednota Tradičná kvalita 100% citrónová šťava 200 ml,0.65,0,nealkoholicke_napoje,3
+11646,Jupí Fľaštička Hustý sirup záhradné ovocie 0.7 l,3.99,0,nealkoholicke_napoje,3
+11647,Jupí Fľaštička Koktejl sirup Mojito 0.7 l,3.99,0,nealkoholicke_napoje,3
+11648,Jupí Fľaštička Sirup bazový kvet 0.7 l,3.99,0,nealkoholicke_napoje,3
+11649,Jupí Fľaštička Sirup imunita brusnica s echinaceou 0.7 l,3.99,0,nealkoholicke_napoje,3
+11650,Jupí Sirup jahoda 0.7 l,1.99,0,nealkoholicke_napoje,3
+11651,Jupí Sirup lesná zmes 0.7 l,1.99,0,nealkoholicke_napoje,3
+11652,Jupí Sirup malina 0.7 l,1.99,0,nealkoholicke_napoje,3
+11653,Jupí Sirup pomaranč 0.7 l,1.99,0,nealkoholicke_napoje,3
+11654,Natur Farm Citrónka 1 l,1.19,0,nealkoholicke_napoje,3
+11655,Natur Farm Ovocný sirup príchuť baza 0.7 l,3.49,0,nealkoholicke_napoje,3
+11656,Natur Farm Ovocný sirup s jahodovou príchuťou 0.7 l,3.49,0,nealkoholicke_napoje,3
+11657,Natur Farm Ovocný sirup s malinovou príchuťou 0.7 l,3.49,0,nealkoholicke_napoje,3
+11658,Natur Farm Ovocný sirup s príchuťou limetka-mäta 0.7 l,3.49,0,nealkoholicke_napoje,3
+11659,Natur Farm Ovocný sirup s príchuťou mango-lotosový kvet 0.7 l,3.49,0,nealkoholicke_napoje,3
+11660,Sunquick Nápojový koncentrát mandarínka 330 ml,3.59,0,nealkoholicke_napoje,3
+11661,Sunquick Nápojový koncentrát pomaranč 330 ml,3.59,0,nealkoholicke_napoje,3
+11662,Zlatá Studňa Sirup s príchuťou citrón 0.7 l,2.19,0,nealkoholicke_napoje,3
+11663,Zlatá Studňa Sirup s príchuťou čučoriedka 0.7 l,2.19,0,nealkoholicke_napoje,3
+11664,Zlatá Studňa Sirup s príchuťou lesná jahoda 0.7 l,1.29,0,nealkoholicke_napoje,3
+11665,Zlatá Studňa Sirup s príchuťou lesná zmes 0.7 l,2.19,0,nealkoholicke_napoje,3
+11666,Zlatá Studňa Sirup s príchuťou malina 0.7 l,2.19,0,nealkoholicke_napoje,3
+11667,Zlatá Studňa Sirup s príchuťou multivitamín 0.7 l,2.19,0,nealkoholicke_napoje,3
+11668,Zlatá Studňa Sirup s príchuťou pomaranč 0.7 l,1.29,0,nealkoholicke_napoje,3
+11669,Zlatá Studňa Sirup s príchuťou rumový čaj 0.7 l,2.09,0,nealkoholicke_napoje,3
+11670,COOP Sirup s príchuťou jahoda 0.7l PET DC,1.39,0,nealkoholicke_napoje,3
+11671,Sirup pomaranč 0.7L sklo,2.09,0,nealkoholicke_napoje,3
+11672,Sirup malina 0.7L sklo,2.09,0,nealkoholicke_napoje,3
+11673,Sirup Oravan Baza citrón 0.7l PET,2.09,0,nealkoholicke_napoje,3
+11674,Natur Farm Ovocný sirup s pomarančovou šťavou 0.7 l,3.49,0,nealkoholicke_napoje,3
+11675,Zlatá Studňa Sirup s príchuťou bazy 0.7 l,1.29,0,nealkoholicke_napoje,3
+11676,Frupper Jahoda 0.7 l,1.69,0,nealkoholicke_napoje,3
+11677,Red Bull Energy Drink 250 ml,1.0,0,nealkoholicke_napoje,3
+11678,Red Bull Energy Drink 355 ml,1.69,0,nealkoholicke_napoje,3
+11679,Red Bull Energy Drink 4 x 250 ml,4.99,0,nealkoholicke_napoje,3
+11680,Red Bull Sugar Free 250 ml,1.0,0,nealkoholicke_napoje,3
+11681,Red Bull Sugar Free 355 ml,1.69,0,nealkoholicke_napoje,3
+11682,Red Bull The Blue Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11683,Red Bull The Red Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11684,Red Bull The Tropical Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11685,Monster Energy Sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11686,Monster Energy The Doctor sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11687,Monster Juiced Mango Loco sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11688,Hell Classic energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11689,Hell Classic energetický nápoj 500 ml,0.79,0,nealkoholicke_napoje,3
+11690,Hell Strong Apple energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11691,Hell Apple energetický nápoj 500 ml,0.79,0,nealkoholicke_napoje,3
+11692,Hell Strong Focus energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11693,Hell Strong Red Grape energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11694,Hell Strong Water Melon energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11695,Ice Coffee Double Espresso 250 ml,0.99,0,nealkoholicke_napoje,3
+11696,Ice Coffee Cappuccino 250 ml,0.99,0,nealkoholicke_napoje,3
+11697,Ice Coffee Latte 250 ml,0.99,0,nealkoholicke_napoje,3
+11698,Semtex Energy Bloody Orange 500 ml,1.19,0,nealkoholicke_napoje,3
+11699,Semtex Energy Focus 250 ml,0.79,0,nealkoholicke_napoje,3
+11700,Semtex Energy Focus 500 ml,1.19,0,nealkoholicke_napoje,3
+11701,Semtex Street Water Focus 750 ml,1.19,0,nealkoholicke_napoje,3
+11702,Tiger Energetický nápoj 250 ml,0.79,0,nealkoholicke_napoje,3
+11703,Tiger Energetický nápoj 500 ml,1.09,0,nealkoholicke_napoje,3
+11704,Nápoj isofruit pomaranč & citrón 500 ml,1.39,0,nealkoholicke_napoje,3
+11705,COOP Jednota nápoj energet. Sýtený 250ml cev plech,0.55,0,nealkoholicke_napoje,3
+11706,COOP Jednota nápoj energeťák sýtený 0.25l plech,0.55,0,nealkoholicke_napoje,3
+11707,Powerking Sýtený povzbudzujúci nealkoholický nápoj s vitamínmi s príchuťou 250 ml,0.75,0,nealkoholicke_napoje,3
+11708,COOP Nápoj Energeťák sýtený 300ml TK,0.66,0,nealkoholicke_napoje,3
+11709,Red Bull Energy Drink 2 x 250 ml,1.99,0,nealkoholicke_napoje,3
+11710,Ice Coffee Coconut 250 ml,0.99,0,nealkoholicke_napoje,3
+11711,Semtex Extrem Guarana & Matcha 500 ml,1.19,0,nealkoholicke_napoje,3
+11712,Hell Watermelon energetický nápoj 500 ml,0.79,0,nealkoholicke_napoje,3
+11713,Dr. Oetker Bystrinka šumivý nealkoholický nápoj v prášku bez cukru 8 g,0.27,0,nealkoholicke_napoje,3
+11714,Dr. Oetker PIMA stévia nápoj aróma pomaranč 50 g,0.69,0,nealkoholicke_napoje,3
+11715,Dr. Oetker Šumienka aróma malina nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11716,Dr. Oetker Šumienka aróma mandarínka nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11717,Dr. Oetker Šumienka aróma tropik nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11718,Dr. Oetker Šumienka citrón nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11719,Dr. Oetker Šumienka pomaranč nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11720,Liana Minerál šumivý nápoj v prášku 6 g,0.17,0,nealkoholicke_napoje,3
+11721,Song Perlenka grgáčik 8 g,0.23,0,nealkoholicke_napoje,3
+11722,Song Šumienka aróma višňa nápoj v prášku 14 g,0.22,0,nealkoholicke_napoje,3
+11723,Song Šumienka s citrónovou arómou 14 g,0.23,0,nealkoholicke_napoje,3
+11724,Song Šumienka s citrónovou arómou nápoj v prášku 14 g,0.23,0,nealkoholicke_napoje,3
+11725,Song Šumienka s pomarančovou arómou 14 g,0.23,0,nealkoholicke_napoje,3
+11342,COOP Voda pramenitá nesýtená 1.5L DC,0.29,0,nealkoholicke_napoje,3
+11343,COOP Voda pramenitá sýtená 1.5L DC,0.29,0,nealkoholicke_napoje,3
+11344,Jana Vitamin Immuno nízkoenergetický nesýtený nápoj s arómou citróna 500 ml,1.39,0,nealkoholicke_napoje,3
+11345,Jana Nízkoenergetický nesýtený nápoj s príchuťou citrón-limetka 1.5 l,1.09,0,nealkoholicke_napoje,3
+11346,Natura Nesýtená 1.5 l,0.75,0,nealkoholicke_napoje,3
+11347,Natura Jemne sýtená 1.5 l,0.75,0,nealkoholicke_napoje,3
+11348,Natura Sýtená 1.5 l,0.75,0,nealkoholicke_napoje,3
+11349,Natura Nesýtená 500 ml,0.79,0,nealkoholicke_napoje,3
+11350,Natura Jemne sýtená 500 ml,0.79,0,nealkoholicke_napoje,3
+11351,Mitická Prírodná minerálna voda tichá 0.5 l,0.55,0,nealkoholicke_napoje,3
+11352,Mitická Prírodná minerálna voda jemne perlivá 0.5 l,0.55,0,nealkoholicke_napoje,3
+11353,Mitická Prírodná minerálna voda perlivá 0.5 l,0.55,0,nealkoholicke_napoje,3
+11354,Magnesia Red Minerálna voda s príchuťou malina sýtená 0.5 l,0.79,0,nealkoholicke_napoje,3
+11355,Magnesia Neperlivá prírodná minerálna voda 0.5 l,0.69,0,nealkoholicke_napoje,3
+11356,Gemerka Botanica s príchuťou citrón a mäta jemne perlivá 1.5 l,1.05,0,nealkoholicke_napoje,3
+11357,Rajec Čaj ľadová bylinka nechtík 1.5 l,1.19,0,nealkoholicke_napoje,3
+11358,Rajec Čaj ľadová bylinka mäta 1.5 l,1.19,0,nealkoholicke_napoje,3
+11359,Rajec Čaj ľadová bylinka rakytník 1.5 l,1.19,0,nealkoholicke_napoje,3
+11360,Kofola Original 250 ml,0.65,0,nealkoholicke_napoje,3
+11361,Kofola Original 500 ml,1.09,0,nealkoholicke_napoje,3
+11362,Kofola Original 0.5 l,0.89,0,nealkoholicke_napoje,3
+11363,Kofola Original 1 l,1.59,0,nealkoholicke_napoje,3
+11364,Kofola Original 1.5 l,1.39,0,nealkoholicke_napoje,3
+11365,Kofola Original 2 l,0.99,0,nealkoholicke_napoje,3
+11366,Kofola Original 2.25 l,1.09,0,nealkoholicke_napoje,3
+11367,Kofola Bez cukru 2 l,0.99,0,nealkoholicke_napoje,3
+11368,Kofola Citrus 0.5 l,0.89,0,nealkoholicke_napoje,3
+11369,Kofola Citrus 2 l,0.99,0,nealkoholicke_napoje,3
+11370,Kofola Višňa 2 l,0.99,0,nealkoholicke_napoje,3
+11371,Coca-Cola 330 ml,0.99,0,nealkoholicke_napoje,3
+11372,Coca-Cola 4 x 330 ml,2.99,0,nealkoholicke_napoje,3
+11373,Coca-Cola 500 ml,1.19,0,nealkoholicke_napoje,3
+11374,Coca-Cola 1.5 l,1.39,0,nealkoholicke_napoje,3
+11375,Coca-Cola 2 l,1.99,0,nealkoholicke_napoje,3
+11376,Coca-Cola Zero 2 l,1.19,0,nealkoholicke_napoje,3
+11377,Coca-Cola Zero 330 ml,0.99,0,nealkoholicke_napoje,3
+11378,Coca-Cola Zero 4 x 330 ml,2.99,0,nealkoholicke_napoje,3
+11379,Coca-Cola Zero 500 ml,1.19,0,nealkoholicke_napoje,3
+11380,Coca-Cola Zero 1.5 l,1.39,0,nealkoholicke_napoje,3
+11381,Pepsi Cola 330 ml,0.69,0,nealkoholicke_napoje,3
+11382,Pepsi Cola 0.5 l,1.05,0,nealkoholicke_napoje,3
+11383,Pepsi Cola 1 l,1.49,0,nealkoholicke_napoje,3
+11384,Pepsi Cola 1.5 l,0.99,0,nealkoholicke_napoje,3
+11385,Pepsi Cola 2.25 l,1.39,0,nealkoholicke_napoje,3
+11386,Pepsi Max 330 ml,0.69,0,nealkoholicke_napoje,3
+11387,Pepsi Max 0.5 l,1.05,0,nealkoholicke_napoje,3
+11388,Pepsi Max 1 l,1.49,0,nealkoholicke_napoje,3
+11389,Pepsi Max 1.5 l,0.99,0,nealkoholicke_napoje,3
+11390,Pepsi Max 2.25 l,1.39,0,nealkoholicke_napoje,3
+11391,Pepsi Lime 330 ml,0.69,0,nealkoholicke_napoje,3
+11392,Pepsi Lime 0.5 l,1.05,0,nealkoholicke_napoje,3
+11393,Pepsi Lime 1.5 l,0.99,0,nealkoholicke_napoje,3
+11394,Pepsi Lime 2.25 l,1.39,0,nealkoholicke_napoje,3
+11395,Pepsi Mango 2.25 l,1.39,0,nealkoholicke_napoje,3
+11396,Budiš Cola 1.5 l,0.99,0,nealkoholicke_napoje,3
+11397,Lokálka Klasik 2 l,1.19,0,nealkoholicke_napoje,3
+11398,Nápoj Lokálka slivka 2L,1.19,0,nealkoholicke_napoje,3
+11399,Royal Crown Cola Classic 330 ml,0.79,0,nealkoholicke_napoje,3
+11400,Royal Crown Cola 1.33 l,1.69,0,nealkoholicke_napoje,3
+11401,COOP Limonáda Bublinky cola 2L PET VÝHRADNE,0.69,0,nealkoholicke_napoje,3
+11402,Fanta Pomaranč 330 ml,0.99,0,nealkoholicke_napoje,3
+11403,Fanta Pomaranč 4 x 330 ml,2.99,0,nealkoholicke_napoje,3
+11404,Fanta Pomaranč 500 ml,1.19,0,nealkoholicke_napoje,3
+11405,Fanta Pomaranč 1.5 l,1.39,0,nealkoholicke_napoje,3
+11406,Fanta Pomaranč 2 l,1.99,0,nealkoholicke_napoje,3
+11407,Mirinda Orange 330 ml,0.69,0,nealkoholicke_napoje,3
+11408,Mirinda Orange 0.5 l,1.05,0,nealkoholicke_napoje,3
+11409,Mirinda Orange 1 l,1.49,0,nealkoholicke_napoje,3
+11410,Mirinda Orange 1.5 l,0.99,0,nealkoholicke_napoje,3
+11411,Mirinda Orange 2.25 l,1.79,0,nealkoholicke_napoje,3
+11412,Sprite Citrón limetka 330 ml,0.99,0,nealkoholicke_napoje,3
+11413,Sprite Citrón limetka 500 ml,1.19,0,nealkoholicke_napoje,3
+11414,Sprite Citrón limetka 1.5 l,1.39,0,nealkoholicke_napoje,3
+11415,Sprite Citrón limetka 2 l,1.99,0,nealkoholicke_napoje,3
+11416,7UP 330 ml,0.69,0,nealkoholicke_napoje,3
+11417,7UP 1.5 l,0.99,0,nealkoholicke_napoje,3
+11418,7UP 2.25 l,1.79,0,nealkoholicke_napoje,3
+11419,Vinea Biela 500 ml,1.09,0,nealkoholicke_napoje,3
+11420,Vinea Biela 0.5 l,0.89,0,nealkoholicke_napoje,3
+11421,Vinea Biela 1.5 l,1.39,0,nealkoholicke_napoje,3
+11422,Vinea Červená 1.5 l,1.39,0,nealkoholicke_napoje,3
+11423,Vinea Frizzante 1.5 l,1.39,0,nealkoholicke_napoje,3
+11424,Márka Original 2 l,1.19,0,nealkoholicke_napoje,3
+11425,Hroznový mušter 1.5 l,1.39,0,nealkoholicke_napoje,3
+11426,Kinley Tonic Water 1.5 l,1.79,0,nealkoholicke_napoje,3
+11427,Kinley Pink Aromatic Berry 1.5 l,1.79,0,nealkoholicke_napoje,3
+11428,Original River tonic 2l PET,1.09,0,nealkoholicke_napoje,3
+11429,Kubík Waterrr Príchuť jahoda 250 ml,0.79,0,nealkoholicke_napoje,3
+11430,Kubík Waterrr Príchuť pomaranč 250 ml,0.79,0,nealkoholicke_napoje,3
+11431,Mazagrande Forte nealkoholický sýtený nápoj s kávovou zložkou a citrusovou príchuťou 250 ml,1.49,0,nealkoholicke_napoje,3
+11432,Relax Always Lucky sýtená limonáda príchuť kaktus 330 ml,0.89,0,nealkoholicke_napoje,3
+11433,Relax Party Mood sýtená limonáda príchuť mango 330 ml,0.89,0,nealkoholicke_napoje,3
+11434,Targa Florio Arancia sýtená pomarančová limonáda 330 ml,0.79,0,nealkoholicke_napoje,3
+11435,Targa Florio Limone sýtená citrónová limonáda 330 ml,0.79,0,nealkoholicke_napoje,3
+11436,Xixo Tutti Fruity Soft Drink 250 ml,0.55,0,nealkoholicke_napoje,3
+11437,βG KILLER Alcohol Killer 250 ml,2.39,0,nealkoholicke_napoje,3
+11438,COOP Jednota limonáda bublinky zel.Jablko 2l pet výhradne,0.69,0,nealkoholicke_napoje,3
+11439,COOP Jednota nápoj citrón ovocný sýtený 1.5l pet,0.89,0,nealkoholicke_napoje,3
+11440,COOP Jednota nápoj multivitamín ovocný nesýtený 2l pet,1.49,0,nealkoholicke_napoje,3
+11441,COOP Jednota nápoj pomaranč ovocný sýtený 1.5l,0.89,0,nealkoholicke_napoje,3
+11442,COOP Jednota nápoj energeťák sýtený 1l pet,1.05,0,nealkoholicke_napoje,3
+11443,COOP Limonáda Bublinky citrón 2L PET VÝHRADNE,0.69,0,nealkoholicke_napoje,3
+11444,COOP Limonáda Bublinky hrozno 2L PET VÝHRADNE,0.69,0,nealkoholicke_napoje,3
+11445,COOP Nápoj Aloe vera jemne sýtený 1.5L TK,0.77,0,nealkoholicke_napoje,3
+11446,COOP Nápoj Aloe Vera a brusnica 1.5l TK,0.77,0,nealkoholicke_napoje,3
+11447,Disney Frozen Detský nealkoholický ovocný nápoj 0.75 l,2.99,0,nealkoholicke_napoje,3
+11448,Disney Mickey Mouse & Friends Detský nealkoholický nápoj ochutený 0.75 l,3.19,0,nealkoholicke_napoje,3
+11449,Disney-Pixar Cars 2 Sýtený ovocný nápoj s jahodovou a jablkovou šťavou 0.75 l,3.19,0,nealkoholicke_napoje,3
+11450,Robby Bubble Peach sýtený nealkoholický nápoj ochutený 0.75 l,1.89,0,nealkoholicke_napoje,3
+11451,Robby Bubble Strawberry sýtený nealkoholický nápoj ochutený 0.75 l,1.89,0,nealkoholicke_napoje,3
+11452,Schweppes Pink Tonic 1.5 l,1.79,0,nealkoholicke_napoje,3
+11453,Tchibo Coffizz Marakuja voda 0.5l,1.39,0,nealkoholicke_napoje,3
+11454,Tchibo Coffizz Citrón a mäta voda 0.5l,1.39,0,nealkoholicke_napoje,3
+11455,Coca-Cola 1 l,1.49,0,nealkoholicke_napoje,3
+11456,Coca-Cola Zero 1 l,1.49,0,nealkoholicke_napoje,3
+11457,Sprite Citrón limetka 1 l,1.49,0,nealkoholicke_napoje,3
+11458,Fanta Pomaranč 1 l,1.49,0,nealkoholicke_napoje,3
+11459,Kinley Citrus & Ylang Ylang 1.5 l,1.79,0,nealkoholicke_napoje,3
+11460,Xixo Tutti Fruity Apple Soft Drink 250 ml,0.55,0,nealkoholicke_napoje,3
+11461,Xixo Tutti Fruity Cactus sýtený nealkoholický nápoj s príchuťou opuncie. kivi 250 ml,0.55,0,nealkoholicke_napoje,3
+11462,Sanpellegrino Naturali Aranciata Rossa sýtený nealkoholický nápoj 330 ml,1.09,0,nealkoholicke_napoje,3
+11463,Sanpellegrino Naturali citrón & mäta sýtený nealkoholický nápoj 330 ml,1.19,0,nealkoholicke_napoje,3
+11464,Budiš Citrón 0.33 l,1.19,0,nealkoholicke_napoje,3
+11465,Budiš Pomaranč 0.33 l,1.19,0,nealkoholicke_napoje,3
+11466,Royal Crown Cola No Sugar 1.33 l,1.69,0,nealkoholicke_napoje,3
+11467,Royal Crown Cola No Sugar 330 ml,0.79,0,nealkoholicke_napoje,3
+11468,Targa Florio Tonica Originale sýtený nealkoholický nápoj 330 ml,0.79,0,nealkoholicke_napoje,3
+11469,Targa Florio Tonica Rosa sýtený nealkoholický nápoj 330 ml,0.79,0,nealkoholicke_napoje,3
+11470,DrWitt Elements príchuť ružový grapefruit 250 ml,0.99,0,nealkoholicke_napoje,3
+11471,DrWitt Elements príchuť biela broskyňa 250 ml,0.99,0,nealkoholicke_napoje,3
+11472,Carpe Diem Kombucha 0.75 l,2.99,0,nealkoholicke_napoje,3
+11473,Nápoj aloe vera 0.5l pet,1.29,0,nealkoholicke_napoje,3
+11474,Nápoj Aloe Vera light 0.5l PET,1.29,0,nealkoholicke_napoje,3
+11475,Aloe Vera Original 1.5 l,1.99,0,nealkoholicke_napoje,3
+11476,COOP Nápoj Šašo pomaranč 0.2L Junior,0.59,0,nealkoholicke_napoje,3
+11477,COOP Nápoj Šašo multi 0.2L Junior,0.59,0,nealkoholicke_napoje,3
+11478,COOP Nápoj detský jahoda 20% 300ml Junior,0.69,0,nealkoholicke_napoje,3
+11479,COOP Nápoj detský multivitamín 20% 300ml Junior,0.69,0,nealkoholicke_napoje,3
+11480,COOP Nápoj detský pomar.+mandar.20% 300ml Junior,0.69,0,nealkoholicke_napoje,3
+11481,COOP Nápoj Mrkva-jablko 1L TK,1.25,0,nealkoholicke_napoje,3
+11482,DrWitt Antiox granátové jablko a acai 750 ml,1.49,0,nealkoholicke_napoje,3
+11483,DrWitt Elements kolagén s príchuťou jahody 750 ml,1.49,0,nealkoholicke_napoje,3
+11484,DrWitt Fit mango. citrón a zelený čaj 750 ml,1.49,0,nealkoholicke_napoje,3
+11485,DrWitt Power-C pomaranč-pomelo 0.75L PET,1.49,0,nealkoholicke_napoje,3
+11486,Jupík Aqua Citrón 500 ml,1.09,0,nealkoholicke_napoje,3
+11487,Jupík Aqua Jablko 500 ml,1.09,0,nealkoholicke_napoje,3
+11488,Jupík Aqua Jahoda 500 ml,1.09,0,nealkoholicke_napoje,3
+11489,Jupík Aqua Malina 500 ml,1.09,0,nealkoholicke_napoje,3
+11490,Jupík Ovocík 20% Pomaranč 330 ml,0.89,0,nealkoholicke_napoje,3
+11491,Jupík Ovocík 20% Multivitamín 330 ml,0.89,0,nealkoholicke_napoje,3
+11492,Jupík Ovocík 20% Cherry Cola 330 ml,0.89,0,nealkoholicke_napoje,3
+11493,Jupík Ovocík 20% Jablko jahoda 330 ml,0.89,0,nealkoholicke_napoje,3
+11494,Kubík Play! Mrkva červený pomaranč jablko-limetka 400 ml,0.59,0,nealkoholicke_napoje,3
+11495,Kubík Play! Malina mrkva jablko-limetka 400 ml,0.59,0,nealkoholicke_napoje,3
+11496,Kubík Waterrr Príchuť citrón 500 ml,0.59,0,nealkoholicke_napoje,3
+11497,Kubík Waterrr Príchuť jahoda 500 ml,0.59,0,nealkoholicke_napoje,3
+11498,COOP Jednota čaj ľadový broskyňa 1.5l,1.29,0,nealkoholicke_napoje,3
+11499,COOP Jednota čaj ľadový citrón 1.5l,1.29,0,nealkoholicke_napoje,3
+11500,Lipton Green Ice Tea ľadový čaj s príchuťou limety a mäty 1.5 l,1.79,0,nealkoholicke_napoje,3
+11501,Lipton Green Ice Tea ľadový čaj zelený 1.5 l,1.79,0,nealkoholicke_napoje,3
+11502,Lipton Green Ice Tea ľadový čaj zelený 500 ml,1.19,0,nealkoholicke_napoje,3
+11503,Lipton Ice Tea ľadový čaj s citrónovou príchuťou 1.5 l,1.79,0,nealkoholicke_napoje,3
+11504,Lipton Ice Tea ľadový čaj s príchuťou broskyne 1.5 l,1.79,0,nealkoholicke_napoje,3
+11505,Lipton Ice Tea ľadový čaj s príchuťou broskyne 500 ml,1.19,0,nealkoholicke_napoje,3
+11506,Lipton Ice Tea s príchuťou malín 1.5 l,1.79,0,nealkoholicke_napoje,3
+11507,Lipton Lemon Ice Tea ľadový čaj s citrónovou príchuťou 500 ml,1.19,0,nealkoholicke_napoje,3
+11508,Lipton Zero Green Ice Tea s citrónovou príchuťou 1.5 l,1.79,0,nealkoholicke_napoje,3
+11509,Nestea Čierny ľadový čaj s príchuťou broskyne 1.5 l,1.69,0,nealkoholicke_napoje,3
+11510,Nestea Zelený ľadový čaj s príchuťou citrusov 1.5 l,1.69,0,nealkoholicke_napoje,3
+11511,Rauch My Tea Čajový nápoj s broskyňovou príchuťou 1.5 l,2.19,0,nealkoholicke_napoje,3
+11512,Rauch Sport Isotonic Citrus sýtený nealkoholický nápoj 0.5 l,1.69,0,nealkoholicke_napoje,3
+11513,Rio H2O Vitamínová voda citrón s dužinou 400 ml,0.99,0,nealkoholicke_napoje,3
+11514,Teeekanne Ľadový nápoj s príchuťou broskyne 0.5 l,1.29,0,nealkoholicke_napoje,3
+11515,Teekanne Ľadový čaj s príchuťou citrónu 0.5 l,1.29,0,nealkoholicke_napoje,3
+11516,Teekanne Nealkoholický nápoj s príchuťou granátového jablka a broskyne 0.5 l,1.29,0,nealkoholicke_napoje,3
+11517,Xixo Broskyňový ľadový čaj s 1% obsahom ovocnej šťavy 250 ml,0.55,0,nealkoholicke_napoje,3
+11518,Xixo Citrus Green Tea s 1% obsahom ovocnej šťavy 250 ml,0.55,0,nealkoholicke_napoje,3
+11519,Xixo Ice Tea Raspberry and Blueberry nealkoholický nápoj s príchuťou maliny a čučoriedky 250 ml,0.55,0,nealkoholicke_napoje,3
+11520,Xixo Jahodový ľadový čaj s 1% obsahom ovocnej šťavy 250 ml,0.55,0,nealkoholicke_napoje,3
+11521,Rochester Dickensian Recipe Ginger nealkoholický nápoj so zázvorom 725 ml,7.69,0,nealkoholicke_napoje,3
+11522,Red Bull Green Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11523,Red Bull Apricot Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11524,Kofola Original 4 x 2 l,5.19,0,nealkoholicke_napoje,3
+11525,Schweppes Indian tonic 1.5 l,1.79,0,nealkoholicke_napoje,3
+11526,Magnesia Plus Antistress 0.7 l,1.29,0,nealkoholicke_napoje,3
+11527,Magnesia Plus Focus 0.7 l,1.29,0,nealkoholicke_napoje,3
+11528,Gemerka jemne perlivá 2 l,0.75,0,nealkoholicke_napoje,3
+11529,Gemerka perlivá 2 l,0.75,0,nealkoholicke_napoje,3
+11530,Magnesia Extra 0.7 l,1.29,0,nealkoholicke_napoje,3
+11531,Hochwald Ľadová káva eiskaffee 500ml,1.49,0,nealkoholicke_napoje,3
+11532,Monster Energy Ultra sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11533,Starbucks Caramel Macchiato 220 ml,2.49,0,nealkoholicke_napoje,3
+11534,Starbucks Frappuccino 250 ml,2.99,0,nealkoholicke_napoje,3
+11535,Oshee Vitamin Water nesytený nápoj s prichuťou citronóvo-pomarančovou 555 ml,1.49,0,nealkoholicke_napoje,3
+11536,Arizona Pomegranate Green Tea nealkoholický ochutený nápoj 450 ml,1.49,0,nealkoholicke_napoje,3
+11537,Limeňita Pomarančová Šťava 1L,2.99,0,nealkoholicke_napoje,3
+11538,Rio Cold Press 100% ovocný mix s jahodami 200 ml,0.85,0,nealkoholicke_napoje,3
+11539,Rio Jablko cvikla 1 l,1.49,0,nealkoholicke_napoje,3
+11540,Kukkonia Iced Coffee 0.5 l,1.19,0,nealkoholicke_napoje,3
+11541,Rio Cold Press Greponade Grapefruit 400 ml,1.49,0,nealkoholicke_napoje,3
+11542,Rio H2O Vitamínová voda grapefruit s dužinou 400 ml,0.99,0,nealkoholicke_napoje,3
+11543,Body&Future Vitamin Water Antiox 400 ml,2.39,0,nealkoholicke_napoje,3
+11544,Body&Future Vitamin Water Collagen 400 ml,2.39,0,nealkoholicke_napoje,3
+11545,Rio Bubble Tea mango 400 ml,3.29,0,nealkoholicke_napoje,3
+11546,Rio Bubble Tea s liči a broskyňou 400 ml,3.29,0,nealkoholicke_napoje,3
+11547,Surprise Drinks Cars nesýtený ovocný nápoj 300 ml,1.29,0,nealkoholicke_napoje,3
+11548,Surprise Drinks Star Wars ovocný nápoj 300 ml,1.29,0,nealkoholicke_napoje,3
+11549,Disney Minnie Mouse prekvapenie jahoda 300 ml,1.29,0,nealkoholicke_napoje,3
+11550,Relax Pomaranč mandarínka maracuja mango 1 l,1.29,0,nealkoholicke_napoje,3
+11551,Semtex Extrem Guarana & Matcha 250 ml,0.99,0,nealkoholicke_napoje,3
+11552,Red Bull Summer Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11553,Red Bull The Winter Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11554,Maresi Vienna Ice Coffee cappucine 230ml,1.69,0,nealkoholicke_napoje,3
+11555,Rauch Sport Isotonic Berry sýtený nealkoholický nápoj 0.5 l,1.69,0,nealkoholicke_napoje,3
+11556,Rauch Juice Bar 100% pomarančová šťava 800 ml,2.99,0,nealkoholicke_napoje,3
+11557,Rauch Juice Bar 100% jablkovo-hroznovo-malinová šťava 800 ml,2.99,0,nealkoholicke_napoje,3
+11558,Rauch Juice Bar 100% ananás-pomaranč-marakuja 800 ml,3.19,0,nealkoholicke_napoje,3
+11559,Rauch Sport Isotonic Grapefruit sýtený nealkoholický nápoj 0.5 l,1.49,0,nealkoholicke_napoje,3
+11560,Rauch Happy Day 100% jablková šťava 330 ml,1.29,0,nealkoholicke_napoje,3
+11561,Rauch Happy Day 100% multivitamin 330 ml,1.29,0,nealkoholicke_napoje,3
+11562,Rauch Happy Day Pomarančový nektár 1.5 l,2.99,0,nealkoholicke_napoje,3
+11563,Rauch Happy Day Multivitamín 1.5 l,2.49,0,nealkoholicke_napoje,3
+11564,BIO šťava pomarančová Limenita 1L PET,4.39,0,nealkoholicke_napoje,3
+11565,Cappy 100% pomaranč 1 l,1.99,0,nealkoholicke_napoje,3
+11566,Cappy 100% jablko 1 l,1.99,0,nealkoholicke_napoje,3
+11567,Cappy Multivitamin 1 l,1.89,0,nealkoholicke_napoje,3
+11568,Capri-Sun Multivitamin nesýtený nealkoholický ovocný nápoj 200 ml,0.39,0,nealkoholicke_napoje,3
+11569,Capri-Sun Mystic Dragon nesýtený nealkoholický ovocný nápoj 200 ml,0.39,0,nealkoholicke_napoje,3
+11570,Capri-Sun Orange nesýtený nealkoholický ovocný nápoj 200 ml,0.39,0,nealkoholicke_napoje,3
+11571,Caprio Plus Pomaranč 2 l,1.79,0,nealkoholicke_napoje,3
+11572,Caprio Plus Jablko 2 l,1.29,0,nealkoholicke_napoje,3
+11573,Caprio Plus Multivitamín 2 l,1.29,0,nealkoholicke_napoje,3
+11574,Caprio Plus Party Mix ananás mango 2 l,1.29,0,nealkoholicke_napoje,3
+11575,COOP Šťava pomarančová 100% 1L TK,1.89,0,nealkoholicke_napoje,3
+11576,COOP Šťava Jablko 100% 1L TK,0.89,0,nealkoholicke_napoje,3
+11577,COOP Jednota jablko-baza 1l tp,1.09,0,nealkoholicke_napoje,3
+11578,COOP Jednota multivitamín 45% 1l tradičná kvalita,1.49,0,nealkoholicke_napoje,3
+11579,COOP Šťava Paradajka 100% 1L AL,1.39,0,nealkoholicke_napoje,3
+11580,Hello 100% jablko 250ml TPP,0.49,0,nealkoholicke_napoje,3
+11581,Hello 100% jablko-broskyňa 250ml TPP,0.49,0,nealkoholicke_napoje,3
+11582,Hello Smoothie jahoda 100% 200ml,0.75,0,nealkoholicke_napoje,3
+11583,Kubík 100% jablko 300 ml,0.75,0,nealkoholicke_napoje,3
+11584,Kubík 100% multivitamín 300 ml,0.75,0,nealkoholicke_napoje,3
+11585,Matyšák 100% hroznová šťava biela 0.75 l,3.99,0,nealkoholicke_napoje,3
+11586,Matyšák 100% hroznová šťava červená 0.75 l,3.99,0,nealkoholicke_napoje,3
+11587,Rauch Happy Day 100% pomaranč 1 l,2.49,0,nealkoholicke_napoje,3
+11588,Rauch Happy Day 100% pomarančová šťava s dužinou 1 l,2.49,0,nealkoholicke_napoje,3
+11589,Rauch Happy Day 100% multivitamín 1 l,2.29,0,nealkoholicke_napoje,3
+11590,Rauch Happy Day Multivitamín 100% 2 l,3.49,0,nealkoholicke_napoje,3
+11591,Rauch Happy Day 100% jablko 1 l,2.29,0,nealkoholicke_napoje,3
+11592,Rauch Happy Day Family ananás 1 l,1.79,0,nealkoholicke_napoje,3
+11593,Rauch Happy Day Family jablkovo-jahodový nápoj 1 l,1.79,0,nealkoholicke_napoje,3
+11594,Rauch Happy Day Family Multivitamin ovocný nápoj 1 l,1.79,0,nealkoholicke_napoje,3
+11595,Rauch Happy Day Immun Plus Orange. Mango & Lemon 1 l,2.29,0,nealkoholicke_napoje,3
+11596,Relax Jablko kaktus limetka 250 ml,0.99,0,nealkoholicke_napoje,3
+11597,Relax Jablko melón 250 ml,0.99,0,nealkoholicke_napoje,3
+11598,Relax Mango jablko pomaranč citrón 250 ml,0.99,0,nealkoholicke_napoje,3
+11599,Relax Džús 100% pomaranč 1 l,2.69,0,nealkoholicke_napoje,3
+11600,Relax Džús 100% jablko 1 l,1.39,0,nealkoholicke_napoje,3
+11601,Relax Džús 100% multivitamín 1 l,1.39,0,nealkoholicke_napoje,3
+11602,Relax Multivitamín červené ovocie 1 l,1.49,0,nealkoholicke_napoje,3
+11603,Relax Ananás 1 l,1.69,0,nealkoholicke_napoje,3
+11604,Relax Broskyňa 1 l,1.49,0,nealkoholicke_napoje,3
+11605,Relax Brusnica 1 l,1.49,0,nealkoholicke_napoje,3
+11606,Relax Hruška 1 l,1.69,0,nealkoholicke_napoje,3
+11607,Relax Exotica Kaktus 1 l,1.69,0,nealkoholicke_napoje,3
+11608,Relax Džús 100% červený grapefruit 1 l,1.39,0,nealkoholicke_napoje,3
+11609,Relax Frozen jablko arónia višňa lesná jahoda 200 ml,0.49,0,nealkoholicke_napoje,3
+11610,Relax Disney multivitamín 200 ml,0.49,0,nealkoholicke_napoje,3
+11611,Relax Pixar jablko. broskyňa. jahoda 200 ml,0.49,0,nealkoholicke_napoje,3
+11612,Relax Immuno 100% džús multivitamín 1 l,1.69,0,nealkoholicke_napoje,3
+11613,Relax Immuno 100% džús pomaranč maracuja 1 l,2.19,0,nealkoholicke_napoje,3
+11614,Rio 100% jablko 1 l,1.49,0,nealkoholicke_napoje,3
+11615,Rio Brusnica so zníženým obsahom cukru 1 l,1.79,0,nealkoholicke_napoje,3
+11616,Rio Cold Press 100% pomarančová šťava lisovaná za studena. s dužinou 200 ml,1.49,0,nealkoholicke_napoje,3
+11617,Rio Cold Press 100% ananásová šťava lisovaná za studena 180 ml,1.39,0,nealkoholicke_napoje,3
+11618,Rio Cold Press 100% jablko 1 l,1.99,0,nealkoholicke_napoje,3
+11619,Rio Cold Press 100% hruška 1 l,2.99,0,nealkoholicke_napoje,3
+11620,Rio Cold Press 100% Costa Rica ananás 1 l,2.99,0,nealkoholicke_napoje,3
+11621,Rio Cold Press 100% jablko cvikla 1 l,1.99,0,nealkoholicke_napoje,3
+11622,Rio Cold Press 100% karotka 1 l,1.99,0,nealkoholicke_napoje,3
+11623,Rio Cold Press 100% malina hrozno jablko 1 l,2.99,0,nealkoholicke_napoje,3
+11624,Rio Cold Press 100% Costa Rica pomaranč s dužinou 1 l,3.99,0,nealkoholicke_napoje,3
+11625,Rio Cold Press 100% šťava z jabĺk a cvikly lisovaná za studena 200 ml,1.09,0,nealkoholicke_napoje,3
+11626,Rio Cold Press Ginger Shot Apple 180 ml,1.59,0,nealkoholicke_napoje,3
+11627,Rio Cold Press Ginger Shot Orange 180 ml,1.59,0,nealkoholicke_napoje,3
+11628,Rochester Organic Root Ginger nealkoholický nápoj zo zázvoru 725 ml,7.69,0,nealkoholicke_napoje,3
+11629,Toma Jablko 250 ml,0.55,0,nealkoholicke_napoje,3
+11630,Toma Jahoda 250 ml,0.55,0,nealkoholicke_napoje,3
+11631,Toma Pomaranč 250 ml,0.55,0,nealkoholicke_napoje,3
+11632,Body&Future Detox viacdruhový ovocno-zeleninový nápoj 200 ml,1.69,0,nealkoholicke_napoje,3
+11633,Zdravo 100 % broskyňovo jablková šťava 0.75 l,2.79,0,nealkoholicke_napoje,3
+11634,Zdravo 100% cviklovo-jablková šťava 0.75 l,3.39,0,nealkoholicke_napoje,3
+11635,Zdravo 100% jablková šťava 0.75 l,2.69,0,nealkoholicke_napoje,3
+11636,Zdravo 100% šťava z cvikly a jabĺk 0.20 l,1.19,0,nealkoholicke_napoje,3
+11637,Zdravo 100% šťava z cvikly. jabĺk a čučoriedok 0.75 l,5.59,0,nealkoholicke_napoje,3
+11638,Zdravo 100% šťava z jabĺk a arónie 0.75 l,4.59,0,nealkoholicke_napoje,3
+11639,Rauch Happy Day 100% pomarančová šťava 330 ml,1.79,0,nealkoholicke_napoje,3
+11640,Caprio Hustý Jahoda 700 ml,1.69,0,nealkoholicke_napoje,3
+11641,Caprio Hustý Malina 700 ml,1.69,0,nealkoholicke_napoje,3
+11642,Caprio Hustý Pomaranč 700 ml,1.69,0,nealkoholicke_napoje,3
+11643,COOP Jednota sirup s príchuťou lesná zmes 0.7l pet,1.39,0,nealkoholicke_napoje,3
+11644,COOP Jednota sirup s príchuťou pomaranč 0.7l pet,1.39,0,nealkoholicke_napoje,3
+11645,COOP Jednota Tradičná kvalita 100% citrónová šťava 200 ml,0.65,0,nealkoholicke_napoje,3
+11646,Jupí Fľaštička Hustý sirup záhradné ovocie 0.7 l,3.99,0,nealkoholicke_napoje,3
+11647,Jupí Fľaštička Koktejl sirup Mojito 0.7 l,3.99,0,nealkoholicke_napoje,3
+11648,Jupí Fľaštička Sirup bazový kvet 0.7 l,3.99,0,nealkoholicke_napoje,3
+11649,Jupí Fľaštička Sirup imunita brusnica s echinaceou 0.7 l,3.99,0,nealkoholicke_napoje,3
+11650,Jupí Sirup jahoda 0.7 l,1.99,0,nealkoholicke_napoje,3
+11651,Jupí Sirup lesná zmes 0.7 l,1.99,0,nealkoholicke_napoje,3
+11652,Jupí Sirup malina 0.7 l,1.99,0,nealkoholicke_napoje,3
+11653,Jupí Sirup pomaranč 0.7 l,1.99,0,nealkoholicke_napoje,3
+11654,Natur Farm Citrónka 1 l,1.19,0,nealkoholicke_napoje,3
+11655,Natur Farm Ovocný sirup príchuť baza 0.7 l,3.49,0,nealkoholicke_napoje,3
+11656,Natur Farm Ovocný sirup s jahodovou príchuťou 0.7 l,3.49,0,nealkoholicke_napoje,3
+11657,Natur Farm Ovocný sirup s malinovou príchuťou 0.7 l,3.49,0,nealkoholicke_napoje,3
+11658,Natur Farm Ovocný sirup s príchuťou limetka-mäta 0.7 l,3.49,0,nealkoholicke_napoje,3
+11659,Natur Farm Ovocný sirup s príchuťou mango-lotosový kvet 0.7 l,3.49,0,nealkoholicke_napoje,3
+11660,Sunquick Nápojový koncentrát mandarínka 330 ml,3.59,0,nealkoholicke_napoje,3
+11661,Sunquick Nápojový koncentrát pomaranč 330 ml,3.59,0,nealkoholicke_napoje,3
+11662,Zlatá Studňa Sirup s príchuťou citrón 0.7 l,2.19,0,nealkoholicke_napoje,3
+11663,Zlatá Studňa Sirup s príchuťou čučoriedka 0.7 l,2.19,0,nealkoholicke_napoje,3
+11664,Zlatá Studňa Sirup s príchuťou lesná jahoda 0.7 l,1.29,0,nealkoholicke_napoje,3
+11665,Zlatá Studňa Sirup s príchuťou lesná zmes 0.7 l,2.19,0,nealkoholicke_napoje,3
+11666,Zlatá Studňa Sirup s príchuťou malina 0.7 l,2.19,0,nealkoholicke_napoje,3
+11667,Zlatá Studňa Sirup s príchuťou multivitamín 0.7 l,2.19,0,nealkoholicke_napoje,3
+11668,Zlatá Studňa Sirup s príchuťou pomaranč 0.7 l,1.29,0,nealkoholicke_napoje,3
+11669,Zlatá Studňa Sirup s príchuťou rumový čaj 0.7 l,2.09,0,nealkoholicke_napoje,3
+11670,COOP Sirup s príchuťou jahoda 0.7l PET DC,1.39,0,nealkoholicke_napoje,3
+11671,Sirup pomaranč 0.7L sklo,2.09,0,nealkoholicke_napoje,3
+11672,Sirup malina 0.7L sklo,2.09,0,nealkoholicke_napoje,3
+11673,Sirup Oravan Baza citrón 0.7l PET,2.09,0,nealkoholicke_napoje,3
+11674,Natur Farm Ovocný sirup s pomarančovou šťavou 0.7 l,3.49,0,nealkoholicke_napoje,3
+11675,Zlatá Studňa Sirup s príchuťou bazy 0.7 l,1.29,0,nealkoholicke_napoje,3
+11676,Frupper Jahoda 0.7 l,1.69,0,nealkoholicke_napoje,3
+11677,Red Bull Energy Drink 250 ml,1.0,0,nealkoholicke_napoje,3
+11678,Red Bull Energy Drink 355 ml,1.69,0,nealkoholicke_napoje,3
+11679,Red Bull Energy Drink 4 x 250 ml,4.99,0,nealkoholicke_napoje,3
+11680,Red Bull Sugar Free 250 ml,1.0,0,nealkoholicke_napoje,3
+11681,Red Bull Sugar Free 355 ml,1.69,0,nealkoholicke_napoje,3
+11682,Red Bull The Blue Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11683,Red Bull The Red Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11684,Red Bull The Tropical Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11685,Monster Energy Sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11686,Monster Energy The Doctor sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11687,Monster Juiced Mango Loco sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11688,Hell Classic energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11689,Hell Classic energetický nápoj 500 ml,0.79,0,nealkoholicke_napoje,3
+11690,Hell Strong Apple energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11691,Hell Apple energetický nápoj 500 ml,0.79,0,nealkoholicke_napoje,3
+11692,Hell Strong Focus energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11693,Hell Strong Red Grape energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11694,Hell Strong Water Melon energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11695,Ice Coffee Double Espresso 250 ml,0.99,0,nealkoholicke_napoje,3
+11696,Ice Coffee Cappuccino 250 ml,0.99,0,nealkoholicke_napoje,3
+11697,Ice Coffee Latte 250 ml,0.99,0,nealkoholicke_napoje,3
+11698,Semtex Energy Bloody Orange 500 ml,1.19,0,nealkoholicke_napoje,3
+11699,Semtex Energy Focus 250 ml,0.79,0,nealkoholicke_napoje,3
+11700,Semtex Energy Focus 500 ml,1.19,0,nealkoholicke_napoje,3
+11701,Semtex Street Water Focus 750 ml,1.19,0,nealkoholicke_napoje,3
+11702,Tiger Energetický nápoj 250 ml,0.79,0,nealkoholicke_napoje,3
+11703,Tiger Energetický nápoj 500 ml,1.09,0,nealkoholicke_napoje,3
+11704,Nápoj isofruit pomaranč & citrón 500 ml,1.39,0,nealkoholicke_napoje,3
+11705,COOP Jednota nápoj energet. Sýtený 250ml cev plech,0.55,0,nealkoholicke_napoje,3
+11706,COOP Jednota nápoj energeťák sýtený 0.25l plech,0.55,0,nealkoholicke_napoje,3
+11707,Powerking Sýtený povzbudzujúci nealkoholický nápoj s vitamínmi s príchuťou 250 ml,0.75,0,nealkoholicke_napoje,3
+11708,COOP Nápoj Energeťák sýtený 300ml TK,0.66,0,nealkoholicke_napoje,3
+11709,Red Bull Energy Drink 2 x 250 ml,1.99,0,nealkoholicke_napoje,3
+11710,Ice Coffee Coconut 250 ml,0.99,0,nealkoholicke_napoje,3
+11711,Semtex Extrem Guarana & Matcha 500 ml,1.19,0,nealkoholicke_napoje,3
+11712,Hell Watermelon energetický nápoj 500 ml,0.79,0,nealkoholicke_napoje,3
+11713,Dr. Oetker Bystrinka šumivý nealkoholický nápoj v prášku bez cukru 8 g,0.27,0,nealkoholicke_napoje,3
+11714,Dr. Oetker PIMA stévia nápoj aróma pomaranč 50 g,0.69,0,nealkoholicke_napoje,3
+11715,Dr. Oetker Šumienka aróma malina nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11716,Dr. Oetker Šumienka aróma mandarínka nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11717,Dr. Oetker Šumienka aróma tropik nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11718,Dr. Oetker Šumienka citrón nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11719,Dr. Oetker Šumienka pomaranč nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11720,Liana Minerál šumivý nápoj v prášku 6 g,0.17,0,nealkoholicke_napoje,3
+11721,Song Perlenka grgáčik 8 g,0.23,0,nealkoholicke_napoje,3
+11722,Song Šumienka aróma višňa nápoj v prášku 14 g,0.22,0,nealkoholicke_napoje,3
+11723,Song Šumienka s citrónovou arómou 14 g,0.23,0,nealkoholicke_napoje,3
+11724,Song Šumienka s citrónovou arómou nápoj v prášku 14 g,0.23,0,nealkoholicke_napoje,3
+11725,Song Šumienka s pomarančovou arómou 14 g,0.23,0,nealkoholicke_napoje,3
+11342,COOP Voda pramenitá nesýtená 1.5L DC,0.29,0,nealkoholicke_napoje,3
+11343,COOP Voda pramenitá sýtená 1.5L DC,0.29,0,nealkoholicke_napoje,3
+11344,Jana Vitamin Immuno nízkoenergetický nesýtený nápoj s arómou citróna 500 ml,1.39,0,nealkoholicke_napoje,3
+11345,Jana Nízkoenergetický nesýtený nápoj s príchuťou citrón-limetka 1.5 l,1.09,0,nealkoholicke_napoje,3
+11346,Natura Nesýtená 1.5 l,0.75,0,nealkoholicke_napoje,3
+11347,Natura Jemne sýtená 1.5 l,0.75,0,nealkoholicke_napoje,3
+11348,Natura Sýtená 1.5 l,0.75,0,nealkoholicke_napoje,3
+11349,Natura Nesýtená 500 ml,0.79,0,nealkoholicke_napoje,3
+11350,Natura Jemne sýtená 500 ml,0.79,0,nealkoholicke_napoje,3
+11351,Mitická Prírodná minerálna voda tichá 0.5 l,0.55,0,nealkoholicke_napoje,3
+11352,Mitická Prírodná minerálna voda jemne perlivá 0.5 l,0.55,0,nealkoholicke_napoje,3
+11353,Mitická Prírodná minerálna voda perlivá 0.5 l,0.55,0,nealkoholicke_napoje,3
+11354,Magnesia Red Minerálna voda s príchuťou malina sýtená 0.5 l,0.79,0,nealkoholicke_napoje,3
+11355,Magnesia Neperlivá prírodná minerálna voda 0.5 l,0.69,0,nealkoholicke_napoje,3
+11356,Gemerka Botanica s príchuťou citrón a mäta jemne perlivá 1.5 l,1.05,0,nealkoholicke_napoje,3
+11357,Rajec Čaj ľadová bylinka nechtík 1.5 l,1.19,0,nealkoholicke_napoje,3
+11358,Rajec Čaj ľadová bylinka mäta 1.5 l,1.19,0,nealkoholicke_napoje,3
+11359,Rajec Čaj ľadová bylinka rakytník 1.5 l,1.19,0,nealkoholicke_napoje,3
+11360,Kofola Original 250 ml,0.65,0,nealkoholicke_napoje,3
+11361,Kofola Original 500 ml,1.09,0,nealkoholicke_napoje,3
+11362,Kofola Original 0.5 l,0.89,0,nealkoholicke_napoje,3
+11363,Kofola Original 1 l,1.59,0,nealkoholicke_napoje,3
+11364,Kofola Original 1.5 l,1.39,0,nealkoholicke_napoje,3
+11365,Kofola Original 2 l,0.99,0,nealkoholicke_napoje,3
+11366,Kofola Original 2.25 l,1.09,0,nealkoholicke_napoje,3
+11367,Kofola Bez cukru 2 l,0.99,0,nealkoholicke_napoje,3
+11368,Kofola Citrus 0.5 l,0.89,0,nealkoholicke_napoje,3
+11369,Kofola Citrus 2 l,0.99,0,nealkoholicke_napoje,3
+11370,Kofola Višňa 2 l,0.99,0,nealkoholicke_napoje,3
+11371,Coca-Cola 330 ml,0.99,0,nealkoholicke_napoje,3
+11372,Coca-Cola 4 x 330 ml,2.99,0,nealkoholicke_napoje,3
+11373,Coca-Cola 500 ml,1.19,0,nealkoholicke_napoje,3
+11374,Coca-Cola 1.5 l,1.39,0,nealkoholicke_napoje,3
+11375,Coca-Cola 2 l,1.99,0,nealkoholicke_napoje,3
+11376,Coca-Cola Zero 2 l,1.19,0,nealkoholicke_napoje,3
+11377,Coca-Cola Zero 330 ml,0.99,0,nealkoholicke_napoje,3
+11378,Coca-Cola Zero 4 x 330 ml,2.99,0,nealkoholicke_napoje,3
+11379,Coca-Cola Zero 500 ml,1.19,0,nealkoholicke_napoje,3
+11380,Coca-Cola Zero 1.5 l,1.39,0,nealkoholicke_napoje,3
+11381,Pepsi Cola 330 ml,0.69,0,nealkoholicke_napoje,3
+11382,Pepsi Cola 0.5 l,1.05,0,nealkoholicke_napoje,3
+11383,Pepsi Cola 1 l,1.49,0,nealkoholicke_napoje,3
+11384,Pepsi Cola 1.5 l,0.99,0,nealkoholicke_napoje,3
+11385,Pepsi Cola 2.25 l,1.39,0,nealkoholicke_napoje,3
+11386,Pepsi Max 330 ml,0.69,0,nealkoholicke_napoje,3
+11387,Pepsi Max 0.5 l,1.05,0,nealkoholicke_napoje,3
+11388,Pepsi Max 1 l,1.49,0,nealkoholicke_napoje,3
+11389,Pepsi Max 1.5 l,0.99,0,nealkoholicke_napoje,3
+11390,Pepsi Max 2.25 l,1.39,0,nealkoholicke_napoje,3
+11391,Pepsi Lime 330 ml,0.69,0,nealkoholicke_napoje,3
+11392,Pepsi Lime 0.5 l,1.05,0,nealkoholicke_napoje,3
+11393,Pepsi Lime 1.5 l,0.99,0,nealkoholicke_napoje,3
+11394,Pepsi Lime 2.25 l,1.39,0,nealkoholicke_napoje,3
+11395,Pepsi Mango 2.25 l,1.39,0,nealkoholicke_napoje,3
+11396,Budiš Cola 1.5 l,0.99,0,nealkoholicke_napoje,3
+11397,Lokálka Klasik 2 l,1.19,0,nealkoholicke_napoje,3
+11398,Nápoj Lokálka slivka 2L,1.19,0,nealkoholicke_napoje,3
+11399,Royal Crown Cola Classic 330 ml,0.79,0,nealkoholicke_napoje,3
+11400,Royal Crown Cola 1.33 l,1.69,0,nealkoholicke_napoje,3
+11401,COOP Limonáda Bublinky cola 2L PET VÝHRADNE,0.69,0,nealkoholicke_napoje,3
+11402,Fanta Pomaranč 330 ml,0.99,0,nealkoholicke_napoje,3
+11403,Fanta Pomaranč 4 x 330 ml,2.99,0,nealkoholicke_napoje,3
+11404,Fanta Pomaranč 500 ml,1.19,0,nealkoholicke_napoje,3
+11405,Fanta Pomaranč 1.5 l,1.39,0,nealkoholicke_napoje,3
+11406,Fanta Pomaranč 2 l,1.99,0,nealkoholicke_napoje,3
+11407,Mirinda Orange 330 ml,0.69,0,nealkoholicke_napoje,3
+11408,Mirinda Orange 0.5 l,1.05,0,nealkoholicke_napoje,3
+11409,Mirinda Orange 1 l,1.49,0,nealkoholicke_napoje,3
+11410,Mirinda Orange 1.5 l,0.99,0,nealkoholicke_napoje,3
+11411,Mirinda Orange 2.25 l,1.79,0,nealkoholicke_napoje,3
+11412,Sprite Citrón limetka 330 ml,0.99,0,nealkoholicke_napoje,3
+11413,Sprite Citrón limetka 500 ml,1.19,0,nealkoholicke_napoje,3
+11414,Sprite Citrón limetka 1.5 l,1.39,0,nealkoholicke_napoje,3
+11415,Sprite Citrón limetka 2 l,1.99,0,nealkoholicke_napoje,3
+11416,7UP 330 ml,0.69,0,nealkoholicke_napoje,3
+11417,7UP 1.5 l,0.99,0,nealkoholicke_napoje,3
+11418,7UP 2.25 l,1.79,0,nealkoholicke_napoje,3
+11419,Vinea Biela 500 ml,1.09,0,nealkoholicke_napoje,3
+11420,Vinea Biela 0.5 l,0.89,0,nealkoholicke_napoje,3
+11421,Vinea Biela 1.5 l,1.39,0,nealkoholicke_napoje,3
+11422,Vinea Červená 1.5 l,1.39,0,nealkoholicke_napoje,3
+11423,Vinea Frizzante 1.5 l,1.39,0,nealkoholicke_napoje,3
+11424,Márka Original 2 l,1.19,0,nealkoholicke_napoje,3
+11425,Hroznový mušter 1.5 l,1.39,0,nealkoholicke_napoje,3
+11426,Kinley Tonic Water 1.5 l,1.79,0,nealkoholicke_napoje,3
+11427,Kinley Pink Aromatic Berry 1.5 l,1.79,0,nealkoholicke_napoje,3
+11428,Original River tonic 2l PET,1.09,0,nealkoholicke_napoje,3
+11429,Kubík Waterrr Príchuť jahoda 250 ml,0.79,0,nealkoholicke_napoje,3
+11430,Kubík Waterrr Príchuť pomaranč 250 ml,0.79,0,nealkoholicke_napoje,3
+11431,Mazagrande Forte nealkoholický sýtený nápoj s kávovou zložkou a citrusovou príchuťou 250 ml,1.49,0,nealkoholicke_napoje,3
+11432,Relax Always Lucky sýtená limonáda príchuť kaktus 330 ml,0.89,0,nealkoholicke_napoje,3
+11433,Relax Party Mood sýtená limonáda príchuť mango 330 ml,0.89,0,nealkoholicke_napoje,3
+11434,Targa Florio Arancia sýtená pomarančová limonáda 330 ml,0.79,0,nealkoholicke_napoje,3
+11435,Targa Florio Limone sýtená citrónová limonáda 330 ml,0.79,0,nealkoholicke_napoje,3
+11436,Xixo Tutti Fruity Soft Drink 250 ml,0.55,0,nealkoholicke_napoje,3
+11437,βG KILLER Alcohol Killer 250 ml,2.39,0,nealkoholicke_napoje,3
+11438,COOP Jednota limonáda bublinky zel.Jablko 2l pet výhradne,0.69,0,nealkoholicke_napoje,3
+11439,COOP Jednota nápoj citrón ovocný sýtený 1.5l pet,0.89,0,nealkoholicke_napoje,3
+11440,COOP Jednota nápoj multivitamín ovocný nesýtený 2l pet,1.49,0,nealkoholicke_napoje,3
+11441,COOP Jednota nápoj pomaranč ovocný sýtený 1.5l,0.89,0,nealkoholicke_napoje,3
+11442,COOP Jednota nápoj energeťák sýtený 1l pet,1.05,0,nealkoholicke_napoje,3
+11443,COOP Limonáda Bublinky citrón 2L PET VÝHRADNE,0.69,0,nealkoholicke_napoje,3
+11444,COOP Limonáda Bublinky hrozno 2L PET VÝHRADNE,0.69,0,nealkoholicke_napoje,3
+11445,COOP Nápoj Aloe vera jemne sýtený 1.5L TK,0.77,0,nealkoholicke_napoje,3
+11446,COOP Nápoj Aloe Vera a brusnica 1.5l TK,0.77,0,nealkoholicke_napoje,3
+11447,Disney Frozen Detský nealkoholický ovocný nápoj 0.75 l,2.99,0,nealkoholicke_napoje,3
+11448,Disney Mickey Mouse & Friends Detský nealkoholický nápoj ochutený 0.75 l,3.19,0,nealkoholicke_napoje,3
+11449,Disney-Pixar Cars 2 Sýtený ovocný nápoj s jahodovou a jablkovou šťavou 0.75 l,3.19,0,nealkoholicke_napoje,3
+11450,Robby Bubble Peach sýtený nealkoholický nápoj ochutený 0.75 l,1.89,0,nealkoholicke_napoje,3
+11451,Robby Bubble Strawberry sýtený nealkoholický nápoj ochutený 0.75 l,1.89,0,nealkoholicke_napoje,3
+11452,Schweppes Pink Tonic 1.5 l,1.79,0,nealkoholicke_napoje,3
+11453,Tchibo Coffizz Marakuja voda 0.5l,1.39,0,nealkoholicke_napoje,3
+11454,Tchibo Coffizz Citrón a mäta voda 0.5l,1.39,0,nealkoholicke_napoje,3
+11455,Coca-Cola 1 l,1.49,0,nealkoholicke_napoje,3
+11456,Coca-Cola Zero 1 l,1.49,0,nealkoholicke_napoje,3
+11457,Sprite Citrón limetka 1 l,1.49,0,nealkoholicke_napoje,3
+11458,Fanta Pomaranč 1 l,1.49,0,nealkoholicke_napoje,3
+11459,Kinley Citrus & Ylang Ylang 1.5 l,1.79,0,nealkoholicke_napoje,3
+11460,Xixo Tutti Fruity Apple Soft Drink 250 ml,0.55,0,nealkoholicke_napoje,3
+11461,Xixo Tutti Fruity Cactus sýtený nealkoholický nápoj s príchuťou opuncie. kivi 250 ml,0.55,0,nealkoholicke_napoje,3
+11462,Sanpellegrino Naturali Aranciata Rossa sýtený nealkoholický nápoj 330 ml,1.09,0,nealkoholicke_napoje,3
+11463,Sanpellegrino Naturali citrón & mäta sýtený nealkoholický nápoj 330 ml,1.19,0,nealkoholicke_napoje,3
+11464,Budiš Citrón 0.33 l,1.19,0,nealkoholicke_napoje,3
+11465,Budiš Pomaranč 0.33 l,1.19,0,nealkoholicke_napoje,3
+11466,Royal Crown Cola No Sugar 1.33 l,1.69,0,nealkoholicke_napoje,3
+11467,Royal Crown Cola No Sugar 330 ml,0.79,0,nealkoholicke_napoje,3
+11468,Targa Florio Tonica Originale sýtený nealkoholický nápoj 330 ml,0.79,0,nealkoholicke_napoje,3
+11469,Targa Florio Tonica Rosa sýtený nealkoholický nápoj 330 ml,0.79,0,nealkoholicke_napoje,3
+11470,DrWitt Elements príchuť ružový grapefruit 250 ml,0.99,0,nealkoholicke_napoje,3
+11471,DrWitt Elements príchuť biela broskyňa 250 ml,0.99,0,nealkoholicke_napoje,3
+11472,Carpe Diem Kombucha 0.75 l,2.99,0,nealkoholicke_napoje,3
+11473,Nápoj aloe vera 0.5l pet,1.29,0,nealkoholicke_napoje,3
+11474,Nápoj Aloe Vera light 0.5l PET,1.29,0,nealkoholicke_napoje,3
+11475,Aloe Vera Original 1.5 l,1.99,0,nealkoholicke_napoje,3
+11476,COOP Nápoj Šašo pomaranč 0.2L Junior,0.59,0,nealkoholicke_napoje,3
+11477,COOP Nápoj Šašo multi 0.2L Junior,0.59,0,nealkoholicke_napoje,3
+11478,COOP Nápoj detský jahoda 20% 300ml Junior,0.69,0,nealkoholicke_napoje,3
+11479,COOP Nápoj detský multivitamín 20% 300ml Junior,0.69,0,nealkoholicke_napoje,3
+11480,COOP Nápoj detský pomar.+mandar.20% 300ml Junior,0.69,0,nealkoholicke_napoje,3
+11481,COOP Nápoj Mrkva-jablko 1L TK,1.25,0,nealkoholicke_napoje,3
+11482,DrWitt Antiox granátové jablko a acai 750 ml,1.49,0,nealkoholicke_napoje,3
+11483,DrWitt Elements kolagén s príchuťou jahody 750 ml,1.49,0,nealkoholicke_napoje,3
+11484,DrWitt Fit mango. citrón a zelený čaj 750 ml,1.49,0,nealkoholicke_napoje,3
+11485,DrWitt Power-C pomaranč-pomelo 0.75L PET,1.49,0,nealkoholicke_napoje,3
+11486,Jupík Aqua Citrón 500 ml,1.09,0,nealkoholicke_napoje,3
+11487,Jupík Aqua Jablko 500 ml,1.09,0,nealkoholicke_napoje,3
+11488,Jupík Aqua Jahoda 500 ml,1.09,0,nealkoholicke_napoje,3
+11489,Jupík Aqua Malina 500 ml,1.09,0,nealkoholicke_napoje,3
+11490,Jupík Ovocík 20% Pomaranč 330 ml,0.89,0,nealkoholicke_napoje,3
+11491,Jupík Ovocík 20% Multivitamín 330 ml,0.89,0,nealkoholicke_napoje,3
+11492,Jupík Ovocík 20% Cherry Cola 330 ml,0.89,0,nealkoholicke_napoje,3
+11493,Jupík Ovocík 20% Jablko jahoda 330 ml,0.89,0,nealkoholicke_napoje,3
+11494,Kubík Play! Mrkva červený pomaranč jablko-limetka 400 ml,0.59,0,nealkoholicke_napoje,3
+11495,Kubík Play! Malina mrkva jablko-limetka 400 ml,0.59,0,nealkoholicke_napoje,3
+11496,Kubík Waterrr Príchuť citrón 500 ml,0.59,0,nealkoholicke_napoje,3
+11497,Kubík Waterrr Príchuť jahoda 500 ml,0.59,0,nealkoholicke_napoje,3
+11498,COOP Jednota čaj ľadový broskyňa 1.5l,1.29,0,nealkoholicke_napoje,3
+11499,COOP Jednota čaj ľadový citrón 1.5l,1.29,0,nealkoholicke_napoje,3
+11500,Lipton Green Ice Tea ľadový čaj s príchuťou limety a mäty 1.5 l,1.79,0,nealkoholicke_napoje,3
+11501,Lipton Green Ice Tea ľadový čaj zelený 1.5 l,1.79,0,nealkoholicke_napoje,3
+11502,Lipton Green Ice Tea ľadový čaj zelený 500 ml,1.19,0,nealkoholicke_napoje,3
+11503,Lipton Ice Tea ľadový čaj s citrónovou príchuťou 1.5 l,1.79,0,nealkoholicke_napoje,3
+11504,Lipton Ice Tea ľadový čaj s príchuťou broskyne 1.5 l,1.79,0,nealkoholicke_napoje,3
+11505,Lipton Ice Tea ľadový čaj s príchuťou broskyne 500 ml,1.19,0,nealkoholicke_napoje,3
+11506,Lipton Ice Tea s príchuťou malín 1.5 l,1.79,0,nealkoholicke_napoje,3
+11507,Lipton Lemon Ice Tea ľadový čaj s citrónovou príchuťou 500 ml,1.19,0,nealkoholicke_napoje,3
+11508,Lipton Zero Green Ice Tea s citrónovou príchuťou 1.5 l,1.79,0,nealkoholicke_napoje,3
+11509,Nestea Čierny ľadový čaj s príchuťou broskyne 1.5 l,1.69,0,nealkoholicke_napoje,3
+11510,Nestea Zelený ľadový čaj s príchuťou citrusov 1.5 l,1.69,0,nealkoholicke_napoje,3
+11511,Rauch My Tea Čajový nápoj s broskyňovou príchuťou 1.5 l,2.19,0,nealkoholicke_napoje,3
+11512,Rauch Sport Isotonic Citrus sýtený nealkoholický nápoj 0.5 l,1.69,0,nealkoholicke_napoje,3
+11513,Rio H2O Vitamínová voda citrón s dužinou 400 ml,0.99,0,nealkoholicke_napoje,3
+11514,Teeekanne Ľadový nápoj s príchuťou broskyne 0.5 l,1.29,0,nealkoholicke_napoje,3
+11515,Teekanne Ľadový čaj s príchuťou citrónu 0.5 l,1.29,0,nealkoholicke_napoje,3
+11516,Teekanne Nealkoholický nápoj s príchuťou granátového jablka a broskyne 0.5 l,1.29,0,nealkoholicke_napoje,3
+11517,Xixo Broskyňový ľadový čaj s 1% obsahom ovocnej šťavy 250 ml,0.55,0,nealkoholicke_napoje,3
+11518,Xixo Citrus Green Tea s 1% obsahom ovocnej šťavy 250 ml,0.55,0,nealkoholicke_napoje,3
+11519,Xixo Ice Tea Raspberry and Blueberry nealkoholický nápoj s príchuťou maliny a čučoriedky 250 ml,0.55,0,nealkoholicke_napoje,3
+11520,Xixo Jahodový ľadový čaj s 1% obsahom ovocnej šťavy 250 ml,0.55,0,nealkoholicke_napoje,3
+11521,Rochester Dickensian Recipe Ginger nealkoholický nápoj so zázvorom 725 ml,7.69,0,nealkoholicke_napoje,3
+11522,Red Bull Green Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11523,Red Bull Apricot Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11524,Kofola Original 4 x 2 l,5.19,0,nealkoholicke_napoje,3
+11525,Schweppes Indian tonic 1.5 l,1.79,0,nealkoholicke_napoje,3
+11526,Magnesia Plus Antistress 0.7 l,1.29,0,nealkoholicke_napoje,3
+11527,Magnesia Plus Focus 0.7 l,1.29,0,nealkoholicke_napoje,3
+11528,Gemerka jemne perlivá 2 l,0.75,0,nealkoholicke_napoje,3
+11529,Gemerka perlivá 2 l,0.75,0,nealkoholicke_napoje,3
+11530,Magnesia Extra 0.7 l,1.29,0,nealkoholicke_napoje,3
+11531,Hochwald Ľadová káva eiskaffee 500ml,1.49,0,nealkoholicke_napoje,3
+11532,Monster Energy Ultra sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11533,Starbucks Caramel Macchiato 220 ml,2.49,0,nealkoholicke_napoje,3
+11534,Starbucks Frappuccino 250 ml,2.99,0,nealkoholicke_napoje,3
+11535,Oshee Vitamin Water nesytený nápoj s prichuťou citronóvo-pomarančovou 555 ml,1.49,0,nealkoholicke_napoje,3
+11536,Arizona Pomegranate Green Tea nealkoholický ochutený nápoj 450 ml,1.49,0,nealkoholicke_napoje,3
+11537,Limeňita Pomarančová Šťava 1L,2.99,0,nealkoholicke_napoje,3
+11538,Rio Cold Press 100% ovocný mix s jahodami 200 ml,0.85,0,nealkoholicke_napoje,3
+11539,Rio Jablko cvikla 1 l,1.49,0,nealkoholicke_napoje,3
+11540,Kukkonia Iced Coffee 0.5 l,1.19,0,nealkoholicke_napoje,3
+11541,Rio Cold Press Greponade Grapefruit 400 ml,1.49,0,nealkoholicke_napoje,3
+11542,Rio H2O Vitamínová voda grapefruit s dužinou 400 ml,0.99,0,nealkoholicke_napoje,3
+11543,Body&Future Vitamin Water Antiox 400 ml,2.39,0,nealkoholicke_napoje,3
+11544,Body&Future Vitamin Water Collagen 400 ml,2.39,0,nealkoholicke_napoje,3
+11545,Rio Bubble Tea mango 400 ml,3.29,0,nealkoholicke_napoje,3
+11546,Rio Bubble Tea s liči a broskyňou 400 ml,3.29,0,nealkoholicke_napoje,3
+11547,Surprise Drinks Cars nesýtený ovocný nápoj 300 ml,1.29,0,nealkoholicke_napoje,3
+11548,Surprise Drinks Star Wars ovocný nápoj 300 ml,1.29,0,nealkoholicke_napoje,3
+11549,Disney Minnie Mouse prekvapenie jahoda 300 ml,1.29,0,nealkoholicke_napoje,3
+11550,Relax Pomaranč mandarínka maracuja mango 1 l,1.29,0,nealkoholicke_napoje,3
+11551,Semtex Extrem Guarana & Matcha 250 ml,0.99,0,nealkoholicke_napoje,3
+11552,Red Bull Summer Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11553,Red Bull The Winter Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11554,Maresi Vienna Ice Coffee cappucine 230ml,1.69,0,nealkoholicke_napoje,3
+11555,Rauch Sport Isotonic Berry sýtený nealkoholický nápoj 0.5 l,1.69,0,nealkoholicke_napoje,3
+11556,Rauch Juice Bar 100% pomarančová šťava 800 ml,2.99,0,nealkoholicke_napoje,3
+11557,Rauch Juice Bar 100% jablkovo-hroznovo-malinová šťava 800 ml,2.99,0,nealkoholicke_napoje,3
+11558,Rauch Juice Bar 100% ananás-pomaranč-marakuja 800 ml,3.19,0,nealkoholicke_napoje,3
+11559,Rauch Sport Isotonic Grapefruit sýtený nealkoholický nápoj 0.5 l,1.49,0,nealkoholicke_napoje,3
+11560,Rauch Happy Day 100% jablková šťava 330 ml,1.29,0,nealkoholicke_napoje,3
+11561,Rauch Happy Day 100% multivitamin 330 ml,1.29,0,nealkoholicke_napoje,3
+11562,Rauch Happy Day Pomarančový nektár 1.5 l,2.99,0,nealkoholicke_napoje,3
+11563,Rauch Happy Day Multivitamín 1.5 l,2.49,0,nealkoholicke_napoje,3
+11564,BIO šťava pomarančová Limenita 1L PET,4.39,0,nealkoholicke_napoje,3
+11565,Cappy 100% pomaranč 1 l,1.99,0,nealkoholicke_napoje,3
+11566,Cappy 100% jablko 1 l,1.99,0,nealkoholicke_napoje,3
+11567,Cappy Multivitamin 1 l,1.89,0,nealkoholicke_napoje,3
+11568,Capri-Sun Multivitamin nesýtený nealkoholický ovocný nápoj 200 ml,0.39,0,nealkoholicke_napoje,3
+11569,Capri-Sun Mystic Dragon nesýtený nealkoholický ovocný nápoj 200 ml,0.39,0,nealkoholicke_napoje,3
+11570,Capri-Sun Orange nesýtený nealkoholický ovocný nápoj 200 ml,0.39,0,nealkoholicke_napoje,3
+11571,Caprio Plus Pomaranč 2 l,1.79,0,nealkoholicke_napoje,3
+11572,Caprio Plus Jablko 2 l,1.29,0,nealkoholicke_napoje,3
+11573,Caprio Plus Multivitamín 2 l,1.29,0,nealkoholicke_napoje,3
+11574,Caprio Plus Party Mix ananás mango 2 l,1.29,0,nealkoholicke_napoje,3
+11575,COOP Šťava pomarančová 100% 1L TK,1.89,0,nealkoholicke_napoje,3
+11576,COOP Šťava Jablko 100% 1L TK,0.89,0,nealkoholicke_napoje,3
+11577,COOP Jednota jablko-baza 1l tp,1.09,0,nealkoholicke_napoje,3
+11578,COOP Jednota multivitamín 45% 1l tradičná kvalita,1.49,0,nealkoholicke_napoje,3
+11579,COOP Šťava Paradajka 100% 1L AL,1.39,0,nealkoholicke_napoje,3
+11580,Hello 100% jablko 250ml TPP,0.49,0,nealkoholicke_napoje,3
+11581,Hello 100% jablko-broskyňa 250ml TPP,0.49,0,nealkoholicke_napoje,3
+11582,Hello Smoothie jahoda 100% 200ml,0.75,0,nealkoholicke_napoje,3
+11583,Kubík 100% jablko 300 ml,0.75,0,nealkoholicke_napoje,3
+11584,Kubík 100% multivitamín 300 ml,0.75,0,nealkoholicke_napoje,3
+11585,Matyšák 100% hroznová šťava biela 0.75 l,3.99,0,nealkoholicke_napoje,3
+11586,Matyšák 100% hroznová šťava červená 0.75 l,3.99,0,nealkoholicke_napoje,3
+11587,Rauch Happy Day 100% pomaranč 1 l,2.49,0,nealkoholicke_napoje,3
+11588,Rauch Happy Day 100% pomarančová šťava s dužinou 1 l,2.49,0,nealkoholicke_napoje,3
+11589,Rauch Happy Day 100% multivitamín 1 l,2.29,0,nealkoholicke_napoje,3
+11590,Rauch Happy Day Multivitamín 100% 2 l,3.49,0,nealkoholicke_napoje,3
+11591,Rauch Happy Day 100% jablko 1 l,2.29,0,nealkoholicke_napoje,3
+11592,Rauch Happy Day Family ananás 1 l,1.79,0,nealkoholicke_napoje,3
+11593,Rauch Happy Day Family jablkovo-jahodový nápoj 1 l,1.79,0,nealkoholicke_napoje,3
+11594,Rauch Happy Day Family Multivitamin ovocný nápoj 1 l,1.79,0,nealkoholicke_napoje,3
+11595,Rauch Happy Day Immun Plus Orange. Mango & Lemon 1 l,2.29,0,nealkoholicke_napoje,3
+11596,Relax Jablko kaktus limetka 250 ml,0.99,0,nealkoholicke_napoje,3
+11597,Relax Jablko melón 250 ml,0.99,0,nealkoholicke_napoje,3
+11598,Relax Mango jablko pomaranč citrón 250 ml,0.99,0,nealkoholicke_napoje,3
+11599,Relax Džús 100% pomaranč 1 l,2.69,0,nealkoholicke_napoje,3
+11600,Relax Džús 100% jablko 1 l,1.39,0,nealkoholicke_napoje,3
+11601,Relax Džús 100% multivitamín 1 l,1.39,0,nealkoholicke_napoje,3
+11602,Relax Multivitamín červené ovocie 1 l,1.49,0,nealkoholicke_napoje,3
+11603,Relax Ananás 1 l,1.69,0,nealkoholicke_napoje,3
+11604,Relax Broskyňa 1 l,1.49,0,nealkoholicke_napoje,3
+11605,Relax Brusnica 1 l,1.49,0,nealkoholicke_napoje,3
+11606,Relax Hruška 1 l,1.69,0,nealkoholicke_napoje,3
+11607,Relax Exotica Kaktus 1 l,1.69,0,nealkoholicke_napoje,3
+11608,Relax Džús 100% červený grapefruit 1 l,1.39,0,nealkoholicke_napoje,3
+11609,Relax Frozen jablko arónia višňa lesná jahoda 200 ml,0.49,0,nealkoholicke_napoje,3
+11610,Relax Disney multivitamín 200 ml,0.49,0,nealkoholicke_napoje,3
+11611,Relax Pixar jablko. broskyňa. jahoda 200 ml,0.49,0,nealkoholicke_napoje,3
+11612,Relax Immuno 100% džús multivitamín 1 l,1.69,0,nealkoholicke_napoje,3
+11613,Relax Immuno 100% džús pomaranč maracuja 1 l,2.19,0,nealkoholicke_napoje,3
+11614,Rio 100% jablko 1 l,1.49,0,nealkoholicke_napoje,3
+11615,Rio Brusnica so zníženým obsahom cukru 1 l,1.79,0,nealkoholicke_napoje,3
+11616,Rio Cold Press 100% pomarančová šťava lisovaná za studena. s dužinou 200 ml,1.49,0,nealkoholicke_napoje,3
+11617,Rio Cold Press 100% ananásová šťava lisovaná za studena 180 ml,1.39,0,nealkoholicke_napoje,3
+11618,Rio Cold Press 100% jablko 1 l,1.99,0,nealkoholicke_napoje,3
+11619,Rio Cold Press 100% hruška 1 l,2.99,0,nealkoholicke_napoje,3
+11620,Rio Cold Press 100% Costa Rica ananás 1 l,2.99,0,nealkoholicke_napoje,3
+11621,Rio Cold Press 100% jablko cvikla 1 l,1.99,0,nealkoholicke_napoje,3
+11622,Rio Cold Press 100% karotka 1 l,1.99,0,nealkoholicke_napoje,3
+11623,Rio Cold Press 100% malina hrozno jablko 1 l,2.99,0,nealkoholicke_napoje,3
+11624,Rio Cold Press 100% Costa Rica pomaranč s dužinou 1 l,3.99,0,nealkoholicke_napoje,3
+11625,Rio Cold Press 100% šťava z jabĺk a cvikly lisovaná za studena 200 ml,1.09,0,nealkoholicke_napoje,3
+11626,Rio Cold Press Ginger Shot Apple 180 ml,1.59,0,nealkoholicke_napoje,3
+11627,Rio Cold Press Ginger Shot Orange 180 ml,1.59,0,nealkoholicke_napoje,3
+11628,Rochester Organic Root Ginger nealkoholický nápoj zo zázvoru 725 ml,7.69,0,nealkoholicke_napoje,3
+11629,Toma Jablko 250 ml,0.55,0,nealkoholicke_napoje,3
+11630,Toma Jahoda 250 ml,0.55,0,nealkoholicke_napoje,3
+11631,Toma Pomaranč 250 ml,0.55,0,nealkoholicke_napoje,3
+11632,Body&Future Detox viacdruhový ovocno-zeleninový nápoj 200 ml,1.69,0,nealkoholicke_napoje,3
+11633,Zdravo 100 % broskyňovo jablková šťava 0.75 l,2.79,0,nealkoholicke_napoje,3
+11634,Zdravo 100% cviklovo-jablková šťava 0.75 l,3.39,0,nealkoholicke_napoje,3
+11635,Zdravo 100% jablková šťava 0.75 l,2.69,0,nealkoholicke_napoje,3
+11636,Zdravo 100% šťava z cvikly a jabĺk 0.20 l,1.19,0,nealkoholicke_napoje,3
+11637,Zdravo 100% šťava z cvikly. jabĺk a čučoriedok 0.75 l,5.59,0,nealkoholicke_napoje,3
+11638,Zdravo 100% šťava z jabĺk a arónie 0.75 l,4.59,0,nealkoholicke_napoje,3
+11639,Rauch Happy Day 100% pomarančová šťava 330 ml,1.79,0,nealkoholicke_napoje,3
+11640,Caprio Hustý Jahoda 700 ml,1.69,0,nealkoholicke_napoje,3
+11641,Caprio Hustý Malina 700 ml,1.69,0,nealkoholicke_napoje,3
+11642,Caprio Hustý Pomaranč 700 ml,1.69,0,nealkoholicke_napoje,3
+11643,COOP Jednota sirup s príchuťou lesná zmes 0.7l pet,1.39,0,nealkoholicke_napoje,3
+11644,COOP Jednota sirup s príchuťou pomaranč 0.7l pet,1.39,0,nealkoholicke_napoje,3
+11645,COOP Jednota Tradičná kvalita 100% citrónová šťava 200 ml,0.65,0,nealkoholicke_napoje,3
+11646,Jupí Fľaštička Hustý sirup záhradné ovocie 0.7 l,3.99,0,nealkoholicke_napoje,3
+11647,Jupí Fľaštička Koktejl sirup Mojito 0.7 l,3.99,0,nealkoholicke_napoje,3
+11648,Jupí Fľaštička Sirup bazový kvet 0.7 l,3.99,0,nealkoholicke_napoje,3
+11649,Jupí Fľaštička Sirup imunita brusnica s echinaceou 0.7 l,3.99,0,nealkoholicke_napoje,3
+11650,Jupí Sirup jahoda 0.7 l,1.99,0,nealkoholicke_napoje,3
+11651,Jupí Sirup lesná zmes 0.7 l,1.99,0,nealkoholicke_napoje,3
+11652,Jupí Sirup malina 0.7 l,1.99,0,nealkoholicke_napoje,3
+11653,Jupí Sirup pomaranč 0.7 l,1.99,0,nealkoholicke_napoje,3
+11654,Natur Farm Citrónka 1 l,1.19,0,nealkoholicke_napoje,3
+11655,Natur Farm Ovocný sirup príchuť baza 0.7 l,3.49,0,nealkoholicke_napoje,3
+11656,Natur Farm Ovocný sirup s jahodovou príchuťou 0.7 l,3.49,0,nealkoholicke_napoje,3
+11657,Natur Farm Ovocný sirup s malinovou príchuťou 0.7 l,3.49,0,nealkoholicke_napoje,3
+11658,Natur Farm Ovocný sirup s príchuťou limetka-mäta 0.7 l,3.49,0,nealkoholicke_napoje,3
+11659,Natur Farm Ovocný sirup s príchuťou mango-lotosový kvet 0.7 l,3.49,0,nealkoholicke_napoje,3
+11660,Sunquick Nápojový koncentrát mandarínka 330 ml,3.59,0,nealkoholicke_napoje,3
+11661,Sunquick Nápojový koncentrát pomaranč 330 ml,3.59,0,nealkoholicke_napoje,3
+11662,Zlatá Studňa Sirup s príchuťou citrón 0.7 l,2.19,0,nealkoholicke_napoje,3
+11663,Zlatá Studňa Sirup s príchuťou čučoriedka 0.7 l,2.19,0,nealkoholicke_napoje,3
+11664,Zlatá Studňa Sirup s príchuťou lesná jahoda 0.7 l,1.29,0,nealkoholicke_napoje,3
+11665,Zlatá Studňa Sirup s príchuťou lesná zmes 0.7 l,2.19,0,nealkoholicke_napoje,3
+11666,Zlatá Studňa Sirup s príchuťou malina 0.7 l,2.19,0,nealkoholicke_napoje,3
+11667,Zlatá Studňa Sirup s príchuťou multivitamín 0.7 l,2.19,0,nealkoholicke_napoje,3
+11668,Zlatá Studňa Sirup s príchuťou pomaranč 0.7 l,1.29,0,nealkoholicke_napoje,3
+11669,Zlatá Studňa Sirup s príchuťou rumový čaj 0.7 l,2.09,0,nealkoholicke_napoje,3
+11670,COOP Sirup s príchuťou jahoda 0.7l PET DC,1.39,0,nealkoholicke_napoje,3
+11671,Sirup pomaranč 0.7L sklo,2.09,0,nealkoholicke_napoje,3
+11672,Sirup malina 0.7L sklo,2.09,0,nealkoholicke_napoje,3
+11673,Sirup Oravan Baza citrón 0.7l PET,2.09,0,nealkoholicke_napoje,3
+11674,Natur Farm Ovocný sirup s pomarančovou šťavou 0.7 l,3.49,0,nealkoholicke_napoje,3
+11675,Zlatá Studňa Sirup s príchuťou bazy 0.7 l,1.29,0,nealkoholicke_napoje,3
+11676,Frupper Jahoda 0.7 l,1.69,0,nealkoholicke_napoje,3
+11677,Red Bull Energy Drink 250 ml,1.0,0,nealkoholicke_napoje,3
+11678,Red Bull Energy Drink 355 ml,1.69,0,nealkoholicke_napoje,3
+11679,Red Bull Energy Drink 4 x 250 ml,4.99,0,nealkoholicke_napoje,3
+11680,Red Bull Sugar Free 250 ml,1.0,0,nealkoholicke_napoje,3
+11681,Red Bull Sugar Free 355 ml,1.69,0,nealkoholicke_napoje,3
+11682,Red Bull The Blue Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11683,Red Bull The Red Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11684,Red Bull The Tropical Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11685,Monster Energy Sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11686,Monster Energy The Doctor sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11687,Monster Juiced Mango Loco sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11688,Hell Classic energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11689,Hell Classic energetický nápoj 500 ml,0.79,0,nealkoholicke_napoje,3
+11690,Hell Strong Apple energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11691,Hell Apple energetický nápoj 500 ml,0.79,0,nealkoholicke_napoje,3
+11692,Hell Strong Focus energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11693,Hell Strong Red Grape energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11694,Hell Strong Water Melon energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11695,Ice Coffee Double Espresso 250 ml,0.99,0,nealkoholicke_napoje,3
+11696,Ice Coffee Cappuccino 250 ml,0.99,0,nealkoholicke_napoje,3
+11697,Ice Coffee Latte 250 ml,0.99,0,nealkoholicke_napoje,3
+11698,Semtex Energy Bloody Orange 500 ml,1.19,0,nealkoholicke_napoje,3
+11699,Semtex Energy Focus 250 ml,0.79,0,nealkoholicke_napoje,3
+11700,Semtex Energy Focus 500 ml,1.19,0,nealkoholicke_napoje,3
+11701,Semtex Street Water Focus 750 ml,1.19,0,nealkoholicke_napoje,3
+11702,Tiger Energetický nápoj 250 ml,0.79,0,nealkoholicke_napoje,3
+11703,Tiger Energetický nápoj 500 ml,1.09,0,nealkoholicke_napoje,3
+11704,Nápoj isofruit pomaranč & citrón 500 ml,1.39,0,nealkoholicke_napoje,3
+11705,COOP Jednota nápoj energet. Sýtený 250ml cev plech,0.55,0,nealkoholicke_napoje,3
+11706,COOP Jednota nápoj energeťák sýtený 0.25l plech,0.55,0,nealkoholicke_napoje,3
+11707,Powerking Sýtený povzbudzujúci nealkoholický nápoj s vitamínmi s príchuťou 250 ml,0.75,0,nealkoholicke_napoje,3
+11708,COOP Nápoj Energeťák sýtený 300ml TK,0.66,0,nealkoholicke_napoje,3
+11709,Red Bull Energy Drink 2 x 250 ml,1.99,0,nealkoholicke_napoje,3
+11710,Ice Coffee Coconut 250 ml,0.99,0,nealkoholicke_napoje,3
+11711,Semtex Extrem Guarana & Matcha 500 ml,1.19,0,nealkoholicke_napoje,3
+11712,Hell Watermelon energetický nápoj 500 ml,0.79,0,nealkoholicke_napoje,3
+11713,Dr. Oetker Bystrinka šumivý nealkoholický nápoj v prášku bez cukru 8 g,0.27,0,nealkoholicke_napoje,3
+11714,Dr. Oetker PIMA stévia nápoj aróma pomaranč 50 g,0.69,0,nealkoholicke_napoje,3
+11715,Dr. Oetker Šumienka aróma malina nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11716,Dr. Oetker Šumienka aróma mandarínka nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11717,Dr. Oetker Šumienka aróma tropik nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11718,Dr. Oetker Šumienka citrón nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11719,Dr. Oetker Šumienka pomaranč nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11720,Liana Minerál šumivý nápoj v prášku 6 g,0.17,0,nealkoholicke_napoje,3
+11721,Song Perlenka grgáčik 8 g,0.23,0,nealkoholicke_napoje,3
+11722,Song Šumienka aróma višňa nápoj v prášku 14 g,0.22,0,nealkoholicke_napoje,3
+11723,Song Šumienka s citrónovou arómou 14 g,0.23,0,nealkoholicke_napoje,3
+11724,Song Šumienka s citrónovou arómou nápoj v prášku 14 g,0.23,0,nealkoholicke_napoje,3
+11725,Song Šumienka s pomarančovou arómou 14 g,0.23,0,nealkoholicke_napoje,3
+11342,COOP Voda pramenitá nesýtená 1.5L DC,0.29,0,nealkoholicke_napoje,3
+11343,COOP Voda pramenitá sýtená 1.5L DC,0.29,0,nealkoholicke_napoje,3
+11344,Jana Vitamin Immuno nízkoenergetický nesýtený nápoj s arómou citróna 500 ml,1.39,0,nealkoholicke_napoje,3
+11345,Jana Nízkoenergetický nesýtený nápoj s príchuťou citrón-limetka 1.5 l,1.09,0,nealkoholicke_napoje,3
+11346,Natura Nesýtená 1.5 l,0.75,0,nealkoholicke_napoje,3
+11347,Natura Jemne sýtená 1.5 l,0.75,0,nealkoholicke_napoje,3
+11348,Natura Sýtená 1.5 l,0.75,0,nealkoholicke_napoje,3
+11349,Natura Nesýtená 500 ml,0.79,0,nealkoholicke_napoje,3
+11350,Natura Jemne sýtená 500 ml,0.79,0,nealkoholicke_napoje,3
+11351,Mitická Prírodná minerálna voda tichá 0.5 l,0.55,0,nealkoholicke_napoje,3
+11352,Mitická Prírodná minerálna voda jemne perlivá 0.5 l,0.55,0,nealkoholicke_napoje,3
+11353,Mitická Prírodná minerálna voda perlivá 0.5 l,0.55,0,nealkoholicke_napoje,3
+11354,Magnesia Red Minerálna voda s príchuťou malina sýtená 0.5 l,0.79,0,nealkoholicke_napoje,3
+11355,Magnesia Neperlivá prírodná minerálna voda 0.5 l,0.69,0,nealkoholicke_napoje,3
+11356,Gemerka Botanica s príchuťou citrón a mäta jemne perlivá 1.5 l,1.05,0,nealkoholicke_napoje,3
+11357,Rajec Čaj ľadová bylinka nechtík 1.5 l,1.19,0,nealkoholicke_napoje,3
+11358,Rajec Čaj ľadová bylinka mäta 1.5 l,1.19,0,nealkoholicke_napoje,3
+11359,Rajec Čaj ľadová bylinka rakytník 1.5 l,1.19,0,nealkoholicke_napoje,3
+11360,Kofola Original 250 ml,0.65,0,nealkoholicke_napoje,3
+11361,Kofola Original 500 ml,1.09,0,nealkoholicke_napoje,3
+11362,Kofola Original 0.5 l,0.89,0,nealkoholicke_napoje,3
+11363,Kofola Original 1 l,1.59,0,nealkoholicke_napoje,3
+11364,Kofola Original 1.5 l,1.39,0,nealkoholicke_napoje,3
+11365,Kofola Original 2 l,0.99,0,nealkoholicke_napoje,3
+11366,Kofola Original 2.25 l,1.09,0,nealkoholicke_napoje,3
+11367,Kofola Bez cukru 2 l,0.99,0,nealkoholicke_napoje,3
+11368,Kofola Citrus 0.5 l,0.89,0,nealkoholicke_napoje,3
+11369,Kofola Citrus 2 l,0.99,0,nealkoholicke_napoje,3
+11370,Kofola Višňa 2 l,0.99,0,nealkoholicke_napoje,3
+11371,Coca-Cola 330 ml,0.99,0,nealkoholicke_napoje,3
+11372,Coca-Cola 4 x 330 ml,2.99,0,nealkoholicke_napoje,3
+11373,Coca-Cola 500 ml,1.19,0,nealkoholicke_napoje,3
+11374,Coca-Cola 1.5 l,1.39,0,nealkoholicke_napoje,3
+11375,Coca-Cola 2 l,1.99,0,nealkoholicke_napoje,3
+11376,Coca-Cola Zero 2 l,1.19,0,nealkoholicke_napoje,3
+11377,Coca-Cola Zero 330 ml,0.99,0,nealkoholicke_napoje,3
+11378,Coca-Cola Zero 4 x 330 ml,2.99,0,nealkoholicke_napoje,3
+11379,Coca-Cola Zero 500 ml,1.19,0,nealkoholicke_napoje,3
+11380,Coca-Cola Zero 1.5 l,1.39,0,nealkoholicke_napoje,3
+11381,Pepsi Cola 330 ml,0.69,0,nealkoholicke_napoje,3
+11382,Pepsi Cola 0.5 l,1.05,0,nealkoholicke_napoje,3
+11383,Pepsi Cola 1 l,1.49,0,nealkoholicke_napoje,3
+11384,Pepsi Cola 1.5 l,0.99,0,nealkoholicke_napoje,3
+11385,Pepsi Cola 2.25 l,1.39,0,nealkoholicke_napoje,3
+11386,Pepsi Max 330 ml,0.69,0,nealkoholicke_napoje,3
+11387,Pepsi Max 0.5 l,1.05,0,nealkoholicke_napoje,3
+11388,Pepsi Max 1 l,1.49,0,nealkoholicke_napoje,3
+11389,Pepsi Max 1.5 l,0.99,0,nealkoholicke_napoje,3
+11390,Pepsi Max 2.25 l,1.39,0,nealkoholicke_napoje,3
+11391,Pepsi Lime 330 ml,0.69,0,nealkoholicke_napoje,3
+11392,Pepsi Lime 0.5 l,1.05,0,nealkoholicke_napoje,3
+11393,Pepsi Lime 1.5 l,0.99,0,nealkoholicke_napoje,3
+11394,Pepsi Lime 2.25 l,1.39,0,nealkoholicke_napoje,3
+11395,Pepsi Mango 2.25 l,1.39,0,nealkoholicke_napoje,3
+11396,Budiš Cola 1.5 l,0.99,0,nealkoholicke_napoje,3
+11397,Lokálka Klasik 2 l,1.19,0,nealkoholicke_napoje,3
+11398,Nápoj Lokálka slivka 2L,1.19,0,nealkoholicke_napoje,3
+11399,Royal Crown Cola Classic 330 ml,0.79,0,nealkoholicke_napoje,3
+11400,Royal Crown Cola 1.33 l,1.69,0,nealkoholicke_napoje,3
+11401,COOP Limonáda Bublinky cola 2L PET VÝHRADNE,0.69,0,nealkoholicke_napoje,3
+11402,Fanta Pomaranč 330 ml,0.99,0,nealkoholicke_napoje,3
+11403,Fanta Pomaranč 4 x 330 ml,2.99,0,nealkoholicke_napoje,3
+11404,Fanta Pomaranč 500 ml,1.19,0,nealkoholicke_napoje,3
+11405,Fanta Pomaranč 1.5 l,1.39,0,nealkoholicke_napoje,3
+11406,Fanta Pomaranč 2 l,1.99,0,nealkoholicke_napoje,3
+11407,Mirinda Orange 330 ml,0.69,0,nealkoholicke_napoje,3
+11408,Mirinda Orange 0.5 l,1.05,0,nealkoholicke_napoje,3
+11409,Mirinda Orange 1 l,1.49,0,nealkoholicke_napoje,3
+11410,Mirinda Orange 1.5 l,0.99,0,nealkoholicke_napoje,3
+11411,Mirinda Orange 2.25 l,1.79,0,nealkoholicke_napoje,3
+11412,Sprite Citrón limetka 330 ml,0.99,0,nealkoholicke_napoje,3
+11413,Sprite Citrón limetka 500 ml,1.19,0,nealkoholicke_napoje,3
+11414,Sprite Citrón limetka 1.5 l,1.39,0,nealkoholicke_napoje,3
+11415,Sprite Citrón limetka 2 l,1.99,0,nealkoholicke_napoje,3
+11416,7UP 330 ml,0.69,0,nealkoholicke_napoje,3
+11417,7UP 1.5 l,0.99,0,nealkoholicke_napoje,3
+11418,7UP 2.25 l,1.79,0,nealkoholicke_napoje,3
+11419,Vinea Biela 500 ml,1.09,0,nealkoholicke_napoje,3
+11420,Vinea Biela 0.5 l,0.89,0,nealkoholicke_napoje,3
+11421,Vinea Biela 1.5 l,1.39,0,nealkoholicke_napoje,3
+11422,Vinea Červená 1.5 l,1.39,0,nealkoholicke_napoje,3
+11423,Vinea Frizzante 1.5 l,1.39,0,nealkoholicke_napoje,3
+11424,Márka Original 2 l,1.19,0,nealkoholicke_napoje,3
+11425,Hroznový mušter 1.5 l,1.39,0,nealkoholicke_napoje,3
+11426,Kinley Tonic Water 1.5 l,1.79,0,nealkoholicke_napoje,3
+11427,Kinley Pink Aromatic Berry 1.5 l,1.79,0,nealkoholicke_napoje,3
+11428,Original River tonic 2l PET,1.09,0,nealkoholicke_napoje,3
+11429,Kubík Waterrr Príchuť jahoda 250 ml,0.79,0,nealkoholicke_napoje,3
+11430,Kubík Waterrr Príchuť pomaranč 250 ml,0.79,0,nealkoholicke_napoje,3
+11431,Mazagrande Forte nealkoholický sýtený nápoj s kávovou zložkou a citrusovou príchuťou 250 ml,1.49,0,nealkoholicke_napoje,3
+11432,Relax Always Lucky sýtená limonáda príchuť kaktus 330 ml,0.89,0,nealkoholicke_napoje,3
+11433,Relax Party Mood sýtená limonáda príchuť mango 330 ml,0.89,0,nealkoholicke_napoje,3
+11434,Targa Florio Arancia sýtená pomarančová limonáda 330 ml,0.79,0,nealkoholicke_napoje,3
+11435,Targa Florio Limone sýtená citrónová limonáda 330 ml,0.79,0,nealkoholicke_napoje,3
+11436,Xixo Tutti Fruity Soft Drink 250 ml,0.55,0,nealkoholicke_napoje,3
+11437,βG KILLER Alcohol Killer 250 ml,2.39,0,nealkoholicke_napoje,3
+11438,COOP Jednota limonáda bublinky zel.Jablko 2l pet výhradne,0.69,0,nealkoholicke_napoje,3
+11439,COOP Jednota nápoj citrón ovocný sýtený 1.5l pet,0.89,0,nealkoholicke_napoje,3
+11440,COOP Jednota nápoj multivitamín ovocný nesýtený 2l pet,1.49,0,nealkoholicke_napoje,3
+11441,COOP Jednota nápoj pomaranč ovocný sýtený 1.5l,0.89,0,nealkoholicke_napoje,3
+11442,COOP Jednota nápoj energeťák sýtený 1l pet,1.05,0,nealkoholicke_napoje,3
+11443,COOP Limonáda Bublinky citrón 2L PET VÝHRADNE,0.69,0,nealkoholicke_napoje,3
+11444,COOP Limonáda Bublinky hrozno 2L PET VÝHRADNE,0.69,0,nealkoholicke_napoje,3
+11445,COOP Nápoj Aloe vera jemne sýtený 1.5L TK,0.77,0,nealkoholicke_napoje,3
+11446,COOP Nápoj Aloe Vera a brusnica 1.5l TK,0.77,0,nealkoholicke_napoje,3
+11447,Disney Frozen Detský nealkoholický ovocný nápoj 0.75 l,2.99,0,nealkoholicke_napoje,3
+11448,Disney Mickey Mouse & Friends Detský nealkoholický nápoj ochutený 0.75 l,3.19,0,nealkoholicke_napoje,3
+11449,Disney-Pixar Cars 2 Sýtený ovocný nápoj s jahodovou a jablkovou šťavou 0.75 l,3.19,0,nealkoholicke_napoje,3
+11450,Robby Bubble Peach sýtený nealkoholický nápoj ochutený 0.75 l,1.89,0,nealkoholicke_napoje,3
+11451,Robby Bubble Strawberry sýtený nealkoholický nápoj ochutený 0.75 l,1.89,0,nealkoholicke_napoje,3
+11452,Schweppes Pink Tonic 1.5 l,1.79,0,nealkoholicke_napoje,3
+11453,Tchibo Coffizz Marakuja voda 0.5l,1.39,0,nealkoholicke_napoje,3
+11454,Tchibo Coffizz Citrón a mäta voda 0.5l,1.39,0,nealkoholicke_napoje,3
+11455,Coca-Cola 1 l,1.49,0,nealkoholicke_napoje,3
+11456,Coca-Cola Zero 1 l,1.49,0,nealkoholicke_napoje,3
+11457,Sprite Citrón limetka 1 l,1.49,0,nealkoholicke_napoje,3
+11458,Fanta Pomaranč 1 l,1.49,0,nealkoholicke_napoje,3
+11459,Kinley Citrus & Ylang Ylang 1.5 l,1.79,0,nealkoholicke_napoje,3
+11460,Xixo Tutti Fruity Apple Soft Drink 250 ml,0.55,0,nealkoholicke_napoje,3
+11461,Xixo Tutti Fruity Cactus sýtený nealkoholický nápoj s príchuťou opuncie. kivi 250 ml,0.55,0,nealkoholicke_napoje,3
+11462,Sanpellegrino Naturali Aranciata Rossa sýtený nealkoholický nápoj 330 ml,1.09,0,nealkoholicke_napoje,3
+11463,Sanpellegrino Naturali citrón & mäta sýtený nealkoholický nápoj 330 ml,1.19,0,nealkoholicke_napoje,3
+11464,Budiš Citrón 0.33 l,1.19,0,nealkoholicke_napoje,3
+11465,Budiš Pomaranč 0.33 l,1.19,0,nealkoholicke_napoje,3
+11466,Royal Crown Cola No Sugar 1.33 l,1.69,0,nealkoholicke_napoje,3
+11467,Royal Crown Cola No Sugar 330 ml,0.79,0,nealkoholicke_napoje,3
+11468,Targa Florio Tonica Originale sýtený nealkoholický nápoj 330 ml,0.79,0,nealkoholicke_napoje,3
+11469,Targa Florio Tonica Rosa sýtený nealkoholický nápoj 330 ml,0.79,0,nealkoholicke_napoje,3
+11470,DrWitt Elements príchuť ružový grapefruit 250 ml,0.99,0,nealkoholicke_napoje,3
+11471,DrWitt Elements príchuť biela broskyňa 250 ml,0.99,0,nealkoholicke_napoje,3
+11472,Carpe Diem Kombucha 0.75 l,2.99,0,nealkoholicke_napoje,3
+11473,Nápoj aloe vera 0.5l pet,1.29,0,nealkoholicke_napoje,3
+11474,Nápoj Aloe Vera light 0.5l PET,1.29,0,nealkoholicke_napoje,3
+11475,Aloe Vera Original 1.5 l,1.99,0,nealkoholicke_napoje,3
+11476,COOP Nápoj Šašo pomaranč 0.2L Junior,0.59,0,nealkoholicke_napoje,3
+11477,COOP Nápoj Šašo multi 0.2L Junior,0.59,0,nealkoholicke_napoje,3
+11478,COOP Nápoj detský jahoda 20% 300ml Junior,0.69,0,nealkoholicke_napoje,3
+11479,COOP Nápoj detský multivitamín 20% 300ml Junior,0.69,0,nealkoholicke_napoje,3
+11480,COOP Nápoj detský pomar.+mandar.20% 300ml Junior,0.69,0,nealkoholicke_napoje,3
+11481,COOP Nápoj Mrkva-jablko 1L TK,1.25,0,nealkoholicke_napoje,3
+11482,DrWitt Antiox granátové jablko a acai 750 ml,1.49,0,nealkoholicke_napoje,3
+11483,DrWitt Elements kolagén s príchuťou jahody 750 ml,1.49,0,nealkoholicke_napoje,3
+11484,DrWitt Fit mango. citrón a zelený čaj 750 ml,1.49,0,nealkoholicke_napoje,3
+11485,DrWitt Power-C pomaranč-pomelo 0.75L PET,1.49,0,nealkoholicke_napoje,3
+11486,Jupík Aqua Citrón 500 ml,1.09,0,nealkoholicke_napoje,3
+11487,Jupík Aqua Jablko 500 ml,1.09,0,nealkoholicke_napoje,3
+11488,Jupík Aqua Jahoda 500 ml,1.09,0,nealkoholicke_napoje,3
+11489,Jupík Aqua Malina 500 ml,1.09,0,nealkoholicke_napoje,3
+11490,Jupík Ovocík 20% Pomaranč 330 ml,0.89,0,nealkoholicke_napoje,3
+11491,Jupík Ovocík 20% Multivitamín 330 ml,0.89,0,nealkoholicke_napoje,3
+11492,Jupík Ovocík 20% Cherry Cola 330 ml,0.89,0,nealkoholicke_napoje,3
+11493,Jupík Ovocík 20% Jablko jahoda 330 ml,0.89,0,nealkoholicke_napoje,3
+11494,Kubík Play! Mrkva červený pomaranč jablko-limetka 400 ml,0.59,0,nealkoholicke_napoje,3
+11495,Kubík Play! Malina mrkva jablko-limetka 400 ml,0.59,0,nealkoholicke_napoje,3
+11496,Kubík Waterrr Príchuť citrón 500 ml,0.59,0,nealkoholicke_napoje,3
+11497,Kubík Waterrr Príchuť jahoda 500 ml,0.59,0,nealkoholicke_napoje,3
+11498,COOP Jednota čaj ľadový broskyňa 1.5l,1.29,0,nealkoholicke_napoje,3
+11499,COOP Jednota čaj ľadový citrón 1.5l,1.29,0,nealkoholicke_napoje,3
+11500,Lipton Green Ice Tea ľadový čaj s príchuťou limety a mäty 1.5 l,1.79,0,nealkoholicke_napoje,3
+11501,Lipton Green Ice Tea ľadový čaj zelený 1.5 l,1.79,0,nealkoholicke_napoje,3
+11502,Lipton Green Ice Tea ľadový čaj zelený 500 ml,1.19,0,nealkoholicke_napoje,3
+11503,Lipton Ice Tea ľadový čaj s citrónovou príchuťou 1.5 l,1.79,0,nealkoholicke_napoje,3
+11504,Lipton Ice Tea ľadový čaj s príchuťou broskyne 1.5 l,1.79,0,nealkoholicke_napoje,3
+11505,Lipton Ice Tea ľadový čaj s príchuťou broskyne 500 ml,1.19,0,nealkoholicke_napoje,3
+11506,Lipton Ice Tea s príchuťou malín 1.5 l,1.79,0,nealkoholicke_napoje,3
+11507,Lipton Lemon Ice Tea ľadový čaj s citrónovou príchuťou 500 ml,1.19,0,nealkoholicke_napoje,3
+11508,Lipton Zero Green Ice Tea s citrónovou príchuťou 1.5 l,1.79,0,nealkoholicke_napoje,3
+11509,Nestea Čierny ľadový čaj s príchuťou broskyne 1.5 l,1.69,0,nealkoholicke_napoje,3
+11510,Nestea Zelený ľadový čaj s príchuťou citrusov 1.5 l,1.69,0,nealkoholicke_napoje,3
+11511,Rauch My Tea Čajový nápoj s broskyňovou príchuťou 1.5 l,2.19,0,nealkoholicke_napoje,3
+11512,Rauch Sport Isotonic Citrus sýtený nealkoholický nápoj 0.5 l,1.69,0,nealkoholicke_napoje,3
+11513,Rio H2O Vitamínová voda citrón s dužinou 400 ml,0.99,0,nealkoholicke_napoje,3
+11514,Teeekanne Ľadový nápoj s príchuťou broskyne 0.5 l,1.29,0,nealkoholicke_napoje,3
+11515,Teekanne Ľadový čaj s príchuťou citrónu 0.5 l,1.29,0,nealkoholicke_napoje,3
+11516,Teekanne Nealkoholický nápoj s príchuťou granátového jablka a broskyne 0.5 l,1.29,0,nealkoholicke_napoje,3
+11517,Xixo Broskyňový ľadový čaj s 1% obsahom ovocnej šťavy 250 ml,0.55,0,nealkoholicke_napoje,3
+11518,Xixo Citrus Green Tea s 1% obsahom ovocnej šťavy 250 ml,0.55,0,nealkoholicke_napoje,3
+11519,Xixo Ice Tea Raspberry and Blueberry nealkoholický nápoj s príchuťou maliny a čučoriedky 250 ml,0.55,0,nealkoholicke_napoje,3
+11520,Xixo Jahodový ľadový čaj s 1% obsahom ovocnej šťavy 250 ml,0.55,0,nealkoholicke_napoje,3
+11521,Rochester Dickensian Recipe Ginger nealkoholický nápoj so zázvorom 725 ml,7.69,0,nealkoholicke_napoje,3
+11522,Red Bull Green Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11523,Red Bull Apricot Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11524,Kofola Original 4 x 2 l,5.19,0,nealkoholicke_napoje,3
+11525,Schweppes Indian tonic 1.5 l,1.79,0,nealkoholicke_napoje,3
+11526,Magnesia Plus Antistress 0.7 l,1.29,0,nealkoholicke_napoje,3
+11527,Magnesia Plus Focus 0.7 l,1.29,0,nealkoholicke_napoje,3
+11528,Gemerka jemne perlivá 2 l,0.75,0,nealkoholicke_napoje,3
+11529,Gemerka perlivá 2 l,0.75,0,nealkoholicke_napoje,3
+11530,Magnesia Extra 0.7 l,1.29,0,nealkoholicke_napoje,3
+11531,Hochwald Ľadová káva eiskaffee 500ml,1.49,0,nealkoholicke_napoje,3
+11532,Monster Energy Ultra sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11533,Starbucks Caramel Macchiato 220 ml,2.49,0,nealkoholicke_napoje,3
+11534,Starbucks Frappuccino 250 ml,2.99,0,nealkoholicke_napoje,3
+11535,Oshee Vitamin Water nesytený nápoj s prichuťou citronóvo-pomarančovou 555 ml,1.49,0,nealkoholicke_napoje,3
+11536,Arizona Pomegranate Green Tea nealkoholický ochutený nápoj 450 ml,1.49,0,nealkoholicke_napoje,3
+11537,Limeňita Pomarančová Šťava 1L,2.99,0,nealkoholicke_napoje,3
+11538,Rio Cold Press 100% ovocný mix s jahodami 200 ml,0.85,0,nealkoholicke_napoje,3
+11539,Rio Jablko cvikla 1 l,1.49,0,nealkoholicke_napoje,3
+11540,Kukkonia Iced Coffee 0.5 l,1.19,0,nealkoholicke_napoje,3
+11541,Rio Cold Press Greponade Grapefruit 400 ml,1.49,0,nealkoholicke_napoje,3
+11542,Rio H2O Vitamínová voda grapefruit s dužinou 400 ml,0.99,0,nealkoholicke_napoje,3
+11543,Body&Future Vitamin Water Antiox 400 ml,2.39,0,nealkoholicke_napoje,3
+11544,Body&Future Vitamin Water Collagen 400 ml,2.39,0,nealkoholicke_napoje,3
+11545,Rio Bubble Tea mango 400 ml,3.29,0,nealkoholicke_napoje,3
+11546,Rio Bubble Tea s liči a broskyňou 400 ml,3.29,0,nealkoholicke_napoje,3
+11547,Surprise Drinks Cars nesýtený ovocný nápoj 300 ml,1.29,0,nealkoholicke_napoje,3
+11548,Surprise Drinks Star Wars ovocný nápoj 300 ml,1.29,0,nealkoholicke_napoje,3
+11549,Disney Minnie Mouse prekvapenie jahoda 300 ml,1.29,0,nealkoholicke_napoje,3
+11550,Relax Pomaranč mandarínka maracuja mango 1 l,1.29,0,nealkoholicke_napoje,3
+11551,Semtex Extrem Guarana & Matcha 250 ml,0.99,0,nealkoholicke_napoje,3
+11552,Red Bull Summer Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11553,Red Bull The Winter Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11554,Maresi Vienna Ice Coffee cappucine 230ml,1.69,0,nealkoholicke_napoje,3
+11555,Rauch Sport Isotonic Berry sýtený nealkoholický nápoj 0.5 l,1.69,0,nealkoholicke_napoje,3
+11556,Rauch Juice Bar 100% pomarančová šťava 800 ml,2.99,0,nealkoholicke_napoje,3
+11557,Rauch Juice Bar 100% jablkovo-hroznovo-malinová šťava 800 ml,2.99,0,nealkoholicke_napoje,3
+11558,Rauch Juice Bar 100% ananás-pomaranč-marakuja 800 ml,3.19,0,nealkoholicke_napoje,3
+11559,Rauch Sport Isotonic Grapefruit sýtený nealkoholický nápoj 0.5 l,1.49,0,nealkoholicke_napoje,3
+11560,Rauch Happy Day 100% jablková šťava 330 ml,1.29,0,nealkoholicke_napoje,3
+11561,Rauch Happy Day 100% multivitamin 330 ml,1.29,0,nealkoholicke_napoje,3
+11562,Rauch Happy Day Pomarančový nektár 1.5 l,2.99,0,nealkoholicke_napoje,3
+11563,Rauch Happy Day Multivitamín 1.5 l,2.49,0,nealkoholicke_napoje,3
+11564,BIO šťava pomarančová Limenita 1L PET,4.39,0,nealkoholicke_napoje,3
+11565,Cappy 100% pomaranč 1 l,1.99,0,nealkoholicke_napoje,3
+11566,Cappy 100% jablko 1 l,1.99,0,nealkoholicke_napoje,3
+11567,Cappy Multivitamin 1 l,1.89,0,nealkoholicke_napoje,3
+11568,Capri-Sun Multivitamin nesýtený nealkoholický ovocný nápoj 200 ml,0.39,0,nealkoholicke_napoje,3
+11569,Capri-Sun Mystic Dragon nesýtený nealkoholický ovocný nápoj 200 ml,0.39,0,nealkoholicke_napoje,3
+11570,Capri-Sun Orange nesýtený nealkoholický ovocný nápoj 200 ml,0.39,0,nealkoholicke_napoje,3
+11571,Caprio Plus Pomaranč 2 l,1.79,0,nealkoholicke_napoje,3
+11572,Caprio Plus Jablko 2 l,1.29,0,nealkoholicke_napoje,3
+11573,Caprio Plus Multivitamín 2 l,1.29,0,nealkoholicke_napoje,3
+11574,Caprio Plus Party Mix ananás mango 2 l,1.29,0,nealkoholicke_napoje,3
+11575,COOP Šťava pomarančová 100% 1L TK,1.89,0,nealkoholicke_napoje,3
+11576,COOP Šťava Jablko 100% 1L TK,0.89,0,nealkoholicke_napoje,3
+11577,COOP Jednota jablko-baza 1l tp,1.09,0,nealkoholicke_napoje,3
+11578,COOP Jednota multivitamín 45% 1l tradičná kvalita,1.49,0,nealkoholicke_napoje,3
+11579,COOP Šťava Paradajka 100% 1L AL,1.39,0,nealkoholicke_napoje,3
+11580,Hello 100% jablko 250ml TPP,0.49,0,nealkoholicke_napoje,3
+11581,Hello 100% jablko-broskyňa 250ml TPP,0.49,0,nealkoholicke_napoje,3
+11582,Hello Smoothie jahoda 100% 200ml,0.75,0,nealkoholicke_napoje,3
+11583,Kubík 100% jablko 300 ml,0.75,0,nealkoholicke_napoje,3
+11584,Kubík 100% multivitamín 300 ml,0.75,0,nealkoholicke_napoje,3
+11585,Matyšák 100% hroznová šťava biela 0.75 l,3.99,0,nealkoholicke_napoje,3
+11586,Matyšák 100% hroznová šťava červená 0.75 l,3.99,0,nealkoholicke_napoje,3
+11587,Rauch Happy Day 100% pomaranč 1 l,2.49,0,nealkoholicke_napoje,3
+11588,Rauch Happy Day 100% pomarančová šťava s dužinou 1 l,2.49,0,nealkoholicke_napoje,3
+11589,Rauch Happy Day 100% multivitamín 1 l,2.29,0,nealkoholicke_napoje,3
+11590,Rauch Happy Day Multivitamín 100% 2 l,3.49,0,nealkoholicke_napoje,3
+11591,Rauch Happy Day 100% jablko 1 l,2.29,0,nealkoholicke_napoje,3
+11592,Rauch Happy Day Family ananás 1 l,1.79,0,nealkoholicke_napoje,3
+11593,Rauch Happy Day Family jablkovo-jahodový nápoj 1 l,1.79,0,nealkoholicke_napoje,3
+11594,Rauch Happy Day Family Multivitamin ovocný nápoj 1 l,1.79,0,nealkoholicke_napoje,3
+11595,Rauch Happy Day Immun Plus Orange. Mango & Lemon 1 l,2.29,0,nealkoholicke_napoje,3
+11596,Relax Jablko kaktus limetka 250 ml,0.99,0,nealkoholicke_napoje,3
+11597,Relax Jablko melón 250 ml,0.99,0,nealkoholicke_napoje,3
+11598,Relax Mango jablko pomaranč citrón 250 ml,0.99,0,nealkoholicke_napoje,3
+11599,Relax Džús 100% pomaranč 1 l,2.69,0,nealkoholicke_napoje,3
+11600,Relax Džús 100% jablko 1 l,1.39,0,nealkoholicke_napoje,3
+11601,Relax Džús 100% multivitamín 1 l,1.39,0,nealkoholicke_napoje,3
+11602,Relax Multivitamín červené ovocie 1 l,1.49,0,nealkoholicke_napoje,3
+11603,Relax Ananás 1 l,1.69,0,nealkoholicke_napoje,3
+11604,Relax Broskyňa 1 l,1.49,0,nealkoholicke_napoje,3
+11605,Relax Brusnica 1 l,1.49,0,nealkoholicke_napoje,3
+11606,Relax Hruška 1 l,1.69,0,nealkoholicke_napoje,3
+11607,Relax Exotica Kaktus 1 l,1.69,0,nealkoholicke_napoje,3
+11608,Relax Džús 100% červený grapefruit 1 l,1.39,0,nealkoholicke_napoje,3
+11609,Relax Frozen jablko arónia višňa lesná jahoda 200 ml,0.49,0,nealkoholicke_napoje,3
+11610,Relax Disney multivitamín 200 ml,0.49,0,nealkoholicke_napoje,3
+11611,Relax Pixar jablko. broskyňa. jahoda 200 ml,0.49,0,nealkoholicke_napoje,3
+11612,Relax Immuno 100% džús multivitamín 1 l,1.69,0,nealkoholicke_napoje,3
+11613,Relax Immuno 100% džús pomaranč maracuja 1 l,2.19,0,nealkoholicke_napoje,3
+11614,Rio 100% jablko 1 l,1.49,0,nealkoholicke_napoje,3
+11615,Rio Brusnica so zníženým obsahom cukru 1 l,1.79,0,nealkoholicke_napoje,3
+11616,Rio Cold Press 100% pomarančová šťava lisovaná za studena. s dužinou 200 ml,1.49,0,nealkoholicke_napoje,3
+11617,Rio Cold Press 100% ananásová šťava lisovaná za studena 180 ml,1.39,0,nealkoholicke_napoje,3
+11618,Rio Cold Press 100% jablko 1 l,1.99,0,nealkoholicke_napoje,3
+11619,Rio Cold Press 100% hruška 1 l,2.99,0,nealkoholicke_napoje,3
+11620,Rio Cold Press 100% Costa Rica ananás 1 l,2.99,0,nealkoholicke_napoje,3
+11621,Rio Cold Press 100% jablko cvikla 1 l,1.99,0,nealkoholicke_napoje,3
+11622,Rio Cold Press 100% karotka 1 l,1.99,0,nealkoholicke_napoje,3
+11623,Rio Cold Press 100% malina hrozno jablko 1 l,2.99,0,nealkoholicke_napoje,3
+11624,Rio Cold Press 100% Costa Rica pomaranč s dužinou 1 l,3.99,0,nealkoholicke_napoje,3
+11625,Rio Cold Press 100% šťava z jabĺk a cvikly lisovaná za studena 200 ml,1.09,0,nealkoholicke_napoje,3
+11626,Rio Cold Press Ginger Shot Apple 180 ml,1.59,0,nealkoholicke_napoje,3
+11627,Rio Cold Press Ginger Shot Orange 180 ml,1.59,0,nealkoholicke_napoje,3
+11628,Rochester Organic Root Ginger nealkoholický nápoj zo zázvoru 725 ml,7.69,0,nealkoholicke_napoje,3
+11629,Toma Jablko 250 ml,0.55,0,nealkoholicke_napoje,3
+11630,Toma Jahoda 250 ml,0.55,0,nealkoholicke_napoje,3
+11631,Toma Pomaranč 250 ml,0.55,0,nealkoholicke_napoje,3
+11632,Body&Future Detox viacdruhový ovocno-zeleninový nápoj 200 ml,1.69,0,nealkoholicke_napoje,3
+11633,Zdravo 100 % broskyňovo jablková šťava 0.75 l,2.79,0,nealkoholicke_napoje,3
+11634,Zdravo 100% cviklovo-jablková šťava 0.75 l,3.39,0,nealkoholicke_napoje,3
+11635,Zdravo 100% jablková šťava 0.75 l,2.69,0,nealkoholicke_napoje,3
+11636,Zdravo 100% šťava z cvikly a jabĺk 0.20 l,1.19,0,nealkoholicke_napoje,3
+11637,Zdravo 100% šťava z cvikly. jabĺk a čučoriedok 0.75 l,5.59,0,nealkoholicke_napoje,3
+11638,Zdravo 100% šťava z jabĺk a arónie 0.75 l,4.59,0,nealkoholicke_napoje,3
+11639,Rauch Happy Day 100% pomarančová šťava 330 ml,1.79,0,nealkoholicke_napoje,3
+11640,Caprio Hustý Jahoda 700 ml,1.69,0,nealkoholicke_napoje,3
+11641,Caprio Hustý Malina 700 ml,1.69,0,nealkoholicke_napoje,3
+11642,Caprio Hustý Pomaranč 700 ml,1.69,0,nealkoholicke_napoje,3
+11643,COOP Jednota sirup s príchuťou lesná zmes 0.7l pet,1.39,0,nealkoholicke_napoje,3
+11644,COOP Jednota sirup s príchuťou pomaranč 0.7l pet,1.39,0,nealkoholicke_napoje,3
+11645,COOP Jednota Tradičná kvalita 100% citrónová šťava 200 ml,0.65,0,nealkoholicke_napoje,3
+11646,Jupí Fľaštička Hustý sirup záhradné ovocie 0.7 l,3.99,0,nealkoholicke_napoje,3
+11647,Jupí Fľaštička Koktejl sirup Mojito 0.7 l,3.99,0,nealkoholicke_napoje,3
+11648,Jupí Fľaštička Sirup bazový kvet 0.7 l,3.99,0,nealkoholicke_napoje,3
+11649,Jupí Fľaštička Sirup imunita brusnica s echinaceou 0.7 l,3.99,0,nealkoholicke_napoje,3
+11650,Jupí Sirup jahoda 0.7 l,1.99,0,nealkoholicke_napoje,3
+11651,Jupí Sirup lesná zmes 0.7 l,1.99,0,nealkoholicke_napoje,3
+11652,Jupí Sirup malina 0.7 l,1.99,0,nealkoholicke_napoje,3
+11653,Jupí Sirup pomaranč 0.7 l,1.99,0,nealkoholicke_napoje,3
+11654,Natur Farm Citrónka 1 l,1.19,0,nealkoholicke_napoje,3
+11655,Natur Farm Ovocný sirup príchuť baza 0.7 l,3.49,0,nealkoholicke_napoje,3
+11656,Natur Farm Ovocný sirup s jahodovou príchuťou 0.7 l,3.49,0,nealkoholicke_napoje,3
+11657,Natur Farm Ovocný sirup s malinovou príchuťou 0.7 l,3.49,0,nealkoholicke_napoje,3
+11658,Natur Farm Ovocný sirup s príchuťou limetka-mäta 0.7 l,3.49,0,nealkoholicke_napoje,3
+11659,Natur Farm Ovocný sirup s príchuťou mango-lotosový kvet 0.7 l,3.49,0,nealkoholicke_napoje,3
+11660,Sunquick Nápojový koncentrát mandarínka 330 ml,3.59,0,nealkoholicke_napoje,3
+11661,Sunquick Nápojový koncentrát pomaranč 330 ml,3.59,0,nealkoholicke_napoje,3
+11662,Zlatá Studňa Sirup s príchuťou citrón 0.7 l,2.19,0,nealkoholicke_napoje,3
+11663,Zlatá Studňa Sirup s príchuťou čučoriedka 0.7 l,2.19,0,nealkoholicke_napoje,3
+11664,Zlatá Studňa Sirup s príchuťou lesná jahoda 0.7 l,1.29,0,nealkoholicke_napoje,3
+11665,Zlatá Studňa Sirup s príchuťou lesná zmes 0.7 l,2.19,0,nealkoholicke_napoje,3
+11666,Zlatá Studňa Sirup s príchuťou malina 0.7 l,2.19,0,nealkoholicke_napoje,3
+11667,Zlatá Studňa Sirup s príchuťou multivitamín 0.7 l,2.19,0,nealkoholicke_napoje,3
+11668,Zlatá Studňa Sirup s príchuťou pomaranč 0.7 l,1.29,0,nealkoholicke_napoje,3
+11669,Zlatá Studňa Sirup s príchuťou rumový čaj 0.7 l,2.09,0,nealkoholicke_napoje,3
+11670,COOP Sirup s príchuťou jahoda 0.7l PET DC,1.39,0,nealkoholicke_napoje,3
+11671,Sirup pomaranč 0.7L sklo,2.09,0,nealkoholicke_napoje,3
+11672,Sirup malina 0.7L sklo,2.09,0,nealkoholicke_napoje,3
+11673,Sirup Oravan Baza citrón 0.7l PET,2.09,0,nealkoholicke_napoje,3
+11674,Natur Farm Ovocný sirup s pomarančovou šťavou 0.7 l,3.49,0,nealkoholicke_napoje,3
+11675,Zlatá Studňa Sirup s príchuťou bazy 0.7 l,1.29,0,nealkoholicke_napoje,3
+11676,Frupper Jahoda 0.7 l,1.69,0,nealkoholicke_napoje,3
+11677,Red Bull Energy Drink 250 ml,1.0,0,nealkoholicke_napoje,3
+11678,Red Bull Energy Drink 355 ml,1.69,0,nealkoholicke_napoje,3
+11679,Red Bull Energy Drink 4 x 250 ml,4.99,0,nealkoholicke_napoje,3
+11680,Red Bull Sugar Free 250 ml,1.0,0,nealkoholicke_napoje,3
+11681,Red Bull Sugar Free 355 ml,1.69,0,nealkoholicke_napoje,3
+11682,Red Bull The Blue Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11683,Red Bull The Red Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11684,Red Bull The Tropical Edition 250 ml,1.0,0,nealkoholicke_napoje,3
+11685,Monster Energy Sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11686,Monster Energy The Doctor sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11687,Monster Juiced Mango Loco sýtený energetický nápoj 500 ml,1.19,0,nealkoholicke_napoje,3
+11688,Hell Classic energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11689,Hell Classic energetický nápoj 500 ml,0.79,0,nealkoholicke_napoje,3
+11690,Hell Strong Apple energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11691,Hell Apple energetický nápoj 500 ml,0.79,0,nealkoholicke_napoje,3
+11692,Hell Strong Focus energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11693,Hell Strong Red Grape energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11694,Hell Strong Water Melon energetický nápoj 250 ml,0.69,0,nealkoholicke_napoje,3
+11695,Ice Coffee Double Espresso 250 ml,0.99,0,nealkoholicke_napoje,3
+11696,Ice Coffee Cappuccino 250 ml,0.99,0,nealkoholicke_napoje,3
+11697,Ice Coffee Latte 250 ml,0.99,0,nealkoholicke_napoje,3
+11698,Semtex Energy Bloody Orange 500 ml,1.19,0,nealkoholicke_napoje,3
+11699,Semtex Energy Focus 250 ml,0.79,0,nealkoholicke_napoje,3
+11700,Semtex Energy Focus 500 ml,1.19,0,nealkoholicke_napoje,3
+11701,Semtex Street Water Focus 750 ml,1.19,0,nealkoholicke_napoje,3
+11702,Tiger Energetický nápoj 250 ml,0.79,0,nealkoholicke_napoje,3
+11703,Tiger Energetický nápoj 500 ml,1.09,0,nealkoholicke_napoje,3
+11704,Nápoj isofruit pomaranč & citrón 500 ml,1.39,0,nealkoholicke_napoje,3
+11705,COOP Jednota nápoj energet. Sýtený 250ml cev plech,0.55,0,nealkoholicke_napoje,3
+11706,COOP Jednota nápoj energeťák sýtený 0.25l plech,0.55,0,nealkoholicke_napoje,3
+11707,Powerking Sýtený povzbudzujúci nealkoholický nápoj s vitamínmi s príchuťou 250 ml,0.75,0,nealkoholicke_napoje,3
+11708,COOP Nápoj Energeťák sýtený 300ml TK,0.66,0,nealkoholicke_napoje,3
+11709,Red Bull Energy Drink 2 x 250 ml,1.99,0,nealkoholicke_napoje,3
+11710,Ice Coffee Coconut 250 ml,0.99,0,nealkoholicke_napoje,3
+11711,Semtex Extrem Guarana & Matcha 500 ml,1.19,0,nealkoholicke_napoje,3
+11712,Hell Watermelon energetický nápoj 500 ml,0.79,0,nealkoholicke_napoje,3
+11713,Dr. Oetker Bystrinka šumivý nealkoholický nápoj v prášku bez cukru 8 g,0.27,0,nealkoholicke_napoje,3
+11714,Dr. Oetker PIMA stévia nápoj aróma pomaranč 50 g,0.69,0,nealkoholicke_napoje,3
+11715,Dr. Oetker Šumienka aróma malina nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11716,Dr. Oetker Šumienka aróma mandarínka nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11717,Dr. Oetker Šumienka aróma tropik nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11718,Dr. Oetker Šumienka citrón nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11719,Dr. Oetker Šumienka pomaranč nápoj v prášku 14 g,0.27,0,nealkoholicke_napoje,3
+11720,Liana Minerál šumivý nápoj v prášku 6 g,0.17,0,nealkoholicke_napoje,3
+11721,Song Perlenka grgáčik 8 g,0.23,0,nealkoholicke_napoje,3
+11722,Song Šumienka aróma višňa nápoj v prášku 14 g,0.22,0,nealkoholicke_napoje,3
+11723,Song Šumienka s citrónovou arómou 14 g,0.23,0,nealkoholicke_napoje,3
+11724,Song Šumienka s citrónovou arómou nápoj v prášku 14 g,0.23,0,nealkoholicke_napoje,3
+11725,Song Šumienka s pomarančovou arómou 14 g,0.23,0,nealkoholicke_napoje,3

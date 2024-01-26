@@ -21,26 +21,26 @@ __VERSION__ = "1.0.0"
 
 from typing import List
 import threading
-from utils import hash_string
+from AOSS.utils import hash_string
 from enum import Enum
 
 # --- Market File Configuration --- #
 
-__MF_ID_INDEX = 0
-__MF_NAME_INDEX = __MF_ID_INDEX + 1
-__MF_STORE_NAME_INDEX = __MF_NAME_INDEX + 1
-__MF_NEXT_PRODUCT_INDEX = __MF_STORE_NAME_INDEX + 1
-__MF_PRODUCT_FILE_INDEX = __MF_NEXT_PRODUCT_INDEX + 1
-__MF_PF_HEADER_INDEX = __MF_PRODUCT_FILE_INDEX + 1
-__MF_HASH_FILE_INDEX = __MF_PF_HEADER_INDEX + 1
-__MF_HF_HEADER_INDEX = __MF_HASH_FILE_INDEX + 1
-__MF_CATEGORIES_FILE_INDEX = __MF_HF_HEADER_INDEX + 1
-__MF_CF_HEADER_INDEX = __MF_CATEGORIES_FILE_INDEX + 1
+MF_ID_INDEX = 0
+MF_NAME_INDEX = MF_ID_INDEX + 1
+MF_STORE_NAME_INDEX = MF_NAME_INDEX + 1
+MF_NEXT_PRODUCT_INDEX = MF_STORE_NAME_INDEX + 1
+MF_PRODUCT_FILE_INDEX = MF_NEXT_PRODUCT_INDEX + 1
+MF_PF_HEADER_INDEX = MF_PRODUCT_FILE_INDEX + 1
+MF_HASH_FILE_INDEX = MF_PF_HEADER_INDEX + 1
+MF_HF_HEADER_INDEX = MF_HASH_FILE_INDEX + 1
+MF_CATEGORIES_FILE_INDEX = MF_HF_HEADER_INDEX + 1
+MF_CF_HEADER_INDEX = MF_CATEGORIES_FILE_INDEX + 1
 
-__MF_ATTR_DELIMITER = ','
-__MF_CATEGORIES_DELIMITER = ';'
+MF_ATTR_DELIMITER = ','
 
 class ProductCategory(Enum):
+    NEURČENÁ = 0
     OVOCIE_ZELENINA = 1
     PECIVO = 2
     MASO_MRAZENE_VYROBKY = 3
@@ -150,30 +150,30 @@ class Product:
 def __to_obj(attributes: List[str], market_file: str, MF_header: bool = False):
     categories = set()
 
-    with open(file=attributes[__MF_CATEGORIES_FILE_INDEX].rstrip(), mode='r', encoding='utf-8') as file:
+    with open(file=attributes[MF_CATEGORIES_FILE_INDEX].rstrip(), mode='r', encoding='utf-8') as file:
         line = file.readline()
         
-        if line is not None and int(attributes[__MF_CF_HEADER_INDEX]):
+        if line is not None and int(attributes[MF_CF_HEADER_INDEX]):
             line = file.readline()
 
         while line:
             
             c_attributes = line.split(sep=Market.CF_ATTR_DELIMITER())
             
-            if c_attributes[Market.CF_MARKET_ID()].rstrip() == attributes[__MF_ID_INDEX]:
+            if c_attributes[Market.CF_MARKET_ID()].rstrip() == attributes[MF_ID_INDEX]:
                 categories.add(c_attributes[Market.CF_URL_NAME_INDEX()])
 
             line = file.readline()
             
-    return Market(  ID=int(attributes[__MF_ID_INDEX]),
-                    name=attributes[__MF_NAME_INDEX],
-                    store_name=attributes[__MF_STORE_NAME_INDEX],
-                    product_ID=int(attributes[__MF_NEXT_PRODUCT_INDEX]),
+    return Market(  ID=int(attributes[MF_ID_INDEX]),
+                    name=attributes[MF_NAME_INDEX],
+                    store_name=attributes[MF_STORE_NAME_INDEX],
+                    product_ID=int(attributes[MF_NEXT_PRODUCT_INDEX]),
                     categories=tuple(categories),
                     market_file=(market_file, MF_header),
-                    product_file=(attributes[__MF_PRODUCT_FILE_INDEX], bool(int(attributes[__MF_PF_HEADER_INDEX]))),
-                    hash_file=(attributes[__MF_HASH_FILE_INDEX], bool(int(attributes[__MF_HF_HEADER_INDEX]))),
-                    categories_file=(attributes[__MF_CATEGORIES_FILE_INDEX], bool(int(attributes[__MF_CF_HEADER_INDEX]))))
+                    product_file=(attributes[MF_PRODUCT_FILE_INDEX], bool(int(attributes[MF_PF_HEADER_INDEX]))),
+                    hash_file=(attributes[MF_HASH_FILE_INDEX], bool(int(attributes[MF_HF_HEADER_INDEX]))),
+                    categories_file=(attributes[MF_CATEGORIES_FILE_INDEX], bool(int(attributes[MF_CF_HEADER_INDEX]))))
 
 
     
@@ -188,8 +188,8 @@ def market(ID: int, market_file: str, header: bool = False):
 
         while line:
 
-            if line[__MF_ID_INDEX] == str(ID):
-                return __to_obj(attributes=line.split(__MF_ATTR_DELIMITER), market_file=market_file, MF_header=header)
+            if line[MF_ID_INDEX] == str(ID):
+                return __to_obj(attributes=line.split(MF_ATTR_DELIMITER), market_file=market_file, MF_header=header)
             
             line = file.readline()
 
@@ -206,7 +206,7 @@ def markets(market_file: str, header: bool = False):
 
         while(line):
 
-            list.append(__to_obj(attributes=line.split(__MF_ATTR_DELIMITER), market_file=market_file, MF_header=header))
+            list.append(__to_obj(attributes=line.split(MF_ATTR_DELIMITER), market_file=market_file, MF_header=header))
             line = file.readline()
     
     return tuple(list)
@@ -436,9 +436,9 @@ class Market:
             
             while line:
 
-                if line[__MF_ID_INDEX] == str(self.__ID):
-                    attributes: List[str] = line.split(__MF_ATTR_DELIMITER)
-                    attributes[__MF_NEXT_PRODUCT_INDEX] = str(self.__product_ID)
+                if line.split(MF_ATTR_DELIMITER)[MF_ID_INDEX] == str(self.__ID):
+                    attributes: List[str] = line.split(MF_ATTR_DELIMITER)
+                    attributes[MF_NEXT_PRODUCT_INDEX] = str(self.__product_ID)
                     lines.append(','.join(attributes))
                     found = True
                 else:

@@ -1,5 +1,5 @@
 from tkinter import Frame, Tk, LabelFrame, Canvas, Scrollbar, Label
-from utils import TextEditor
+from AOSS.utils import TextEditor
 
 # def update_scrollregion(canvas: Canvas):
 #     canvas.update_idletasks()

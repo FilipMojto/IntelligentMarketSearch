@@ -3,3 +3,5 @@
 *.update.bat
 *.gitupdate.bat
 .bvenv
+.venv
+.vscode

@@ -10,6 +10,7 @@ RESOURCES = PATHS["resources"]
 DATA = PATHS["resources"]["data"]
 
 MARKET_FILE_PATH = PATHS["resources"]["data"]["markets"]
+MARKET_FILE_HEADER = PATHS["resources"]["data"]["markets_header"]
 PRODUCT_FILE_PATH = PATHS["resources"]["data"]["products"]
 PRODUCT_HASH_FILE_PATH = PATHS['resources']["data"]["product_hashes"]
 

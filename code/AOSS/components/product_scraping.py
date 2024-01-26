@@ -1,4 +1,4 @@
-from shopping import Market, Product
+from code.AOSS.shopping import Market, Product
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
@@ -6,7 +6,7 @@ from collections import OrderedDict
 import time
 import threading
 from typing import List, Dict
-from utils import ThreadPool
+from code.AOSS.utils import ThreadPool
 
 
 
