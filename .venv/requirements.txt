@@ -1,8 +1,0 @@
-thefuzz
-rapidfuzz
-packaging
-requests
-beautifulsoup4
-selenium
-unidecode
-polars
