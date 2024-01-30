@@ -190,12 +190,12 @@ class AddProductToCartView(LabelFrame):
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
 
-        self.__product_matcher = ProductMatcher(markets=shp.markets(market_file=config_paths.MARKET_FILE_PATH, header=config_paths.MARKET_FILE_HEADER))
+        self.__product_matcher = ProductMatcher(markets=shp.markets(market_file=config_paths.MARKET_FILE['path'], header=config_paths.MARKET_FILE['header']))
     
-    def notify(self, category_name: str):
+    def show_category_details(self, category_name: str, details: str):
         self.__info_text.config(state="normal")
         self.__info_text.delete(1.0, END)
-        self.__info_text.insert(END, category_name)
+        self.__info_text.insert(END, category_name + '\n' + details)
         self.__info_text.config(state="disabled")
 
     def consume_entry(self):
@@ -276,7 +276,7 @@ class CategoriesFrame(LabelFrame):
         if new_value != self.__old_val: 
 
             category_name = shp.ProductCategory(value=new_value).name
-            self.__category_info_view.notify(category_name=category_name)
+            self.__category_info_view.show_category_details(category_name=category_name, details=shp.category_details(category=category_name.lower()))
             self.__old_val = new_value
 
 

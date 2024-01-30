@@ -3,11 +3,166 @@
         "path": "./resources",
         "data": {
             "path": "./resources/data",
-            "markets": "./resources/data/markets.csv",
-            "markets_header": true,
-            "products": "./resources/data/products.csv",
-            "product_hashes": "./resources/data/product_hashes.csv"            
+
+            "markets": {
+                "name": "markets.csv",
+                "path": "./resources/data/markets.csv",
+                "header": true,
+                "delimiter": ",",
+                "columns": {
+                    "ID": {
+                        "index": 0,
+                        "type": "integer"
+                    },
+                    "name": {
+                        "index": 1,
+                        "type": "string"
+                    },
+
+                    "store_name": {
+                        "index": 2,
+                        "type": "string"
+                    },
+
+                    "product_file": {
+                        "index": 3,
+                        "type": "string"
+                    },
+
+                    "PF_header": {
+                        "index": 4,
+                        "type": "bool"
+                    },
+
+                    "category_file": {
+                        "index": 5,
+                        "type": "string"
+                    },
+
+                    "CF_header": {
+                        "index": 6,
+                        "type": "bool"
+                    }
+
+                }
+            },
+
+            "products": {
+                "name": "products.csv",
+                "path": "./resources/data/products.csv",
+                "header": true,
+                "delimiter": ",",
+                "columns": {
+                    "ID": {
+                        "index": 0,
+                        "type": "integer"
+                    },
+                    "name": { 
+                        "index": 1,
+                        "type": "string"
+                    },
+                    "price": {
+                        "index": 2,
+                        "type": "float"
+                    },
+                    "approximation": {
+                        "index": 3,
+                        "type": "bool"
+                    },
+                    "category": {
+                        "index": 4,
+                        "type": "string"
+                    },
+                    "market_ID": {
+                        "index": 5,
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "index": 6,
+                        "type": "timestamp"
+                    },
+                    "updated_at": {
+                        "index": 7,
+                        "type": "timestamp"
+                    }                    
+                }
+            },
+          
+            "categories": {
+                "name": "categories.csv",
+                "path": "./resources/data/categories.csv",
+                "header": true,
+                "delimiter": ",",
+                "columns": {
+                    "ID": {
+                        "index": 0,
+                        "type": "integer"
+                    },
+                    "name": {
+                        "index": 1,
+                        "type": "string"
+                    },
+                    "details": {
+                        "index": 2,
+                        "type": "text"
+                    }
+                }
+            },
+
+            "category_query_strings": {
+                "name": "query_strings.csv",
+                "path": "./resources/data/query_strings.csv",
+                "header": true,
+                "delimiter": ",",
+                "columns": {
+                    "ID": {
+                        "index": 0,
+                        "type": "integer"
+                    },
+                    "name": {
+                        "index": 1,
+                        "type": "string"
+                    },
+                    "category_ID": {
+                        "index": 2,
+                        "type": "integer"
+                    },
+                    "market_ID": {
+                        "index": 3,
+                        "type": "integer"
+                    }
+                }
+            },
+            
+            "market_hub": {
+                "name": "market_hub.csv",
+                "path": "./resources/data/market_hub.csv",
+                "header": true,
+                "delimiter": ",",
+                "columns": {
+                    "market_ID": {
+                        "index": 0,
+                        "type": "integer"
+                    },
+
+                    "product_ID": {
+                        "index": 1,
+                        "type": "integer"
+                    },
+
+                    "market_file": {
+                        "index": 2,
+                        "type": "string"
+                    },
+
+                    "market_file_header": {
+                        "index": 3,
+                        "type": "bool"
+                    }
+                }
+            }
         },
+
         "gui": {
             "path": "./resources/GUI",
             "new_item_icon": "./resources/GUI/new_item_icon.png",

@@ -21,23 +21,15 @@ __VERSION__ = "1.0.0"
 
 from typing import List
 import threading
-from AOSS.utils import hash_string
+from AOSS.utils import PathManager
 from enum import Enum
+from config_paths import *
+import csv
+from dataclasses import dataclass, KW_ONLY
+import time
+from datetime import datetime
 
-# --- Market File Configuration --- #
 
-MF_ID_INDEX = 0
-MF_NAME_INDEX = MF_ID_INDEX + 1
-MF_STORE_NAME_INDEX = MF_NAME_INDEX + 1
-MF_NEXT_PRODUCT_INDEX = MF_STORE_NAME_INDEX + 1
-MF_PRODUCT_FILE_INDEX = MF_NEXT_PRODUCT_INDEX + 1
-MF_PF_HEADER_INDEX = MF_PRODUCT_FILE_INDEX + 1
-MF_HASH_FILE_INDEX = MF_PF_HEADER_INDEX + 1
-MF_HF_HEADER_INDEX = MF_HASH_FILE_INDEX + 1
-MF_CATEGORIES_FILE_INDEX = MF_HF_HEADER_INDEX + 1
-MF_CF_HEADER_INDEX = MF_CATEGORIES_FILE_INDEX + 1
-
-MF_ATTR_DELIMITER = ','
 
 class ProductCategory(Enum):
     NEURČENÁ = 0
@@ -50,11 +42,13 @@ class ProductCategory(Enum):
     SLADKOSTI = 7
     SLANE_SNACKY_SEMIENKA = 8
     NEALKOHOLICKE_NAPOJE = 9
-    ALKOHOL = 10
-    TEPLE_NAPOJE = 11
-    HOTOVE_INSTANTNE = 12
-    ZDRAVE_POTRAVINY = 13
+    TEPLE_NAPOJE = 10
+    ALKOHOL = 11
+    ZDRAVE_POTRAVINY = 12
+    HOTOVE_INSTANTNE = 13
+    
 
+@dataclass
 class Product:
     """
         This class represents a single Product object. It is a data class which should provide a
@@ -71,7 +65,7 @@ class Product:
 
             e) category (string) - one of the possible categories
 
-            f) hash (string) - hashed name attribute using sha256
+            f) hash (string) - hashed name attribute using sha256 - Removed
 
             g) market_ID (unsigned int) - unique identifier of a market which possess the product, -1 if not possessed by any market
     """
@@ -113,10 +107,10 @@ class Product:
     
     def PF_ROW_DELIMITER():
         return Product.__PF_ROW_DELIMITER
-    
 
     @staticmethod
     def to_obj(row: str):
+        
         attributes = row.split(Product.__PF_ATTR_DELIMITER)
 
         if len(attributes) != Product.ATTRIBUTE_COUNT:
@@ -127,275 +121,139 @@ class Product:
                        price=float(attributes[Product.__PF_PRICE_INDEX]),
                        approximation=int(attributes[Product.__PF_APPROXIMATION_INDEX]),
                        category=attributes[Product.__PF_CATEGORY_INDEX],
-                       market_ID=int(attributes[Product.__PF_MARKET_ID_INDEX]))
+                       market_ID=int(attributes[Product.__PF_MARKET_ID_INDEX]),
+                       created_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),
+                        updated_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'))
 
+    name: str
+    _: KW_ONLY
+    price: float = -1
+    approximation: int = -1
+    category: str = "unspecified"
+    normalized_category: ProductCategory = ProductCategory.NEURČENÁ
+    created_at: str
+    updated_at: str
+
+
+
+@dataclass
+class RegisteredProduct(Product):
+
+    ID: int
+    market_ID: int
+    _: KW_ONLY
+    standardized_category: ProductCategory = ProductCategory.NEURČENÁ
     
-    def __init__(self, name: str, price: float = -1, approximation: bool = -1, ID: int = -1, category: str = "unspecified", market_ID: int = -1) -> None:
 
-        self.ID = ID
+
+
+
+# def __to_obj(attributes: List[str], market_file: str, MF_header: bool = False):
+#     categories = set()
+
+#     with open(file=attributes[MARKET_FILE['columns']['category_file']['index']].rstrip(), mode='r', encoding='utf-8') as file:
+#         line = file.readline()
         
-        self.name = name
-        self.price = price
-        self.aproximation = approximation
-        self.category = category
-        self.hash = hash_string(self.name)
-        self.market_ID = market_ID
-        
-    
-    def __repr__(self):
-       return f"Product(ID: {self.ID}, name: {self.name}, price: {self.price}, approximation: {self.aproximation}, category: {self.category}, market: {self.market_ID})"
+#         if line is not None and int(attributes[MARKET_FILE['columns']['category_file_header']['index']]):
+#             line = file.readline()
 
-
-
-def __to_obj(attributes: List[str], market_file: str, MF_header: bool = False):
-    categories = set()
-
-    with open(file=attributes[MF_CATEGORIES_FILE_INDEX].rstrip(), mode='r', encoding='utf-8') as file:
-        line = file.readline()
-        
-        if line is not None and int(attributes[MF_CF_HEADER_INDEX]):
-            line = file.readline()
-
-        while line:
+#         while line:
             
-            c_attributes = line.split(sep=Market.CF_ATTR_DELIMITER())
+#             c_attributes = line.split(sep=Market.CF_ATTR_DELIMITER())
             
-            if c_attributes[Market.CF_MARKET_ID()].rstrip() == attributes[MF_ID_INDEX]:
-                categories.add(c_attributes[Market.CF_URL_NAME_INDEX()])
+#             if c_attributes[Market.CF_MARKET_ID()].rstrip() == attributes[MARKET_FILE['columns']['ID']['index']]:
+#                 categories.add(c_attributes[Market.CF_URL_NAME_INDEX()])
 
-            line = file.readline()
+#             line = file.readline()
             
-    return Market(  ID=int(attributes[MF_ID_INDEX]),
-                    name=attributes[MF_NAME_INDEX],
-                    store_name=attributes[MF_STORE_NAME_INDEX],
-                    product_ID=int(attributes[MF_NEXT_PRODUCT_INDEX]),
-                    categories=tuple(categories),
-                    market_file=(market_file, MF_header),
-                    product_file=(attributes[MF_PRODUCT_FILE_INDEX], bool(int(attributes[MF_PF_HEADER_INDEX]))),
-                    hash_file=(attributes[MF_HASH_FILE_INDEX], bool(int(attributes[MF_HF_HEADER_INDEX]))),
-                    categories_file=(attributes[MF_CATEGORIES_FILE_INDEX], bool(int(attributes[MF_CF_HEADER_INDEX]))))
+#     return Market(  ID=int(attributes[MARKET_FILE['columns']['ID']['index']]),
+#                     name=attributes[MARKET_FILE['columns']['name']['index']],
+#                     store_name=attributes[MARKET_FILE['columns']['store_name']['index']],
+#                     #product_ID=int(attributes[MF_NEXT_PRODUCT_INDEX]),
+#                     categories=tuple(categories),
+#                     market_file=(market_file, MF_header),
+#                     product_file=(attributes[MARKET_FILE['columns']['product_file']['index']], bool(int(attributes[MARKET_FILE['columns']['PF_header']['index']]))),
+#                     #hash_file=(attributes[MF_HASH_FILE_INDEX], bool(int(attributes[MF_HF_HEADER_INDEX]))),
+#                     category_file=(attributes[MARKET_FILE['columns']['category_file']['index']], bool(int(attributes[MARKET_FILE['columns']['CF_header']['index']]))))
 
 
-    
-def market(ID: int, market_file: str, header: bool = False):
 
-    with open(file=market_file, mode='r', encoding='utf-8') as file:
-        line = file.readline()
+
+
+
+
         
-        if line is not None and header:
-            line = file.readline()
 
+from abc import ABC, abstractmethod
 
-        while line:
-
-            if line[MF_ID_INDEX] == str(ID):
-                return __to_obj(attributes=line.split(MF_ATTR_DELIMITER), market_file=market_file, MF_header=header)
-            
-            line = file.readline()
-
-    return None
+class MarketHubInterface(ABC):
+    @abstractmethod
+    def can_register(self, market):
+        pass             
     
-def markets(market_file: str, header: bool = False):
-    list: List[Market] = []
-
-    with open(market_file, 'r', encoding='utf-8') as file:
-        line = file.readline()
-
-        if line is not None and header:
-            line = file.readline()
-
-        while(line):
-
-            list.append(__to_obj(attributes=line.split(MF_ATTR_DELIMITER), market_file=market_file, MF_header=header))
-            line = file.readline()
-    
-    return tuple(list)
-
-
-
-
-# --- Market - Class Declaration&Definition --- #
-
-class Market:
-    
-    
-
-    #MF_CATEGORIES_INDEX = MF_NEXT_PRODUCT_INDEX + 1
-
-    # --- Hash File Configuration --- #
-
-    __HF_ID_INDEX = 0
-    __HF_MARKET_ID_INDEX = __HF_ID_INDEX + 1
-    __HF_HASH_INDEX = __HF_MARKET_ID_INDEX + 1
-
-    __HF_ATTR_DELIMITER = ','
-    __HF_ROW_DELIMITER = '\n'
-
-    # --- Categories File Configuration --- #
-
-    __CF_ID_INDEX = 0
-    __CF_URL_NAME_INDEX = __CF_ID_INDEX + 1
-    __CF_NAME_INDEX = __CF_URL_NAME_INDEX + 1
-    __CF_MARKET_ID = __CF_NAME_INDEX + 1
-
-    __CF_ATTR_DELIMITER = ','
-    __CF_ROW_DELIMITER = '\n'
-
-
-    @staticmethod
-    def HF_ID_INDEX():
-        return Market.__HF_ID_INDEX
-    
-    @staticmethod
-    def HF_MARKET_ID_INDEX():
-        return Market.__HF_MARKET_ID_INDEX
-    
-    @staticmethod
-    def HF_HASH_INDEX():
-        return Market.__HF_HASH_INDEX
-    
-    @staticmethod
-    def HF_ATTR_DELIMITER():
-        return Market.__HF_ATTR_DELIMITER
-    
-    @staticmethod
-    def HF_ROW_DELIMITER():
-        return Market.__HF_ROW_DELIMITER
-    
-    @staticmethod
-    def CF_ID_INDEX():
-        return Market.__CF_ID_INDEX
-    
-    @staticmethod
-    def CF_URL_NAME_INDEX():
-        return Market.__CF_URL_NAME_INDEX
-    
-    @staticmethod
-    def CF_NAME_INDEX():
-        return Market.__CF_NAME_INDEX
-    
-    @staticmethod
-    def CF_MARKET_ID():
-        return Market.__CF_MARKET_ID
-    
-    @staticmethod
-    def CF_ATTR_DELIMITER():
-        return Market.__CF_ATTR_DELIMITER
-    
-    @staticmethod
-    def CF_ROW_DELIMITER():
-        return Market.__CF_ROW_DELIMITER
-
-    def __init__(self, ID: int, name: str, store_name: str, product_ID: int, categories: tuple[str], market_file: tuple[str, bool],
-                 product_file: tuple[str, bool], hash_file: tuple[str, bool], categories_file: tuple[str, bool], buffer: int = 1000) -> None:
+    @abstractmethod
+    def get_product_ID(self, market):
+        pass
         
-        # --- Market Attributes --- #
+
+class MarketView:
+    
+    def __init__(self, ID:int, name: str, store_name: str, product_file: tuple[str, bool],  category_file: tuple[str, bool]): #hash_file: tuple[str, bool], category_file: tuple[str, bool]):
         self.__ID = ID
         self.__name = name
         self.__store_name = store_name
-        self.__product_ID = product_ID
-        self.__categories = categories
 
-        # --- Market External Files Configuration --- #
-
-        self.__market_file = market_file
         self.__product_file = product_file
-        self.__hash_file = hash_file
-        self.__categories_file = categories_file
+        PathManager.check_if_exists(path=product_file[0], type='file')
 
-        # --- Market Product Registration Attributes --- #
+        self.__category_file = category_file
+        PathManager.check_if_exists(category_file[0], type='file')
 
-        self.__registration_buffer: List[Product] = []
-        self.__buffer_limit = buffer
-        self.__buffer_lock = threading.Lock()
+        self.__categories: List[str] = []
 
-        
-        
-    def __repr__(self):
-        return f"Market(ID: {self.__ID}, name: {self.__name}, store_name: {self.__store_name}, roduct_ID: {self.__product_ID}, categories: {self.__categories})"
+        #we laod categories from provided file
+        with open(file=self.__category_file[0], mode='r', encoding='utf-8') as file:
 
-    def ID(self) -> int:
+            reader = csv.reader(file)
+
+            if self.__category_file[1]:
+                next(reader)
+            
+            for row in reader:
+
+                if int(row[QUERY_STRING_FILE['columns']['market_ID']['index']]) == self.__ID:
+                    self.__categories.append(row[QUERY_STRING_FILE['columns']['name']['index']])
+
+    def __str__(self):
+        return f"{{ID: {self.__ID}, name: {self.__name}, store_name: {self.__store_name}, categories: {self.__categories}}}" + '\n'
+
+
+    def ID(self):
         return self.__ID
-    
-    def name(self) -> str:
-        return self.__name
-    
-    def store_name(self) -> str:
-        return self.__store_name
-    
-    def product_ID(self) -> int:
-        return self.__product_ID
-    
-    def buffer(self, size: int):
-        with self.__buffer_lock:
-            self.__buffer_limit = size
 
-    def market_file(self) -> tuple[str, bool]:
-        return self.__market_file
+    def name(self, name: str = None):
+        if name is not None:
+            self.__name = name
+        else:
+            return self.__name
     
-    def product_file(self) -> tuple[str, bool]:
+    def store_name(self, name: str = None):
+        if name is not None:
+            self.__store_name = name
+        else:
+            return self.__store_name
+    
+    def categories(self) -> tuple[str]:
+        return self.__categories
+    
+
+    def product_file(self):
         return self.__product_file
     
-    def hash_file(self) -> tuple[str, bool]:
-        return self.__hash_file 
+    def category_file(self):
+        return self.__category_file
 
-    def for_registration(self, product: Product):
-
-        with self.__buffer_lock:
-            # Let's firstly check the unregistered products to prove product's uniqueness
-            for _product in self.__registration_buffer:
-                if (product.hash == _product.hash):
-                    raise ValueError("Conflicting ID or name with an unregistered product!")
-            
-            # Now we check the registered products for the same purpose
-                
-
-            with open(self.__hash_file[0], 'r', encoding='utf-8') as file:
-                line = file.readline()
-
-                if line is not None and self.__hash_file[1]:
-                    line = file.readline()
-
-
-                while line:
-                    attributes = line.split(sep=self.__HF_ATTR_DELIMITER)
-
-                    #if (int(attributes[self.HF_MARKET_ID_INDEX]) == self.ID )
-
-                    if int(attributes[self.__HF_MARKET_ID_INDEX]) == self.__ID and (int(attributes[self.__HF_ID_INDEX]) == product.ID or attributes[self.__HF_HASH_INDEX].rstrip() == product.hash):
-                        raise ValueError("Product already registered!")
-                    
-                    line = file.readline()
-            
-            # here we verify the category of the product, whether the market provides it
-            with open(self.__categories_file[0], mode='r', encoding='utf-8') as categories_f:
-                line = categories_f.readline()
-
-                if line is not None and self.__categories_file[1]:
-                    line = categories_f.readline()
-
-                while line:
-                    attributes = line.split(Market.__CF_ATTR_DELIMITER)
-
-                    if (product.category == attributes[Market.__CF_URL_NAME_INDEX]):
-                        product.category = attributes[Market.__CF_NAME_INDEX]
-                        break
-                    elif product.category == attributes[Market.__CF_NAME_INDEX]:
-                        break
-
-                    line = categories_f.readline()
-                else:
-                    raise ValueError("The market doesn't provide such a category.")
-
-            # Finally, we can add the product for registration
-            self.__registration_buffer.append(product)
-        
-            if len(self.__registration_buffer) >= self.__buffer_limit:
-                self.register_products()
     
-
-
-
     def get_product(self, ID: int):
 
         with open(file=self.__product_file[0], mode='r', encoding='utf-8') as file:
@@ -409,91 +267,280 @@ class Market:
                     return Product.to_obj(row=line)
 
                 line = file.readline()
+            
+
         
         return None
 
+    
+    
+# --- Market - Class Declaration&Definition --- #
+
+class Market(MarketView):
+    
+    
+
+
+    def __init__(self, ID: int, name: str, store_name: str, market_hub: MarketHubInterface,
+                 product_file: tuple[str, bool], category_file: tuple[str, bool], buffer: int = 1000) -> None:
+        super().__init__(ID=ID, name=name, store_name=store_name, product_file=product_file, category_file=category_file)
+
+        # --- Market Attributes --- #
+        self.__ID = ID
+        self.__market_hub = market_hub
+     
+
+        # --- Market Product Registration Attributes --- #
+
+        self.__registration_buffer: List[Product] = []
+        self.__buffer_limit = buffer
+        self.__buffer_lock = threading.Lock()
+
+        
+    
+
+   
+        
+    #def __repr__(self):
+        #return f"Market(ID: {self.__ID}, name: {self.__name}, store_name: {self.__store_name}, roduct_ID: {self.__product_ID}, categories: {self.__categories})"
+
+    def ID(self) -> int:
+        return self.__ID
+
+
+    
+    def buffer(self, size: int):
+        with self.__buffer_lock:
+            self.__buffer_limit = size
+
+
+
+    def for_registration(self, product: Product):
+
+        with self.__buffer_lock:
+            # Let's firstly check the unregistered products to prove product's uniqueness
+            for _product in self.__registration_buffer:
+                if (product.name == _product.name):
+                    raise ValueError("Conflicting name with an unregistered product!")
+            
+            # Now we check the registered products for the same purpose
+            
+            with open(self.product_file()[0], mode='r', encoding='utf-8') as file:
+                reader = csv.reader(file)
+
+                if self.product_file()[1]:
+                    next(reader)
+                
+                for row in reader:
+
+                    if (int(row[PRODUCT_FILE['columns']['market_ID']['index']]) == self.__ID and
+                        row[PRODUCT_FILE['columns']['name']['index']] == product.name):
+                        raise ValueError("Conflicting name with a registered product!")
+                
+
+            # here we verify the category of the product, whether the market provides it
+            with open(self.category_file()[0], mode='r', encoding='utf-8') as categories_f:
+                line = categories_f.readline()
+
+                if line is not None and self.category_file()[1]:
+                    line = categories_f.readline()
+
+                while line:
+                    attributes = line.split(QUERY_STRING_FILE['delimiter'])
+
+                    if (product.category == attributes[QUERY_STRING_FILE['columns']['name']['index']]):
+                        break
+  
+                    line = categories_f.readline()
+                else:
+                    raise ValueError("The market doesn't provide such a category.")
+
+            # Finally, we can add the product for registration
+            self.__registration_buffer.append(product)
+        
+            if len(self.__registration_buffer) >= self.__buffer_limit:
+                self.register_products()
+    
 
 
     def register_products(self):
 
 
-        with open(self.__product_file[0], 'a', encoding='utf-8') as file:
+        with open(self.product_file()[0], 'a', encoding='utf-8') as file:
             for product in self.__registration_buffer:
+                id = self.__market_hub.get_product_ID(market=self)
+                file.write(str(id) + Product.PF_ATTR_DELIMITER() + product.name + Product.PF_ATTR_DELIMITER() + str(product.price)
+                            + Product.PF_ATTR_DELIMITER() + str(int(product.approximation)) + Product.PF_ATTR_DELIMITER() + product.normalized_category.name +
+                            Product.PF_ATTR_DELIMITER() + str(self.__ID) +
+                            PRODUCT_FILE['delimiter'] + product.created_at + PRODUCT_FILE['delimiter'] +
+                            datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\n')
+        
+        self.__registration_buffer.clear()
 
-                file.write(str(self.__product_ID) + Product.PF_ATTR_DELIMITER() + product.name + Product.PF_ATTR_DELIMITER() + str(product.price)
-                            + Product.PF_ATTR_DELIMITER() + str(int(product.aproximation)) + Product.PF_ATTR_DELIMITER() + product.category +
-                            Product.PF_ATTR_DELIMITER() + str(self.__ID) + Product.PF_ROW_DELIMITER())
-
-                product.ID = self.__product_ID
-                self.__product_ID += 1
-                
 
 
-        with open(self.__market_file[0], 'r') as file:
+
+
+
+class MarketHub(MarketHubInterface):
+    ATTR_DELIMITER = ','
+
+    def __init__(self, src_file: str, header: bool = False) -> None:
+        self.__src_file = PathManager.check_if_exists(path=src_file, type='file')
+        self.__src_file_header = header
+        
+        with open(file=src_file, mode='r') as file:
+            
             line = file.readline()
-            lines = []
-            found = False
-            
-            while line:
 
-                if line.split(MF_ATTR_DELIMITER)[MF_ID_INDEX] == str(self.__ID):
-                    attributes: List[str] = line.split(MF_ATTR_DELIMITER)
-                    attributes[MF_NEXT_PRODUCT_INDEX] = str(self.__product_ID)
-                    lines.append(','.join(attributes))
-                    found = True
-                else:
-                    lines.append(line)
-
+            if line is not None and  self.__src_file_header:
                 line = file.readline()
+
             
-            if not found:
-                raise ValueError("Market is not officially registered!")
+            attributes = line.split(sep=self.ATTR_DELIMITER)
 
-        with open(self.__market_file[0], 'w') as file:
-            file.writelines(lines)
-
-        # now we can create hashes for the products
-                
-        with open(self.__hash_file[0], 'a', encoding='utf-8') as hash_file:
-            _len = len(self.__registration_buffer)
-
-            # here we are popping elements from the end
-            for i in range(_len):
-                product = self.__registration_buffer[_len - 1 - i]
+            self.__market_ID: int = int(attributes[0])
+            self.__product_ID: int = int(attributes[1])
+            self.__market_file = attributes[2]
+            self.__MF_header = int(attributes[3])
             
-                hash_file.write(str(product.ID) + self.__HF_ATTR_DELIMITER + str(self.__ID) + self.__HF_ATTR_DELIMITER + str(product.hash) +
-                                self.__HF_ROW_DELIMITER)
-                
-                self.__registration_buffer.pop()
+        self.__markets: List[Market] = []
 
-        # all unregistered products should be removed
-        assert(len(self.__registration_buffer) == 0)
-            
-        
-        
-    def categories(self) -> tuple[str]:
-        return self.__categories
-
-
-
-
-def are_compatible(markets: List[Market]) -> bool:
-
-    if len(markets) == 0 or len(markets) == 1:
-        raise ValueError("Cannot compare this count of markets!")
-
-    count = len(markets)
-
-    for i in range(count):
-
-        for g in range(count):
-
-            if (markets[i].market_file()[0] != markets[g].market_file()[0] or markets[i].product_file()[0] != markets[g].product_file()[0]
-            or markets[i].hash_file()[0] != markets[g].hash_file()[0]):
-                return False
+    def __enter__(self):
+        print("Loading markets from a file...")
+        self.load_markets()
+        return self
     
-    return True
+    def __exit__(self, exc_type, exc_value, traceback):
+        print("Updating hub stats to file...")
+        self.update()
+
+        
+    def update(self):
+        rows: List[str] = []
+
+        with open(self.__src_file, mode='r', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            rows = list(reader)
+            
+        
+        row = rows[0] if not self.__src_file_header else rows[1]
+
+        row[MARKET_HUB_FILE['columns']['market_ID']['index']] = self.__market_ID
+        row[MARKET_HUB_FILE['columns']['product_ID']['index']] = self.__product_ID
+
+
+        with open(file=self.__src_file, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(rows)
+
+        
+        print("Data updated successfully!")
+
+    def __get_market_ID(self):
+        old_val = self.__market_ID
+        self.__market_ID += 1
+        return old_val
+
+    def get_product_ID(self, market: Market):
+        
+        for market in self.__markets:
+            if market.ID() == market.ID():
+                old_value = self.__product_ID
+                self.__product_ID += 1
+                return old_value
+            
+        return -1
+            
+
+    def load_markets(self):    
+        
+        with open(file=self.__market_file, mode='r', encoding='utf-8') as file:
+            reader = csv.reader(file)
+
+            if self.__MF_header:
+                next(reader)
+
+            header_row = next(reader)
+            self.__product_file = PathManager.check_if_exists(path=header_row[MARKET_FILE['columns']['product_file']['index']],
+                                                            type='file')
+            #self.__hash_file = PathManager.check_if_exists(path=header_row[MARKET_FILE['columns']['hash_file']['index']],
+                                                      #     type='file')
+            self.__categories_file = PathManager.check_if_exists(path=header_row[MARKET_FILE['columns']['category_file']['index']],
+                                                                 type='file')
+        
+
+        with open(file=self.__market_file, mode='r', encoding='utf-8') as file:
+
+            reader = csv.reader(file)
+
+            if self.__MF_header:
+                next(reader)
+
+
+
+            for row in reader:
                 
+                market_base = MarketView(
+                    ID=int(row[MARKET_FILE['columns']['ID']['index']]),
+                    name=row[MARKET_FILE['columns']['name']['index']],
+                    store_name=row[MARKET_FILE['columns']['store_name']['index']],
+                    
+                    product_file= (row[MARKET_FILE['columns']['product_file']['index']] , row[MARKET_FILE['columns']['PF_header']['index']]),
+                    category_file=(row[MARKET_FILE['columns']['category_file']['index']], row[MARKET_FILE['columns']['CF_header']['index']])
+                )
+
+               
+                    
+                market = Market(
+                    name=market_base.name(),
+                    store_name=market_base.store_name(),
+                    
+                    # market_file=(self.__market_file, self.__MF_header),
+                    product_file=market_base.product_file(),
+                    category_file=market_base.category_file(),
+
+                    ID=market_base.ID(),
+                    market_hub=self
+                )
+
+                if self.can_register(market=market):
+
+                    print(f"Market: {str(market)} loaded successfully!")
+
+                    self.__markets.append(market)
+                else:
+                    print(f"Market: {repr(market_base)} cannot be loaded!")
+
+
+    def can_register(self, market: Market) -> bool:
+        if (self.__product_file != market.product_file()[0] or self.__categories_file
+                  != market.category_file()[0]): #or self.__hash_file != market.hash_file()[0]):
+            return False
+        
+        for __market in self.__markets:
+
+            if __market.store_name() == market.store_name() or __market.ID() ==market.ID():
+                return False
+
+        return True    
+        
+
+
+    def market(self, ID: int):
+        
+        for market in self.__markets:
+            if market.ID() == ID:
+                return market
+            
+        return None
+
+
+
+    def markets(self):
+        return tuple(self.__markets)
+    
+                    
 
 
 if __name__ == "__main__":
