@@ -1,7 +1,26 @@
 import concurrent.futures
 import threading
-from typing import List
+from typing import List, Literal
 import hashlib
+
+import os
+
+class PathManager:
+    
+    @staticmethod
+    def check_if_exists(path: str, type: Literal['directory', 'file'] = None):
+        if not os.path.exists(path):
+            raise ValueError("Specified path doesn't exist!")
+        
+        if type is not None:
+            if type == 'directory' and not os.path.isdir(path=path):
+                raise ValueError("Specified path is not a directory!")
+            elif type == 'file' and not os.path.isfile(path=path):
+                raise ValueError("Specified path is not a file!")
+
+        return path
+
+
 
 
 class TextEditor:

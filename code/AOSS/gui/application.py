@@ -17,7 +17,7 @@ class Application:
         self.__app.geometry("900x500")
         self.__app.minsize(700, 500)
         
-        self.__main_shoppping_view = MainShoppingView(self.__app, product_file=config_paths.PRODUCT_FILE_PATH)
+        self.__main_shoppping_view = MainShoppingView(self.__app, product_file=config_paths.PRODUCT_FILE['path'])
         self.__main_shoppping_view.grid(row=0, column=0, sticky="NSEW", padx=10)
 
         self.__app.rowconfigure(0, weight=1)

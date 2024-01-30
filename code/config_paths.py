@@ -7,12 +7,18 @@ with open(file=CONFIG_FILE_PATH, mode='r') as config_file:
 
 RESOURCES = PATHS["resources"]
 
+
+
 DATA = PATHS["resources"]["data"]
 
-MARKET_FILE_PATH = PATHS["resources"]["data"]["markets"]
-MARKET_FILE_HEADER = PATHS["resources"]["data"]["markets_header"]
-PRODUCT_FILE_PATH = PATHS["resources"]["data"]["products"]
-PRODUCT_HASH_FILE_PATH = PATHS['resources']["data"]["product_hashes"]
+MARKET_FILE = DATA["markets"]
+PRODUCT_FILE = DATA["products"]
+CATEGORY_FILE = DATA["categories"]
+QUERY_STRING_FILE = DATA["category_query_strings"]
+MARKET_HUB_FILE = DATA["market_hub"]
+
+
+
 
 GUI = PATHS["resources"]["gui"]
 
