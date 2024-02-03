@@ -1,7 +1,8 @@
-from AOSS.structure.shopping import Product, ProductCategory
+from AOSS.structure.shopping import Product, ProductCategory, MarketHub
+from AOSS.components.search import ProductMatcher
 from typing import List
 from config_paths import *
-from exceptions import InvalidFileFormatError
+from AOSS.other.exceptions import InvalidFileFormatError
 import csv
 import time
 from datetime import datetime
@@ -11,7 +12,7 @@ CURRENCY_SIGN='€'
 
 
 def process_scraped_products(products: (list[tuple[str, str, str]] | tuple[str, str, str]),
-                              substition: (list[tuple[str, str]] | tuple[str, str]) = (',', '.')) -> Product:
+                              substition: (list[tuple[str, str]] | tuple[str, str]) = (',', '.')):
 
     if isinstance(products, list):
         results: List[Product] = []
@@ -76,10 +77,20 @@ def process_scraped_products(products: (list[tuple[str, str, str]] | tuple[str, 
     else:
         raise TypeError("Unsupported type of products variable!") 
 
+def categorize_product(product: Product, market_hub: MarketHub):
+
+
+    matcher = ProductMatcher(market_hub=market_hub, buffer_limit=500)
+    match = matcher.match(text=product.name, category=None, min_match=0, limit=1, markets=market_hub.training_market().ID())
+
+    product.normalized_category = match[0][0].normalized_category
+
+    #print(match[0][0])
 
 
 
-def categorize_product(product: Product, categories_file: str, header: bool = False):
+
+def categorize_manually(product: Product, categories_file: str, header: bool = False):
     category_ID = -1
 
     with open(file=categories_file, mode='r', encoding='utf-8') as file:

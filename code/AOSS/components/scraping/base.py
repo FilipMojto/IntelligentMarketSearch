@@ -1,15 +1,30 @@
-from AOSS.structure.shopping import Market, Product
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from collections import OrderedDict
 import time
 import threading
-from typing import List, Dict
-from AOSS.utils import ThreadPool
+from typing import List
+
+import os, sys
+
+# Set the starting point to the directory containing the script
+script_directory = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(script_directory)
+
+# Set the starting point to the directory containing the script
+script_directory = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(script_directory)
+
+# Move up two directories to reach the parent directory (AOSS)
+parent_directory = os.path.abspath(os.path.join(script_directory, '..', '..'))
+sys.path.append(parent_directory)
+
+from AOSS.structure.shopping import Market, Product
+
+from AOSS.other.utils import ThreadPool
 from AOSS.structure.shopping import Market
-
-
 
 # ------ ProductScraper - Class Declaration&Definition ------ #
 
@@ -25,25 +40,30 @@ class ProductScraper:
         
         self.__market = market
         self.__category: str = None
-
-        #self.__session_limit = session_limit
-        #self.__substitution = substition
         
         self.__URL += self.__market.store_name() + '/items/'
-       # self.__MARKET_LOCK = threading.Lock()
 
-        # Here we configure webdriver
-        # Set Chrome options to run in headless mode
+        # Here we configure webdriver - we set Chrome options to run in headless mode
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
 
+        # If a custom webdriver was specified, we specify new service, otherwise we select the default one
         if(driver_path):
             self.__driver = webdriver.Chrome(service=Service(driver_path), options=options)
         else:
             self.__driver = webdriver.Chrome(options=options)        
 
+    def market(self):
+        return self.__market
+
     def category(self, name: str = None, wait: int = 1.5):
-        
+        """
+            This method serves both as a getter and setter and returns the currently processed product category.
+
+            When category is changed, driver requests new url and then program waits for content to load.
+        """
+
+
         if name:
 
             for category in self.__market.categories():
@@ -225,7 +245,7 @@ class ParallelProductScraper:
 
         self.__buffer: List[tuple[str, str, str]] = []
         self.__buffer_lock = threading.Lock()
-        self.__process_finish_signal = threading.Event()
+        self.__is_scraping_signal = threading.Event()
 
 
 
@@ -238,6 +258,9 @@ class ParallelProductScraper:
 
         with self.__buffer_lock:
             self.__buffer.extend(products)
+    
+    def market(self):
+        return self.__market
     
     def consume_buffer(self):
         buffer_cpy: List[tuple[str, str, str]] = []
@@ -253,28 +276,34 @@ class ParallelProductScraper:
         with self.__buffer_lock:
             return len(self.__buffer)
     
-    def is_finished(self):
-        return self.__process_finish_signal.is_set()
+    def is_scraping(self):
+        return self.__is_scraping_signal.is_set()
     
 
 
-    def __launch_threads(self, console_log: bool = False):
-        self.__process_finish_signal.clear()
+    def __launch_threads(self, categories: tuple[str] = None, console_log: bool = False):
+        
+        self.__is_scraping_signal.set()
 
         with ThreadPool(self.__session_limit) as thread_pool:
-
-            for category in self.__market.categories():
-                thread_pool.schedule_task(task=self.__scrape_category,  category=category, console_log=console_log)
-                time.sleep(2)
+            
+            if categories is not None and categories:
+                for category in categories:
+                    thread_pool.schedule_task(task=self.__scrape_category,  category=category, console_log=console_log)
+                    time.sleep(2)
+            else:
+                for category in self.__market.categories():
+                    thread_pool.schedule_task(task=self.__scrape_category,  category=category, console_log=console_log)
+                    time.sleep(2)
         
             thread_pool.wait_until_complete()
         
-        self.__process_finish_signal.set()
+        self.__is_scraping_signal.clear()
 
 
-    def scrape_all(self, console_log: bool = False): 
+    def scrape_all(self, categories: tuple[str] = None, console_log: bool = False): 
 
-        thread = threading.Thread(target=self.__launch_threads, args=(console_log,))
+        thread = threading.Thread(target=self.__launch_threads, args=(categories, console_log))
         thread.start()
 
             

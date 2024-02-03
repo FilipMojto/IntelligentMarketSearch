@@ -3,13 +3,13 @@ ID,name,details
 1,ovocie_zelenina,"Ďalej obsahuje bylinky. Pozor, neobsahuje orechy, či semienka."
 2,pecivo,"Obsahuje slané aj sladké pečivo, racio, torty a zákusky..."
 3,maso_mrazene_potraviny,"Obsahuje rôzne formy mäsa (kuracie, telacie...), ryby a ďalšie mrazené potraviny (pizza, hranolky, zmrzlinu...)."
-4,udeniny_natierky_pastety,"Obsahuje rôzne typy udenín (salámy, šunky...), klobásy, špekačky,  nátierky  "
-5,mliecne_vyrobky,
+4,udeniny_natierky_pastety,"Obsahuje rôzne typy udenín (salámy, šunky...), klobásy, špekačky či  nátierky."
+5,mliecne_vyrobky,"Zahŕňa mlieko, maslo a tuky, jogurty, smotany, syry, tvarohy, bryndza, rôzne mliečne dezerty."
 6,trvanlive_potraviny_vajcia,
-7,sladkosti,
-8,slane_snacky_semienka,
-9,nealkoholicke_napoje,
-10,teple_napoje,
-11,alkohol,
-12,zdrave_potraviny,
-13,hotove_instantne,
+7,sladkosti,"Obsahuje čokolády, cukríky, lizátka, žuvačky, piškoty či perníky."
+8,slane_snacky_semienka,"Zahŕňa napríklad chipsy, snacky, chrumky, orechy a semienka, popcorn a iné."
+9,nealkoholicke_napoje,"Obsahuje minerálky, sýtené nápoje, džúsy, sirupy či energetické nápoje"
+10,teple_napoje,"Zahŕňa čaje, kávy a kakao na varenie."
+11,alkohol,"Obsahuje rôzne formy alkoholu ako napríklad vína, sekty, pivá či rôzne tvrdé alkoholické nápoje."
+12,zdrave_potraviny,"Zahŕňa musli a kaše, zdravé tyčinky, rôzne vegetarianské či vegánske potraviny a nápoje."
+13,hotove_instantne,"Obsahuje bagety, sendviče, "

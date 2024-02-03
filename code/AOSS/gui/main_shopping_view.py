@@ -5,8 +5,9 @@ from tkinter import ttk
 from tkinter import messagebox
 
 import config_paths
-from AOSS.components.product_search import ProductMatcher
+from AOSS.components.search import ProductMatcher
 import AOSS.structure.shopping as shp
+import AOSS.components.processing as pro
 
 # --- ShoppingListItem - Class Declaration&Definition --- #
 
@@ -190,12 +191,20 @@ class AddProductToCartView(LabelFrame):
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
 
-        self.__product_matcher = ProductMatcher(markets=shp.markets(market_file=config_paths.MARKET_FILE['path'], header=config_paths.MARKET_FILE['header']))
+        self.__market_hub = shp.MarketHub(src_file=config_paths.MARKET_HUB_FILE['path'],
+                                      header=config_paths.MARKET_HUB_FILE['header'])
+        self.__market_hub.load_markets()
+        
+        self.__product_matcher = ProductMatcher(market_hub=self.__market_hub)
     
     def show_category_details(self, category_name: str, details: str):
         self.__info_text.config(state="normal")
         self.__info_text.delete(1.0, END)
-        self.__info_text.insert(END, category_name + '\n' + details)
+        try:
+            self.__info_text.insert(END, category_name + '\n' + details)
+        except TypeError:
+            pass
+        
         self.__info_text.config(state="disabled")
 
     def consume_entry(self):
@@ -276,7 +285,7 @@ class CategoriesFrame(LabelFrame):
         if new_value != self.__old_val: 
 
             category_name = shp.ProductCategory(value=new_value).name
-            self.__category_info_view.show_category_details(category_name=category_name, details=shp.category_details(category=category_name.lower()))
+            self.__category_info_view.show_category_details(category_name=category_name, details=pro.category_details(category=category_name.lower()))
             self.__old_val = new_value
 
 

@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.service import Service
 from enum import Enum
 from collections import OrderedDict
 import threading
-from code.AOSS.utils import ThreadPool
+from AOSS.other.utils import ThreadPool
 
 
 class Category(Enum):

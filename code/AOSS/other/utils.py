@@ -20,6 +20,17 @@ class PathManager:
 
         return path
 
+    @staticmethod
+    def make_if_not_exists(path: str, type: Literal['directory', 'file']):
+        if not os.path.exists(path):
+            if type == 'directory':
+                os.makedirs(path)
+            elif type == 'file':
+                with open(path, 'w'):
+                    pass 
+        
+
+
 
 
 
