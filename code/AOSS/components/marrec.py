@@ -3,10 +3,18 @@ __AUTHOR__ = "Evenining Programmer"
 __VERSION__ = "0.0.1"
 
 from typing import List, Dict
-from code.AOSS.shopping import Market, Product
-from code.components.product_search import ProductMatcher
+from AOSS.structure.shopping import Market, Product
+from AOSS.components.search import ProductMatcher
 
 class MarketExplorer:
+
+    """
+        This class explores list of registered markets and attempts to recommend the best one according to a criterium (mostly price).
+        Each market gets allocated a buffer containing products that represent market's offer for the provided product list.
+
+        
+    """
+
     def __init__(self, markets: List[Market], matcher: ProductMatcher = None) -> None:
         self.__markets = markets
         self.__matcher = matcher

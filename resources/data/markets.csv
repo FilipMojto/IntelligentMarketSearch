@@ -1,4 +1,4 @@
 ID,name,store_name,product_file,product_file_header,categories_file,categories_file_header
-1,BILLA,billa-segnerova,./resources/data/products.csv,1,./resources/data/query_strings.csv,1
-2,TESCO,tesco-kamenne-namestie,./resources/data/products.csv,1,./resources/data/query_strings.csv,1
-3,COOP_JEDNOTA,coop-jednota-tempo-bajkalska,./resources/data/products.csv,1,./resources/data/query_strings.csv,1
+1,BILLA,billa-segnerova,../resources/data/products.csv,1,../resources/data/query_strings.csv,1
+2,TESCO,tesco-kamenne-namestie,../resources/data/products.csv,1,../resources/data/query_strings.csv,1
+3,COOP_JEDNOTA,coop-jednota-tempo-bajkalska,../resources/data/products.csv,1,../resources/data/query_strings.csv,1
