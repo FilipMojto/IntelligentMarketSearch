@@ -3,6 +3,7 @@ import sys, os
 import signal
 import multiprocessing as mpr, multiprocessing.connection as mpr_conn
 
+
 # Set the starting point to the directory containing the script
 script_directory = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(script_directory)
@@ -51,16 +52,15 @@ def launch_subprocesses():
     
     
 
-    # print("sys.path:",  sys.path)
-    #python_interpreter = sys.executable
-    # print("Python Interpreter:", python_interpreter)
-
-    #processes: List[subprocess.Popen[bytes]] = []
-
     main_to_all = mpr.Pipe()
-    hub_to_scraper, scraper_to_hub = mpr.Pipe()
-
+    hub_to_scraper = mpr.Queue(maxsize=5)
+    scraper_to_hub = mpr.Queue(maxsize=5)
+    
+    #hub_to_scraper, scraper_to_hub = mpr.Pipe()
+    
+    
     market_hub = mpr.Process(target=mrk.start, args=(main_to_all[0], hub_to_scraper, scraper_to_hub))
+    
     market_hub.start()
     processes.append(market_hub)
 

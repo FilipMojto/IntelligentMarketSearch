@@ -24,6 +24,7 @@ from config_paths import *
 from AOSS.structure.shopping import MarketHub
 from AOSS.components.scraping.base import ParallelProductScraper
 from AOSS.other.utils import PathManager
+from AOSS.components.processing import process_scraped_products, categorize_product, categorize_manually
 
 def custom_signal_handler(signum, frame):
     print(f"Received custom signal {signum}. Performing custom action.")
@@ -78,10 +79,6 @@ def __check_training_set(hub: MarketHub):
         requests.append(ScrapeRequest(ID=get_request_ID(), market_ID=training_market.ID(), categories=empty_categories))
         
 
-        #requests.append(f"--scrape {training_market.ID()} " + " ".join(empty_categories) + str(get_request_ID()))
-
-    # now the rest of the markets
-
 def __scrape_training_set(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr_conn.PipeConnection, scraper_to_hub: mpr_conn.PipeConnection):
     assert(len(requests) > 0)
 
@@ -119,31 +116,28 @@ def __check_product_sets(hub: MarketHub):
         
         if len(empty_categories) > 0:
             
-            requests.append(ScrapeRequest(ID=get_request_ID(), market_ID=market.ID(), categories=empty_categories))
+            requests.append(ScrapeRequest(ID=get_request_ID(), market_ID=market.ID(), categories=empty_categories.copy()))
 
             #requests.append(f"--scrape {market.ID()} " + " ".join(empty_categories) + str(get_request_ID()))
 
-def __scrape_product_sets(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr_conn.PipeConnection, scraper_to_hub: mpr_conn.PipeConnection):
+def __send_scrape_requests(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr.Queue):
     __check_main(main_to_all=main_to_all)
-
+    global requests
+    
     for request in requests:
-        hub_to_scraper.send(obj=request)
-        __check_main(main_to_all=main_to_all)
+        
+        while True:
+            if not hub_to_scraper.full():
+                hub_to_scraper.put(obj=request, block=False)
+                break
+            else:
+                print("Unable to send scraping request!. Retrying...")
+                __check_main(main_to_all=main_to_all)
+                time.sleep(1)
+
         time.sleep(1)
     
-    while len(requests) > 0:
-
-        if scraper_to_hub.poll(timeout=1.5):
-            resp_ID = scraper_to_hub.recv()
-
-            for request in requests:
-                if request.ID == resp_ID:
-                    print(f"Request {request.ID} fulfilled!")
-                    requests.remove(request)
-                    break
-        
-        __check_main(main_to_all=main_to_all)
-        time.sleep(1.5)
+    
 
 
     
@@ -157,13 +151,13 @@ def __check_main(main_to_all: mpr_conn.PipeConnection):
 
         
 
-def start_market_hub(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr_conn.PipeConnection,
-                     scraper_to_hub: mpr_conn.PipeConnection):
+def start_market_hub(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr.Queue,
+                     scraper_to_hub: mpr.Queue):
 
     with MarketHub(src_file=MARKET_HUB_FILE['path'], header=MARKET_HUB_FILE['header']) as hub:
         global product_df
         product_df = pl.read_csv(hub.product_file())
-        print(product_df.describe())
+        #print(product_df.describe())
 
         __check_main(main_to_all=main_to_all)
         __check_training_set(hub=hub)
@@ -180,32 +174,42 @@ def start_market_hub(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr_c
         __check_product_sets(hub=hub)
         
         if len(requests) > 0:
-            __scrape_product_sets(main_to_all=main_to_all, hub_to_scraper=hub_to_scraper, scraper_to_hub=scraper_to_hub)
+            __send_scrape_requests(main_to_all=main_to_all, hub_to_scraper=hub_to_scraper, scraper_to_hub=scraper_to_hub)
 
-        # for request in request:
-        #     data = hub_to_scraper.send(obj=request)
+            while len(requests) > 0:
 
-        #     __check_main()
-        #     time.sleep(0.5)
+                if not scraper_to_hub.empty():
+                    resp = scraper_to_hub.get(block=False)
 
-        # while True:
-        #     __check_main()
+                    if isinstance(resp, list):
+                        print("Received scraped data! Processing...")
+                        products = process_scraped_products(products=resp)
 
-        #     if scraper_to_hub.poll(timeout=1.5):
-        #         response = scraper_to_hub.recv()
+                        for product in products:
 
-        #         if response is not None:
-        #             response_ID = int(response)
+                            
 
-        #             for request in requests:
-        #                 if requests
+                        
 
-        #     time.sleep(1.5)
-  
-        
 
-def start(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr_conn.PipeConnection, 
-          scraper_to_hub: mpr_conn.PipeConnection):
+
+
+
+                    elif isinstance(resp, int):
+
+                        for request in requests:
+                            if request.ID == resp:
+                                print(f"Request {request.ID} fulfilled!")
+                                requests.remove(request)
+                                break
+                
+                __check_main(main_to_all=main_to_all)
+                time.sleep(1.5)
+
+
+
+def start(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr.Queue, 
+          scraper_to_hub: mpr.Queue):
     os.chdir(parent_directory)
     # print(f"Par: {parent_directory}")
     # print(f"Cur: {os.getcwd()}")
@@ -215,6 +219,8 @@ def start(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr_conn.PipeCon
 
 
 if __name__ == "__main__":
-    start()
+    print("Start this script as a subprocess by running start() function.")
+    
+    #start()
 
-    signal.signal(signal.SIGINT, signal_handler)
+    #signal.signal(signal.SIGINT, signal_handler)

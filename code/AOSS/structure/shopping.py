@@ -222,8 +222,8 @@ class MarketView:
             
             for row in reader:
 
-                if int(row[QUERY_STRING_FILE['columns']['market_ID']['index']]) == self.__ID:
-                    self.__categories.append(row[QUERY_STRING_FILE['columns']['name']['index']])
+                if int(row[CATEGORY_MAP_FILE['columns']['market_ID']['index']]) == self.__ID:
+                    self.__categories.append(row[CATEGORY_MAP_FILE['columns']['name']['index']])
 
     def __str__(self):
         return f"{{ID: {self.__ID}, name: {self.__name}, store_name: {self.__store_name}, categories: {self.__categories}}}" + '\n'
@@ -347,9 +347,9 @@ class Market(MarketView):
                     line = categories_f.readline()
 
                 while line:
-                    attributes = line.split(QUERY_STRING_FILE['delimiter'])
+                    attributes = line.split(CATEGORY_MAP_FILE['delimiter'])
 
-                    if (product.category == attributes[QUERY_STRING_FILE['columns']['name']['index']]):
+                    if (product.category == attributes[CATEGORY_MAP_FILE['columns']['name']['index']]):
                         break
   
                     line = categories_f.readline()

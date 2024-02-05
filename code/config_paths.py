@@ -23,7 +23,7 @@ DATA = PATHS["resources"]["data"]
 MARKET_FILE = DATA["markets"]
 PRODUCT_FILE = DATA["products"]
 CATEGORY_FILE = DATA["categories"]
-QUERY_STRING_FILE = DATA["category_query_strings"]
+CATEGORY_MAP_FILE = DATA["category_mappings"]
 MARKET_HUB_FILE = DATA["market_hub"]
 
 
