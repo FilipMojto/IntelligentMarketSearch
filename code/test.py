@@ -1,33 +1,25 @@
-import multiprocessing as mpr
-import multiprocessing.connection as mpr_conn
 import time
 
-def process_1(conn_1: mpr_conn.PipeConnection, conn_2: mpr_conn.PipeConnection):
-    while True:
-        data = ""
-        if conn_1.poll(timeout=0.01):
-            data = conn_1.recv()
-            print(f"Process 1 received: {data}")
-            conn_2.send(f"Process 1 acknowledges receipt of: {data}")
-        time.sleep(1.5)
+from AOSS.structure.shopping import MarketHub
+from AOSS.components.scraping.base import ParallelProductScraper
 
-def process_2(conn_1: mpr_conn.PipeConnection, conn_2: mpr_conn.PipeConnection):
-    while True:
-        data = "Hi, there!"
-        print(f"Process 2 sending data: {data}.")
-        conn_1.send(data)
-        response = conn_2.recv()
-        print(f"Process 2 received response: {response}")
-        time.sleep(1.5)
+from config_paths import *
 
-if __name__ == "__main__":
-    conn_1, conn_2 = mpr.Pipe()  # Create one pipe for each direction
+with MarketHub(src_file=MARKET_HUB_FILE['path'], header=MARKET_HUB_FILE['header']) as hub:
 
-    proc_1 = mpr.Process(target=process_1, args=(conn_1, conn_2))
-    proc_2 = mpr.Process(target=process_2, args=(conn_2, conn_1))
+    market = hub.market(ID=1)
 
-    proc_1.start()
-    proc_2.start()
+    scraper = ParallelProductScraper(market=market, session_limit=5)
 
-    proc_1.join()
-    proc_2.join()
+    scraper.scrape_all(console_log=True, categories=('ovocie-zelenina-103',
+                                                     'pecivo-111',
+                                                     'maso-ryby-117',
+                                                     'udeniny-lahodky-128'))
+
+    while scraper.is_scraping():
+
+        time.sleep(2)
+
+    print("exiting the main thread...")
+
+    

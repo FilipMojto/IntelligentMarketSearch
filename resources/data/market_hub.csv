@@ -1,2 +1,2 @@
-market_ID,product_ID,training_market,market_file,header
-4,50993,2,../resources/data/markets.csv,1
+market_ID,product_ID,training_market,market_file,market_file_header
+1,1,2,../resources/data/markets.csv,1

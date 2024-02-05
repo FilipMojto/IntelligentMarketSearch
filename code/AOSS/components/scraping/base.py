@@ -251,6 +251,7 @@ class ParallelProductScraper:
 
 
     def __scrape_category(self, category: str, console_log: bool = False):
+        print("Executing...")
         scraper = ProductScraper(market=self.__market, driver_path=self.__driver_path)
         scraper.category(name=category)
         
@@ -305,6 +306,7 @@ class ParallelProductScraper:
 
         thread = threading.Thread(target=self.__launch_threads, args=(categories, console_log))
         thread.start()
+        time.sleep(1.5)
 
             
 if __name__ == "__main__":

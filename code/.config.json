@@ -113,9 +113,9 @@
                 }
             },
 
-            "category_query_strings": {
+            "category_mappings": {
                 "name": "query_strings.csv",
-                "path": "../resources/data/query_strings.csv",
+                "path": "../resources/data/category_mappings.csv",
                 "header": true,
                 "delimiter": ",",
                 "columns": {
