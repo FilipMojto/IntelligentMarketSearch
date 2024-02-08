@@ -1,25 +1,140 @@
-import time
 
-from AOSS.structure.shopping import MarketHub
-from AOSS.components.scraping.base import ParallelProductScraper
+# import time
+
+
+
+
+
+# import config_paths as cfg
+# from AOSS.structure.shopping import MarketHub
+# from AOSS.components.search import Matcher
+
+# from distutils.core import setup
+# from Cython.Build import cythonize
 
 from config_paths import *
 
-with MarketHub(src_file=MARKET_HUB_FILE['path'], header=MARKET_HUB_FILE['header']) as hub:
 
-    market = hub.market(ID=1)
+from AOSS.structure.shopping import MarketHub, Market, MarketView
+from AOSS.components.scraping.base import ProductScraper, Product
 
-    scraper = ParallelProductScraper(market=market, session_limit=5)
-
-    scraper.scrape_all(console_log=True, categories=('ovocie-zelenina-103',
-                                                     'pecivo-111',
-                                                     'maso-ryby-117',
-                                                     'udeniny-lahodky-128'))
-
-    while scraper.is_scraping():
-
-        time.sleep(2)
-
-    print("exiting the main thread...")
-
+with MarketHub(src_file=MARKET_HUB_FILE['path']) as hub:
+    markets = hub.markets()
     
+    for index, market in enumerate(markets):
+        print(f"{index} - {market.__str__()}")
+
+    scraper = ProductScraper(market=markets[0])
+    products = scraper.scrape_all(console_log=True)
+
+
+    # market = MarketView(ID=1, name="LSDL", store_name="SDK", category_file="../resources/data/category_mappings.csv",
+    #                     product_file="../resources/data/products.csv")
+    
+    #hub.register(market=market)
+
+
+
+    exit(0)
+
+
+# with MarketHub(src_file=MARKET_HUB_FILE['path'], header=MARKET_HUB_FILE['header']) as hub:
+
+#     market = hub.market(ID=3)
+
+#     market.for_registration(product=Product(name='Zlatý Bažant 0.0% svetlé nealkoholické pivo 500 ml',
+#                                             price=1.08, approximation=0,
+#                                             category='alkohol-49',
+#                                             created_at='2024-02-07 18:40:44',
+#                                             updated_at='2024-02-07 18:40:44'))
+    
+#     print("no bug!")
+
+
+# # # from timeit import timeit
+
+# t1 = timeit(
+#     "factorial(100)",
+#     setup="from cython_test import factorial",
+#     number=10_000,
+# )
+
+# t2 = timeit(
+#     "factorial(100)",
+#     setup="from ccython_test import factorial",
+#     number=10_000,
+# )
+
+# print(f"Pyhon: {t1:.3f}")
+# print(f"Cython: {t2:.3f}")
+
+
+#setup(ext_modules=cythonize("./haha.pyx"))
+
+
+# start = time.time()
+# with open(file=cfg.PRODUCT_FILE['path'], mode='r', encoding='utf-8') as file:
+#     line = file.readline()
+
+#     while line:
+#         line = file.readline()
+# end = time.time()
+
+# print(f"time: {end - start}")
+
+
+# with MarketHub(src_file=cfg.MARKET_HUB_FILE['path'], header=cfg.MARKET_HUB_FILE['header']) as hub:
+#     market = hub.market(ID=2)
+
+#     search = Matcher(market_hub=hub)
+
+#     start = time.time()
+#     haha = search.match(text="JUJ", markets=(2,), limit=1)
+#     end = time.time()
+#     print(f"time: {end - start}")
+
+
+
+exit(0) 
+# from distutils.spawn import find_executable
+# import requests
+# import json
+
+# url = "https://restaurant-api.wolt.com/v4/venues/slug/tesco-kamenne-namestie/menu"
+
+# response = requests.get(url)
+
+# def find_name(data, category_ID: str):
+
+#     for category in data['categories']:
+#         if category.get("id") == category_ID:
+#             return category.get("name")
+        
+
+
+# categories = []
+
+# if response.status_code == 200:
+#     data = response.json()
+#     products = []
+#     for item in data["items"]:
+#         name = item.get("name", "No Name")
+#         price = item.get("baseprice", "No Price")
+#         amount = item.get("quantity_left", "None")
+#         category_ID = item.get("category", "None")
+        
+
+
+#         category = find_name(data=data, category_ID=category_ID)
+        
+#         if category not in categories:
+#             categories.append(category)
+
+#         products.append((name, price, amount, category_ID, category))
+    
+#     for product in products:
+#         #print(products)
+
+#         print(f"Name: {product[0]}, Price: {product[1]}, Quantity left: {product[2]}, name: {product[4]}")
+# else:
+#     print(f"Failed to fetch data: {response.status_code}")

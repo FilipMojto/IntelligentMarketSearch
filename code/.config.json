@@ -29,21 +29,10 @@
                         "type": "string"
                     },
 
-                    "PF_header": {
-                        "index": 4,
-                        "type": "bool"
-                    },
-
                     "category_file": {
-                        "index": 5,
+                        "index": 4,
                         "type": "string"
-                    },
-
-                    "CF_header": {
-                        "index": 6,
-                        "type": "bool"
                     }
-
                 }
             },
 
@@ -52,6 +41,7 @@
                 "path": "../resources/data/products.csv",
                 "header": true,
                 "delimiter": ",",
+                "col_count": 10, 
                 "columns": {
                     "ID": {
                         "index": 0,
@@ -61,32 +51,36 @@
                         "index": 1,
                         "type": "string"
                     },
-                    "price": {
+                    "normalized_name": {
                         "index": 2,
+                        "type": "string"
+                    },
+                    "price": {
+                        "index": 3,
                         "type": "float"
                     },
                     "approximation": {
-                        "index": 3,
+                        "index": 4,
                         "type": "bool"
                     },
                     "category": {
-                        "index": 4,
-                        "type": "string"
-                    },
-                    "query_string": {
                         "index": 5,
                         "type": "string"
                     },
-                    "market_ID": {
+                    "query_string": {
                         "index": 6,
+                        "type": "string"
+                    },
+                    "market_ID": {
+                        "index": 7,
                         "type": "integer"
                     },
                     "created_at": {
-                        "index": 7,
+                        "index": 8,
                         "type": "timestamp"
                     },
                     "updated_at": {
-                        "index": 8,
+                        "index": 9,
                         "type": "timestamp"
                     }                    
                 }
@@ -154,20 +148,15 @@
                         "type": "integer"
                     },
                     
-                    "training_market": {
-                        "index": 2,
-                        "type": "integer"
-                    },
-
                     "market_file": {
-                        "index": 3,
+                        "index": 2,
                         "type": "string"
                     },
 
-                    "market_file_header": {
-                        "index": 4,
-                        "type": "bool"
-                    }
+                    "training_market": {
+                        "index": 3,
+                        "type": "integer"
+                    }   
                 }
             }
         },
@@ -176,6 +165,17 @@
             "path": "../resources/GUI",
             "new_item_icon": "../resources/GUI/new_item_icon.png",
             "shopping_cart_icon": "../resources/GUI/shopping_cart_icon.png"
+        },
+
+        "market_hub_file": {
+            "market_ID": 3,
+            "product_ID": 82843,
+            "training_market": 2,
+            "market_file": {
+                "name": "markets.   csv",
+                "path": "../resources/data/markets.csv",
+                "header": true
+            }
         }
-    }
+    }   
 }

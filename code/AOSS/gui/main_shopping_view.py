@@ -5,7 +5,7 @@ from tkinter import ttk
 from tkinter import messagebox
 
 import config_paths
-from AOSS.components.search import ProductMatcher
+
 import AOSS.structure.shopping as shp
 import AOSS.components.processing as pro
 
@@ -193,9 +193,8 @@ class AddProductToCartView(LabelFrame):
 
         self.__market_hub = shp.MarketHub(src_file=config_paths.MARKET_HUB_FILE['path'],
                                       header=config_paths.MARKET_HUB_FILE['header'])
-        self.__market_hub.load_markets()
-        
-        self.__product_matcher = ProductMatcher(market_hub=self.__market_hub)
+        self.__market_hub.load()
+
     
     def show_category_details(self, category_name: str, details: str):
         self.__info_text.config(state="normal")

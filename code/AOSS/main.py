@@ -2,15 +2,12 @@
 import sys, os
 import signal
 import multiprocessing as mpr, multiprocessing.connection as mpr_conn
-
-
-# Set the starting point to the directory containing the script
-script_directory = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(script_directory)
+from typing import List
 
 # Set the starting point to the directory containing the script
 script_directory = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(script_directory)
+
 
 # Move up two directories to reach the parent directory (AOSS)
 parent_directory = os.path.abspath(os.path.join(script_directory, '..'))
@@ -18,19 +15,20 @@ sys.path.append(parent_directory)
 
 
 from config_paths import *
-from AOSS.components.processing import *
 
 import AOSS.structure.marketing as mrk
 import AOSS.components.scraping.scrape as scrp
 import AOSS.gui.application as app
 
+main_to_all = mpr.Pipe()
+hub_to_scraper = mpr.Queue(maxsize=5)
+scraper_to_hub = mpr.Queue(maxsize=5)
 
 processes: List[mpr.Process] = []
 main_to_all: mpr_conn.PipeConnection = mpr.Pipe()
 
 def terminate():
-    for process in processes:
-        main_to_all.send("-end")
+
 
     for process in processes:
         process.join()
@@ -39,6 +37,7 @@ def terminate():
 
 
 def signal_handler(signum, frame):
+
 
     if signum == 2:
 
@@ -52,9 +51,9 @@ def launch_subprocesses():
     
     
 
-    main_to_all = mpr.Pipe()
-    hub_to_scraper = mpr.Queue(maxsize=5)
-    scraper_to_hub = mpr.Queue(maxsize=5)
+    # main_to_all = mpr.Pipe()
+    # hub_to_scraper = mpr.Queue(maxsize=5)
+    # scraper_to_hub = mpr.Queue(maxsize=5)
     
     #hub_to_scraper, scraper_to_hub = mpr.Pipe()
     
@@ -96,6 +95,7 @@ def launch_subprocesses():
 
 if __name__ == '__main__':
 
-    launch_subprocesses()    
-
     signal.signal(signal.SIGINT, signal_handler)
+    launch_subprocesses()
+
+    
