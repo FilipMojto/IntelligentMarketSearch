@@ -4,7 +4,7 @@ import os, sys
 #Set the starting point to the directory containing the script
 script_directory = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(script_directory)
-print(__file__)
+
 # Move up two directories to reach the parent directory (AOSS)
 
 os.chdir(script_directory)
@@ -25,7 +25,6 @@ PRODUCT_FILE = DATA["products"]
 CATEGORY_FILE = DATA["categories"]
 CATEGORY_MAP_FILE = DATA["category_mappings"]
 MARKET_HUB_FILE = DATA["market_hub"]
-
 
 
 GUI = PATHS["resources"]["gui"]

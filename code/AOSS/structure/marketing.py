@@ -1,10 +1,9 @@
-
-import signal
 import sys, os, time
 import polars as pl
 from typing import List
 import multiprocessing as mpr, multiprocessing.connection as mpr_conn
 from dataclasses import dataclass
+import signal
 
 #Set the starting point to the directory containing the script
 script_directory = os.path.dirname(os.path.abspath(__file__))
@@ -13,18 +12,11 @@ sys.path.append(script_directory)
 parent_directory = os.path.abspath(os.path.join(script_directory, '..', '..'))
 sys.path.append(parent_directory)
 
-#print(__file__)# Move up two directories to reach the parent directory (AOSS)
-#parent_directory = os.path.abspath(os.path.join(script_directory,))
-
-#sys.path.append(parent_directory)
-#os.chdir(parent_directory)
-
 
 from config_paths import *
 from AOSS.structure.shopping import MarketHub
-from AOSS.components.scraping.base import ParallelProductScraper
-from AOSS.other.utils import PathManager
-from AOSS.components.processing import process_scraped_products, categorize_product, categorize_manually
+from AOSS.components.processing import ProductCategorizer
+from AOSS.components.processing import process_product
 
 def custom_signal_handler(signum, frame):
     print(f"Received custom signal {signum}. Performing custom action.")
@@ -79,22 +71,6 @@ def __check_training_set(hub: MarketHub):
         requests.append(ScrapeRequest(ID=get_request_ID(), market_ID=training_market.ID(), categories=empty_categories))
         
 
-def __scrape_training_set(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr_conn.PipeConnection, scraper_to_hub: mpr_conn.PipeConnection):
-    assert(len(requests) > 0)
-
-    hub_to_scraper.send(obj=requests[0])
-
-    while(True):
-        __check_main(main_to_all=main_to_all)
-
-        if scraper_to_hub.poll(timeout=1.5):
-            resp = scraper_to_hub.recv()
-
-            if resp == 0:
-                return 0
-        
-        time.sleep(1.5)
-
         
 def __check_product_sets(hub: MarketHub):
     markets = hub.markets()
@@ -114,37 +90,28 @@ def __check_product_sets(hub: MarketHub):
                 print(f"Detected no products for market {market.name()}. Category: {category}")
                 empty_categories.append(category)
         
-        if len(empty_categories) > 0:
-            
+        if len(empty_categories) > 0:            
             requests.append(ScrapeRequest(ID=get_request_ID(), market_ID=market.ID(), categories=empty_categories.copy()))
 
-            #requests.append(f"--scrape {market.ID()} " + " ".join(empty_categories) + str(get_request_ID()))
 
-def __send_scrape_requests(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr.Queue):
-    __check_main(main_to_all=main_to_all)
-    global requests
-    
-    for request in requests:
+def __send_scrape_request(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr.Queue, request: ScrapeRequest):
         
-        while True:
-            if not hub_to_scraper.full():
-                hub_to_scraper.put(obj=request, block=False)
-                break
-            else:
-                print("Unable to send scraping request!. Retrying...")
-                __check_main(main_to_all=main_to_all)
-                time.sleep(1)
-
-        time.sleep(1)
-    
-    
-
+    while True:
+        if not hub_to_scraper.full():
+            hub_to_scraper.put(obj=request, block=False)
+            break
+        else:
+            print("Unable to send scraping request!. Retrying...")
+            __check_main(main_to_all=main_to_all)
+            time.sleep(1)
 
     
-def __check_main(main_to_all: mpr_conn.PipeConnection):
+    
+
+def __check_main(main_to_all: mpr_conn.PipeConnection, timeout: int = 1):
 
     try:
-        if main_to_all.poll(timeout=1) and main_to_all.recv() == "-quit":
+        if main_to_all.poll(timeout=timeout) and main_to_all.recv() == "-quit":
             terminate()
     except KeyboardInterrupt:
         terminate()
@@ -154,65 +121,103 @@ def __check_main(main_to_all: mpr_conn.PipeConnection):
 def start_market_hub(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr.Queue,
                      scraper_to_hub: mpr.Queue):
 
+
+
     with MarketHub(src_file=MARKET_HUB_FILE['path'], header=MARKET_HUB_FILE['header']) as hub:
+
         global product_df
+
         product_df = pl.read_csv(hub.product_file())
-        #print(product_df.describe())
+
+        for market in hub.markets():
+            market.buffer(size=10000)
+
+        training_market = hub.training_market()
 
         __check_main(main_to_all=main_to_all)
         __check_training_set(hub=hub)
-
-
-        if len(requests) > 0:
-            __scrape_training_set(main_to_all=main_to_all, hub_to_scraper=hub_to_scraper, scraper_to_hub=scraper_to_hub)
-            requests.pop(0)
-
-        assert(len(requests) == 0)
-
-        
-        __check_main(main_to_all)
         __check_product_sets(hub=hub)
-        
-        if len(requests) > 0:
-            __send_scrape_requests(main_to_all=main_to_all, hub_to_scraper=hub_to_scraper, scraper_to_hub=scraper_to_hub)
 
-            while len(requests) > 0:
+        # here we start sending necessary scraping requets
+        while len(requests) > 0:
+            processed_request = requests.pop(0)
+            __send_scrape_request(main_to_all=main_to_all, hub_to_scraper=hub_to_scraper,
+                                    request=processed_request)
 
-                if not scraper_to_hub.empty():
-                    resp = scraper_to_hub.get(block=False)
-
-                    if isinstance(resp, list):
-                        print("Received scraped data! Processing...")
-                        products = process_scraped_products(products=resp)
-
-                        for product in products:
-
-                            
-
-                        
-
-
-
-
-
-                    elif isinstance(resp, int):
-
-                        for request in requests:
-                            if request.ID == resp:
-                                print(f"Request {request.ID} fulfilled!")
-                                requests.remove(request)
-                                break
+            # in this loop, we wait until the request was finished successfully
+            while True:
                 
-                __check_main(main_to_all=main_to_all)
+                if not scraper_to_hub.empty():
+
+                    try:
+                        scraped_data = scraper_to_hub.get(block=False)
+                    except Exception:
+                        pass
+
+                    if isinstance(scraped_data, list):
+                        print("Received scraped data! Processing...")
+                        
+                        for product_data in scraped_data:
+
+                            product, market_ID = product_data
+                            process_product(product=product)
+                            
+                            if market_ID == training_market.ID():
+                                category = ProductCategorizer.categorize_by_mapping(product=product, mappings_file=CATEGORY_MAP_FILE['path'],
+                                                        header=CATEGORY_MAP_FILE['header'])
+                                
+                                try:
+                                    training_market.register_product(product=product, norm_category=category)
+                                    print(f"Registered successfully: {{{product.name}}}")
+                                except ValueError:
+                                    print(f"Product {{{product.name}}} already registered!")
+                            else:
+                                categorizer = ProductCategorizer(market_hub=hub)
+                                assert(hub.can_categorize())
+
+                                if hub.can_categorize():
+                                    
+                                    start = time.time()
+                                    category = categorizer.categorize(product=product)
+                                    end = time.time()
+
+                                    print(f"time:{end - start}")
+
+                                    try:
+                                        hub.market(ID=market_ID).register_product(product=product, norm_category=category)
+                                        print(f"Product {product.name} registered successfully!")
+                                    except ValueError:
+                                        print(f"Product {product.name} already registered!")
+                                
+
+                    elif isinstance(scraped_data, int):
+
+                        if processed_request.ID == scraped_data:
+                            print(f"Request {processed_request.ID} fulfilled!")
+                            hub.market(ID=processed_request.market_ID).save_products()
+                            hub.load_products()
+                            break
+                    else:
+                        print("Unsupported response type!")
+                
                 time.sleep(1.5)
 
+        
+
+            
+            
+
+
+
+                                
+                                
 
 
 def start(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr.Queue, 
           scraper_to_hub: mpr.Queue):
+    
     os.chdir(parent_directory)
-    # print(f"Par: {parent_directory}")
-    # print(f"Cur: {os.getcwd()}")
+    signal.signal(signal.SIGINT, signal_handler)
     start_market_hub(main_to_all=main_to_all, hub_to_scraper=hub_to_scraper, scraper_to_hub=scraper_to_hub)
 
 
@@ -221,6 +226,4 @@ def start(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr.Queue,
 if __name__ == "__main__":
     print("Start this script as a subprocess by running start() function.")
     
-    #start()
-
-    #signal.signal(signal.SIGINT, signal_handler)
+ 

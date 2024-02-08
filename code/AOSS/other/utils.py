@@ -2,13 +2,14 @@ import concurrent.futures
 import threading
 from typing import List, Literal
 import hashlib
+from unidecode import unidecode
 
 import os
 
 class PathManager:
     
     @staticmethod
-    def check_if_exists(path: str, type: Literal['directory', 'file'] = None):
+    def check_if_exists(path: str, type: Literal['directory', 'file'] = None) -> bool:
         if not os.path.exists(path):
             raise ValueError("Specified path doesn't exist!")
         
@@ -17,8 +18,8 @@ class PathManager:
                 raise ValueError("Specified path is not a directory!")
             elif type == 'file' and not os.path.isfile(path=path):
                 raise ValueError("Specified path is not a file!")
-
-        return path
+        
+        return True
 
     @staticmethod
     def make_if_not_exists(path: str, type: Literal['directory', 'file']):
@@ -137,3 +138,10 @@ class ThreadPool:
                     future.result()
 
         self.__futures.clear()
+
+
+def normalize_str(text: str):
+    normalized = text.lower()
+    normalized = unidecode(normalized)
+    return normalized
+

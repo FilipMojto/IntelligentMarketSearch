@@ -3,6 +3,9 @@ from typing import List
 import os, sys
 import multiprocessing as mpr, multiprocessing.connection as mpr_conn, signal
 import msvcrt
+
+import threading
+
 #Set the starting point to the directory containing the script
 script_directory = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(script_directory)
@@ -18,19 +21,27 @@ os.chdir(parent_directory)
 
 
 from config_paths import *
-from AOSS.structure.shopping import MarketHub
-from AOSS.components.scraping.base import ParallelProductScraper
+from AOSS.structure.shopping import MarketHub, Product
+from AOSS.components.scraping.base import ProductScraper
 from AOSS.structure.marketing import ScrapeRequest
 
 
-scrapers: List[ParallelProductScraper] = []
-active_scraper: ParallelProductScraper = None
+scrapers: List[ProductScraper] = []
+scraper_lock = threading.Lock()
+active_scraper: ProductScraper = None
+is_scraping = threading.Event()
 
 requests: List[ScrapeRequest] = []
+products: List[tuple[Product, int]] = []
+product_lock = threading.Lock()
 processed_request: ScrapeRequest = None
 
 def terminate():
     print("Terminating scraping process...")
+
+    # for scraper in scrapers:
+    #     scraper.quit()
+
     exit(0)
 
 def signal_handler(signum, frame):
@@ -38,12 +49,12 @@ def signal_handler(signum, frame):
     if signum == 2:
         terminate()
 
-def __check_main(main_to_all: mpr_conn.PipeConnection):
+def __check_main(main_to_all: mpr_conn.PipeConnection, timeout: float = 1.5):
     """
         This function checks for any incoming request from the main process.
     """
 
-    if main_to_all.poll(timeout=1.5) and main_to_all.recv() == "-end":
+    if main_to_all.poll(timeout=timeout) and main_to_all.recv() == "-end":
         terminate()
 
 
@@ -65,26 +76,36 @@ def __check_market_hub(hub_to_scraper: mpr.Queue):
         else:
             print("Unexpected object type from hub-to-scraper connection!")
 
+
+def __scrape_products(scraper: ProductScraper, request: ScrapeRequest):
+
+    """
+        Used solely by script, more specifically by a scraping thread. It scrapes all data from a specific scraper.
+        Before it starts execution it must get lock of active_scraper global variable.
+    """
+    is_scraping.set()
+
+    products_ = scraper.scrape_categories(categories=request.categories)
+
+    with product_lock:
+        global products
+        products.extend(products_)
     
-    #    pass
+    is_scraping.clear()
+    
+    # with scraper_lock:
+    #     active_scraper = None
 
-    # if hub_to_scraper.poll(timeout=1.5):
-    #     msg = hub_to_scraper.recv()
 
-    #     if isinstance(msg, ScrapeRequest):
-    #         global requests
-    #         requests.append(msg)
-    #     else:
-    #         print("Unexpected object type from hub-to-scraper connection!")
+
+
 
 def process_requests(main_to_all: mpr_conn.PipeConnection, scraper_to_hub: mpr.Queue):
 
     global active_scraper, processed_request
 
-    # first case in which no scraping process in currently in progress
-    if active_scraper is None and processed_request is None:
+    if not is_scraping.is_set():
 
-    
         while len(requests) > 0:
             request = requests.pop(0)
             scraper_found = False
@@ -93,10 +114,12 @@ def process_requests(main_to_all: mpr_conn.PipeConnection, scraper_to_hub: mpr.Q
             for scraper in scrapers:
 
                 if scraper.market().ID() == request.market_ID:
-                    scraper.scrape_all(categories=request.categories, console_log=True)
-                    active_scraper = scraper
+                
+
+                    scrape_thread = threading.Thread(target=__scrape_products, args=(scraper, request))
+                    scrape_thread.start()
                     processed_request = request
-                    scraper_found = True
+
                     break
             
             # case in which an invalid request was received, program simply dumps such requests
@@ -111,43 +134,71 @@ def process_requests(main_to_all: mpr_conn.PipeConnection, scraper_to_hub: mpr.Q
                 break
                 
         __check_main(main_to_all=main_to_all)
+   
+    with product_lock:
+        if products:
 
-    # the other possible case where there is or was an active scraper recently
-    elif active_scraper is not None and processed_request is not None:
+            i = 0
+            length = len(products)
 
-        # if scrape buffer has reached its limit or scraper stopped scraping
-        if active_scraper.buffer_size() > 100 or not active_scraper.is_scraping():
-            data = active_scraper.consume_buffer()
-       
-            # this way scraper process repeats its attempt to send data until they are
-            # received successfully
-            while True:
-                if not scraper_to_hub.full():
-                    scraper_to_hub.put(obj=data, block=False)
-                    #scraper_to_hub.send(data)
-                    __check_main(main_to_all=main_to_all)
-                    break
-                else:
-                    print("Unable to send scraped data! Retrying...")
-                    time.sleep(1.5)
+            while i <  length:
 
-            # if scraper has scraped all data process attempts to send the processed request's
-            # ID as a signal that all data requested were scraped successfully
-            if not active_scraper.is_scraping():
-                
                 while True:
                     if not scraper_to_hub.full():
-                        scraper_to_hub.put(processed_request.ID, block=False)
-                        __check_main(main_to_all=main_to_all)
+                        scraper_to_hub.put(obj=products[i: i + 500], block=False)
                         break
                     else:
                         print("Pipe not ready for writing. Retrying...")
-                        time.sleep(1.5)
+                        __check_main(main_to_all=main_to_all, timeout=0.05)
+                
+                i += 500
 
-                active_scraper = None
-                processed_request = None
+            products.clear()
 
-        __check_main(main_to_all=main_to_all)
+            while True:
+                if not scraper_to_hub.full():
+                    scraper_to_hub.put(processed_request.ID, block=False)
+                    break
+                else:
+                    print("Pipe not ready for writing. Retrying...")
+                    __check_main(main_to_all=main_to_all, timeout=0.05)
+
+
+
+
+
+
+#     if is_scraping.is_set() and not requests:
+        
+#         while True:
+#             if not scraper_to_hub.full():
+#                 scraper_to_hub.put(processed_request.ID, block=False)
+#                 __check_main(main_to_all=main_to_all)
+#                 break
+#             else:
+#                 print("Pipe not ready for writing. Retrying...")
+#                 time.sleep(1.5)
+
+#         active_scraper = None
+#         processed_request = None
+
+# __check_main(main_to_all=main_to_all)
+
+
+def __check_products(scraper_to_hub: mpr.Queue):
+    global products
+
+    with product_lock:
+        if products:
+            if not scraper_to_hub.full():
+                for product in products:
+                    scraper_to_hub.put(obj=product, block=False)
+                
+                products.clear()
+            else:
+                print("Pipe not ready for writing. Retrying...")
+                time.sleep(1.5)
+
 
 
 
@@ -158,19 +209,22 @@ def start(main_to_all: mpr_conn.PipeConnection, scraper_to_hub: mpr.Queue,
     os.chdir(parent_directory)
     scrapers.clear()
     
+
+
     __check_main(main_to_all=main_to_all)
 
     # here we initialize a scraper for each market availale in the market hub
     with MarketHub(src_file=MARKET_HUB_FILE['path'], header=MARKET_HUB_FILE['header']) as hub:
 
         for market in hub.markets():
-            scrapers.append(ParallelProductScraper(market=market, session_limit=5))
+            scrapers.append(ProductScraper(market=market))
 
     # now we can check for incoming requests and process them afterwards
     # the process also checks for incoming signal from the main process
     # the process listens for incoming requests from the market hub process until
     # end request from main process is received
-        
+    is_scraping.clear()
+
     while True:
 
         __check_market_hub(hub_to_scraper=hub_to_scraper)
@@ -178,7 +232,9 @@ def start(main_to_all: mpr_conn.PipeConnection, scraper_to_hub: mpr.Queue,
         __check_main(main_to_all=main_to_all)
 
         time.sleep(1)
-                
+    
+    
+
 
 
 if __name__ == "__main__":
