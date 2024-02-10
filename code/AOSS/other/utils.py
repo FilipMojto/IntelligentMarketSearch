@@ -59,7 +59,18 @@ class TextEditor:
 
             result += char
         
-        return result    
+        return result
+    
+    @staticmethod
+    def standardize_str(text: str):
+        """
+            Returns the provided text in the standardized form by removing special characters
+            and converting all characters to their lower form.
+        """
+
+        normalized = text.lower()
+        normalized = unidecode(normalized)
+        return normalized
 
 
 # class SignalHandler:
@@ -140,8 +151,5 @@ class ThreadPool:
         self.__futures.clear()
 
 
-def normalize_str(text: str):
-    normalized = text.lower()
-    normalized = unidecode(normalized)
-    return normalized
+
 

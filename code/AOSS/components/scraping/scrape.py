@@ -214,24 +214,24 @@ def start(main_to_all: mpr_conn.PipeConnection, scraper_to_hub: mpr.Queue,
     __check_main(main_to_all=main_to_all)
 
     # here we initialize a scraper for each market availale in the market hub
-    with MarketHub(src_file=MARKET_HUB_FILE['path'], header=MARKET_HUB_FILE['header']) as hub:
+    with MarketHub(src_file=MARKET_HUB_FILE['path']) as hub:
 
         for market in hub.markets():
             scrapers.append(ProductScraper(market=market))
 
-    # now we can check for incoming requests and process them afterwards
-    # the process also checks for incoming signal from the main process
-    # the process listens for incoming requests from the market hub process until
-    # end request from main process is received
-    is_scraping.clear()
+        # now we can check for incoming requests and process them afterwards
+        # the process also checks for incoming signal from the main process
+        # the process listens for incoming requests from the market hub process until
+        # end request from main process is received
+        is_scraping.clear()
 
-    while True:
+        while True:
 
-        __check_market_hub(hub_to_scraper=hub_to_scraper)
-        process_requests(main_to_all=main_to_all, scraper_to_hub=scraper_to_hub)
-        __check_main(main_to_all=main_to_all)
+            __check_market_hub(hub_to_scraper=hub_to_scraper)
+            process_requests(main_to_all=main_to_all, scraper_to_hub=scraper_to_hub)
+            __check_main(main_to_all=main_to_all)
 
-        time.sleep(1)
+            time.sleep(1)
     
     
 

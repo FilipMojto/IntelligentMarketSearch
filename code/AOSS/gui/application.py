@@ -7,6 +7,7 @@ import tkinter
 import os, sys
 import signal, multiprocessing as mpr, multiprocessing.connection as mpr_conn
 import threading as thrd
+import time
 
 
 # Set the starting point to the directory containing the script
@@ -19,6 +20,7 @@ sys.path.append(parent_directory)
 
 from config_paths import *
 from AOSS.gui.main_shopping_view import MainShoppingView
+from AOSS.structure.marketing import GUI_START_SIGNAL
 
 def terminate():
     print("Terminating GUI process...")
@@ -36,10 +38,10 @@ class Application(tkinter.Tk):
         #self.__app = tkinter.Tk()
 
         self.title("AOSS Application 1.2.0")
-        self.geometry("900x500")
+        self.geometry("1000x580")
         self.minsize(700, 500)
         
-        self.__main_shoppping_view = MainShoppingView(self, product_file=PRODUCT_FILE['path'])
+        self.__main_shoppping_view = MainShoppingView(self, product_file=PRODUCT_FILE['path'], bg='black')
         self.__main_shoppping_view.grid(row=0, column=0, sticky="NSEW", padx=10)
 
         self.rowconfigure(0, weight=1)
@@ -68,11 +70,19 @@ def check(main_to_all: mpr_conn.PipeConnection):
 
 
 
-def start(main_to_all: mpr_conn.PipeConnection = None):
+def start(main_to_all: mpr_conn.PipeConnection = None, hub_to_gui: mpr.Queue = None):
     
     if main_to_all is None:
         __start_app()
     else:
+        
+        while True:
+            if not hub_to_gui.empty() and hub_to_gui.get(block=False) == GUI_START_SIGNAL:
+                break
+
+            time.sleep(1.5)
+
+        print("starting gui...")
         global app
         app = Application()
         app.after(1500, check, main_to_all)

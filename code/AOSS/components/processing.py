@@ -1,14 +1,14 @@
-from AOSS.structure.shopping import Product, RegisteredProduct, ProductCategory, MarketHub
-from AOSS.components.search import ProductMatcher
 from typing import List
-from config_paths import *
-from AOSS.other.exceptions import InvalidFileFormatError
-from AOSS.other.regex_utils import extract_words
+
 import csv
 import time
-import pandas as pd
-import polars as pl
 from datetime import datetime
+
+from config_paths import *
+from AOSS.structure.shopping import Product, ProductCategory, MarketHub
+from AOSS.components.search import ProductMatcher
+from AOSS.other.exceptions import InvalidFileFormatError
+from AOSS.other.utils import TextEditor
 
 
 PRICE_APPROXIMATION_SIGN = '~'
@@ -88,7 +88,28 @@ def process_product(product: Product):
     product.normalized_name = product.normalized_name.replace(',', '.')
 
 
+import pandas as pd
+
 class ProductCategorizer:
+
+    @staticmethod
+    def category_details(category: str):
+       
+        with open(CATEGORY_FILE['path'], 'r', encoding='utf-8') as file:
+            csv_reader = csv.reader(file)
+            
+            # Assuming the first row contains headers
+
+            if CATEGORY_FILE['header']:
+                next(csv_reader)
+            
+            # Reading the rest of the rows
+            for row in csv_reader:
+                # Accessing columns by index
+                if row[CATEGORY_FILE['columns']['name']['index']] == category:
+                    return row[CATEGORY_FILE['columns']['details']['index']]
+            
+        return None
 
     @staticmethod
     def categorize_by_mapping(product: Product, mappings_file: str, header: bool = False):
@@ -149,9 +170,32 @@ class ProductCategorizer:
         
         self.__market_hub = market_hub
         self.__training_market = self.__market_hub.training_market()
+        self.__matcher = ProductMatcher(market_hub=self.__market_hub)
+
+    def recategorize(self):
+
+        # Step 1: Load the CSV file into a Pandas DataFrame
+        csv_file_path = self.__market_hub.product_file()
+        df = pd.read_csv(csv_file_path)
+        training_market = self.__market_hub.training_market().ID()
+
+        # Step 2: Iterate and Modify Rows
+        column_to_modify = 'category'
+        for index, row in df.iterrows():
+            # Your modification logic here, for example:
+            if row['market_ID'] != training_market:
+                row[column_to_modify] = self.categorize(product=row['normalized_name']).name
+            # row[column_to_modify] = modify_function(row[column_to_modify])
+            #pass
+
+        # Step 3: Save the Modified DataFrame
+        #modified_csv_file_path = 'modified_file.csv'
+        df.to_csv("../resources/data/temp.csv", index=False)
 
 
-    def categorize(self, product: Product):
+
+
+    def categorize(self, product: Product | str):
         """
             This function categorizes a product based on the training market's product categories in the provided market hub.
             It uses a ProductMatcher object to find the best match for the product in the training market product dataset.
@@ -170,12 +214,19 @@ class ProductCategorizer:
         #                     its categories!""")
         
         
-        matcher = ProductMatcher(market_hub=self.__market_hub)
+       # matcher = ProductMatcher(market_hub=self.__market_hub)
 
-        match = matcher.match(text=product.normalized_name, markets=(self.__training_market.ID(),), limit=1, min_match=0)
+        match = None
         
+        if isinstance(product, Product):
+            match = self.__matcher.match(text=product.normalized_name, markets=(self.__training_market.ID(),), limit=1, min_match=0)
+        elif isinstance(product, str):
+            match = self.__matcher.match(text=TextEditor.standardize_str(text=product),
+                                          markets=(self.__training_market.ID(),), limit=1, min_match=0)
 
-        product_match = self.__training_market.get_product(ID=match[0][0])
+        print(match[0].__str__())
+
+        product_match = self.__training_market.get_product(ID=match[0].product_ID)
 
         #match = matcher.match(text=modified_name, category=None, min_match=0, limit=1, markets=market_hub.training_market().ID())
 
@@ -183,47 +234,47 @@ class ProductCategorizer:
     
         #    product.normalized_category = product.normalized_category
     
-    def __function(self, element, matcher: ProductMatcher):
+    # def __function(self, element, matcher: ProductMatcher):
         
-        # start = time.time()
+    #     # start = time.time()
 
-        # #return ProductCategory.NEURČENÁ.name
-        # name=  self.__market_hub.training_market().get_product(
-        #     ID=matcher.match(element, markets=(2,), limit=1)[0][0]).normalized_category.name
+    #     # #return ProductCategory.NEURČENÁ.name
+    #     # name=  self.__market_hub.training_market().get_product(
+    #     #     ID=matcher.match(element, markets=(2,), limit=1)[0][0]).normalized_category.name
 
-        # end = time.time()
+    #     # end = time.time()
 
-        # print(f"time: {end - start}")
-        return ProductCategory.NEURČENÁ.name
+    #     # print(f"time: {end - start}")
+    #     return ProductCategory.NEURČENÁ.name
 
-    def categorize_all(self):
-        df = pd.read_csv(PRODUCT_FILE['path'])
+    # def categorize_all(self):
+    #     df = pd.read_csv(PRODUCT_FILE['path'])
 
-        df.to_hdf(ALL_DATA_FILE['path'], key='products', mode='w')
-        print(f"len before: {len(df)}")
+    #     df.to_hdf(ALL_DATA_FILE['path'], key='products', mode='w')
+    #     print(f"len before: {len(df)}")
 
-        matcher = ProductMatcher(market_hub=self.__market_hub)
+    #     matcher = ProductMatcher(market_hub=self.__market_hub)
 
-        df = pd.read_hdf(ALL_DATA_FILE['path'], key='products')
-        print(df)
-
-
-        mask = (df['market_ID'] == 1)
-
-        df.loc[mask, 'category'] = df.loc[mask, 'normalized_name'].apply(
-            lambda x: self.__function(element=x, matcher=matcher)
-        )
+    #     df = pd.read_hdf(ALL_DATA_FILE['path'], key='products')
+    #     print(df)
 
 
+    #     mask = (df['market_ID'] == 1)
 
-        print(df[df['market_ID'] == 1][['normalized_name', 'category']].head(20) )
+    #     df.loc[mask, 'category'] = df.loc[mask, 'normalized_name'].apply(
+    #         lambda x: self.__function(element=x, matcher=matcher)
+    #     )
 
 
-        # Write the updated DataFrame back to HDF5 file
-        df.to_hdf(ALL_DATA_FILE['path'], key='products', mode='w')
+
+    #     print(df[df['market_ID'] == 1][['normalized_name', 'category']].head(20) )
+
+
+    #     # Write the updated DataFrame back to HDF5 file
+    #     df.to_hdf(ALL_DATA_FILE['path'], key='products', mode='w')
         
-        df = pd.read_hdf(ALL_DATA_FILE['path'], key='products')
-        print(f"len after: {len(df)}")
+    #     df = pd.read_hdf(ALL_DATA_FILE['path'], key='products')
+    #     print(f"len after: {len(df)}")
 
 
 
@@ -231,21 +282,3 @@ class ProductCategorizer:
 
 
 
-
-def category_details(category: str):
-
-    with open(CATEGORY_FILE['path'], 'r', encoding='utf-8') as file:
-        csv_reader = csv.reader(file)
-        
-        # Assuming the first row contains headers
-
-        if CATEGORY_FILE['header']:
-            next(csv_reader)
-        
-        # Reading the rest of the rows
-        for row in csv_reader:
-            # Accessing columns by index
-            if row[CATEGORY_FILE['columns']['name']['index']] == category:
-                return row[CATEGORY_FILE['columns']['details']['index']]
-        
-    return None

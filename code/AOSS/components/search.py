@@ -11,8 +11,9 @@ sys.path.append(parent_dir)
 
 
 
-from AOSS.structure.shopping import MarketHub
+from AOSS.structure.shopping import MarketHub, ProductCategory
 from config_paths import *
+from dataclasses import dataclass
 
 
 # class ProductMatcher:
@@ -136,10 +137,28 @@ from config_paths import *
 #         else:
 #             # we restrict match buffer to the required limit
 #             self.__matches = self.__matches[:limit]
+
     
-import polars as pl
 
 class ProductMatcher:
+    """
+        
+    """
+
+    @dataclass
+    class Match:
+
+        product_ID: int
+        ratio: float
+        price: float
+        market_ID: int
+
+        def __str__(self):
+
+            return {f"{{product_ID: {self.product_ID}, match: {self.ratio}, price: {self.price}, market_ID: {self.market_ID} }}"}
+
+
+
 
     def __init__(self, market_hub: MarketHub) -> None:
         
@@ -149,6 +168,7 @@ class ProductMatcher:
         if len(self.__markets) == 0:
             raise ValueError("Provided market hub contains no markets!")
 
+        market_hub.load_products()
         self.__product_df = market_hub.product_df()
 
         for market in self.__markets:
@@ -159,22 +179,34 @@ class ProductMatcher:
         
         
     
-    def __match_function(self, row, text):
-   
-        return row[PRODUCT_FILE['columns']['ID']['index']], fuzz.token_sort_ratio(row[
-            PRODUCT_FILE['columns']['normalized_name']['index']], text), row[PRODUCT_FILE['columns']['price']['index']]
 
-    def __match_funtion_2(self, row, text):
-        return (row[PRODUCT_FILE['columns']['ID']['index']], fuzz.token_sort_ratio(row[
+    def __extract_cols(self, row, text):
+        return (row[PRODUCT_FILE['columns']['ID']['index']], fuzz.token_set_ratio(row[
             PRODUCT_FILE['columns']['normalized_name']['index']], text), row[PRODUCT_FILE['columns']['price']['index']],
         row[PRODUCT_FILE['columns']['market_ID']['index']])
 
+ 
 
 
+    def match(self, text: str, markets: tuple[int] = None, category: ProductCategory = None, limit: int = 10,
+              min_match: float = 0, for_each: bool = False, sort_words: bool = False):
+        
+        """
+            Match products based on the specified criteria.
 
-    def match(self, text: str, markets: tuple[int] = None, limit: int = 10,
-              min_match: float = 0, for_each: bool = False) -> (List[tuple[int, str, float]] |
-               List[tuple[int, str, float, int]] ):
+            Parameters:
+            - text (str): The text to match against.
+            - markets (tuple[int], optional): A tuple of market IDs to restrict the search to.
+            - category (ProductCategory, optional): The product category to filter by.
+            - limit (int, optional): The maximum number of matches to return.
+            - min_match (float, optional): The minimum match ratio required.
+            - for_each (bool, optional): If True, apply the limit separately for each market.
+            - sort_words (bool, optional): If True, it sorts words first and then finds match ratio
+
+            Returns:
+            - List of matches based on the specified criteria.
+        """
+        
 
         if limit < 0:
             raise ValueError("Invalid limit value! Must be positive.")
@@ -182,42 +214,67 @@ class ProductMatcher:
         if not 0<=min_match<=100:
             raise ValueError("Invalid minimal match value! Must be a float within 0 to 100.")
 
+        if markets is not None and markets:
+            for market in markets:
+                for hub_market in self.__markets:
+                    if market == hub_market.ID():
+                        break
+                else:
+                    raise ValueError("One of filtered market IDs not found in market hub!")
+
+
         df = self.__product_df
         
+        # filtering products belonging to a subset of markets
         if markets is not None and markets:
             df = df.filter(self.__product_df['market_ID'].is_in(markets))
+
+        # filtering products by their category
+        if category is not None:
+            df = df.filter(df['category'] == category.name)
+
+
+        df = df.apply(lambda row: self.__extract_cols(row, text))
+        #print(df)
+
+        # [product_ID, match, price, market_ID]
+        # here we convert necessary columns into python lists and then zip them into a list of tuples
+        results: List[tuple[int, float, float, int]] = list(zip(df['column_0'].to_list(), df['column_1'].to_list(),
+                        df['column_2'].to_list(), df['column_3'].to_list()))
+
+        # Create a list of Match objects
+        matches = [self.Match(*t) for t in results]
+
+        if min_match > 0:
+            matches = [_match for _match in matches if _match.ratio >= min_match]
+
+
+      #  matches.sort(key=lambda _match: (-_match.match, _match.price))
+        
         
         if not for_each:
-            df = df.apply(lambda row: self.__match_function(row, text))
+           #la = sorted(matches, key=lambda _match: (-_match.match, _match.price))
+            return sorted(matches, key=lambda _match: (-_match.ratio, _match.price))[:limit]
 
-            results: List[tuple[int, str, float]] = list(zip(df['column_0'].to_list(), df['column_1'].to_list(),
-                            df['column_2'].to_list()))
-
-            if min_match is not None:
-                if all(x[1] == 0 for x in results):
-                    print("NOW!")
-
-                results = [x for x in results if x[1] >= min_match]
-
-
-            results.sort(key=lambda x: (-x[1], x[2]))
-            return results[:limit]
+            #return matches[:limit]
         else:
-            df = df.apply(lambda row: self.__match_funtion_2(row, text))
-            results: List[tuple[int, str, float, int]] = list(zip(df['column_0'].to_list(), df['column_1'].to_list(),
-                            df['column_2'].to_list(), df['column_3'].to_list()))
+            composed_matches: List[self.Match] = []
+            _markets = []
             
-            if min_match is not None:
-                results = [x for x in results if x[1] > min_match]
+            if markets is not None and markets:
+                for market_i in markets:
+                    _markets.append(self.__market_hub.market(ID=market_i))
+            else:
+                _markets = self.__markets
 
-            results.sort(key=lambda x: (-x[1], x[2]))
+            for market in _markets:
+                composed_matches.extend(
+                    [match for match in sorted(matches, key=lambda m: (-m.ratio, m.price)) if match.market_ID == market.ID()][:limit]
+                )
+                
+                #composed_matches.extend([_match for _match in matches if _match.market_ID == market.ID()][:limit])
 
-            results_2: List[tuple[int, str, float, int]] = []
-
-            for market in self.__markets:
-                results_2.extend([x for x in results if x[3] == market.ID()][:limit])
-
-            return results_2          
+            return composed_matches          
 
 
 

@@ -1,5 +1,5 @@
 
-# import time
+import time
 
 
 
@@ -15,17 +15,59 @@
 from config_paths import *
 
 
-from AOSS.structure.shopping import MarketHub, Market, MarketView
+from AOSS.structure.shopping import MarketHub, Market, MarketView, ProductCategory
 from AOSS.components.scraping.base import ProductScraper, Product
+from AOSS.components.marrec import MarketExplorer
+from AOSS.components.search import ProductMatcher
+
+from AOSS.components.processing import ProductCategorizer
 
 with MarketHub(src_file=MARKET_HUB_FILE['path']) as hub:
-    markets = hub.markets()
     
-    for index, market in enumerate(markets):
-        print(f"{index} - {market.__str__()}")
+    #matcher 
 
-    scraper = ProductScraper(market=markets[0])
-    products = scraper.scrape_all(console_log=True)
+    #categorizer = ProductCategorizer(market_hub=hub)
+    #print(categorizer.categorize(product="stolove hrozno biele 500g").name)
+
+    categorizer = ProductCategorizer(market_hub=hub)
+
+    categorizer.recategorize()
+    
+    # matcher = ProductMatcher(market_hub=hub)
+    # start = time.time()
+    # match = matcher.match(text="stolove hrozno biele 500g",  markets=(2, ), limit=5, for_each=False)
+    # end = time.time()
+
+    # print(f"Time: {end - start}")
+
+    # for m in match:
+
+    #     print(f"{hub.market(ID=m.market_ID).get_product(ID=m.product_ID).name}: {m.ratio}")
+
+    # explorer = MarketExplorer(market_hub=hub)
+
+    # results = explorer.explore(product_list=[("pivo zlaty bazant svetle", ProductCategory.ALKOHOL),
+    #                                          ("rozok biely", ProductCategory.PECIVO)])
+    
+    # for market, product_list in results.items():
+    #     print(f"{hub.market(ID=market).name()}: {[ product.name for product in product_list]}")
+
+exit(0)
+    #matcher = ProductMatcher(market_hub=hub)
+    #matches = matcher.match(text="pivo zlaty bazant svetle", limit=5, for_each=5, category=ProductCategory.ALKOHOL)
+    #markets = hub.markets()
+    #print(markets[1].get_product(ID=82843).__str__())
+    #for match in matches:
+    #    print(match)
+
+     #   print(f"Market: {hub.market(ID=match[3]).get_product(ID=match[0]).__str__()}")
+    
+
+    #print(matches)
+
+    #explorer = MarketExplorer(market_hub=hub)
+    #explorer.explore(product_list=None)
+
 
 
     # market = MarketView(ID=1, name="LSDL", store_name="SDK", category_file="../resources/data/category_mappings.csv",
@@ -35,7 +77,7 @@ with MarketHub(src_file=MARKET_HUB_FILE['path']) as hub:
 
 
 
-    exit(0)
+    #exit(0)
 
 
 # with MarketHub(src_file=MARKET_HUB_FILE['path'], header=MARKET_HUB_FILE['header']) as hub:

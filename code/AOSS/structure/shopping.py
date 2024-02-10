@@ -38,7 +38,7 @@ from datetime import datetime
 # ------- My Imports ------- #
 
 from config_paths import *
-from AOSS.other.utils import PathManager, normalize_str
+from AOSS.other.utils import PathManager, TextEditor
 from AOSS.other.exceptions import IllegalProductStructureError, InvalidFileFormatError
 
 class ProductCategory(Enum):
@@ -90,7 +90,7 @@ class Product:
     updated_at: str
 
     def __post_init__(self):
-        self.normalized_name = normalize_str(self.name)
+        self.normalized_name = TextEditor.standardize_str(self.name)
 
 
 
@@ -217,24 +217,23 @@ class MarketView:
         """
 
         with open(file=self.__product_file, mode='r', encoding='utf-8') as product_file:
-            products = csv.reader(product_file)
+            products = csv.DictReader(product_file)
 
             for metadata in products:
                 
                 # return the object only if provided ID was found and if the market_ID equals to this market's
-                if ( int(metadata[PRODUCT_FILE['columns']['ID']['index']]) == ID and self.__ID == 
-                int(metadata[PRODUCT_FILE['columns']['market_ID']['index']])):
+                if ( int(metadata['ID']) == ID and self.__ID == int(metadata['market_ID'])):
                     
                     return RegisteredProduct(
-                        ID=metadata[PRODUCT_FILE['columns']['ID']['index']],
-                        name=metadata[PRODUCT_FILE['columns']['name']['index']],
-                        price=float(metadata[ PRODUCT_FILE['columns']['price']['index']]),
-                        approximation=int(metadata[PRODUCT_FILE['columns']['approximation']['index']]),
-                        category=metadata[PRODUCT_FILE['columns']['query_string']['index']],
-                        normalized_category=ProductCategory[metadata[PRODUCT_FILE['columns']['category']['index']]],
-                        market_ID=metadata[PRODUCT_FILE['columns']['market_ID']['index']],
-                        created_at=metadata[PRODUCT_FILE['columns']['created_at']['index']],
-                        updated_at=metadata[PRODUCT_FILE['columns']['updated_at']['index']]
+                        ID=metadata['ID'],
+                        name=metadata['name'],
+                        price=float(metadata['price']),
+                        approximation=int(metadata['approximation']),
+                        category=metadata['query_string'],
+                        normalized_category=ProductCategory[metadata['category']],
+                        market_ID=metadata['market_ID'],
+                        created_at=metadata['created_at'],
+                        updated_at=metadata['updated_at']
                     )
             
         return None
@@ -308,47 +307,45 @@ class Market(MarketView):
         """
 
 
-        try:
-            with self.__buffer_lock:
-                # Let's firstly check the unregistered products to prove product's uniqueness
-                for _product in self.__registration_buffer:
-                    if (product.name == _product[0].name):
-                        raise IllegalProductStructureError("Conflicting name with an unregistered product!")
-                
-                # Now we check the registered products for the same purpose
-                
-                with open(self.product_file(), mode='r', encoding='utf-8') as product_file:
-                    products = csv.reader(product_file)
-                    
-                    for row in products:
-                        
-                        # name attribute must be unique only within a market, therefore we verify
-                        # market_ID also
-                        if (int(row[PRODUCT_FILE['columns']['market_ID']['index']]) == self.__ID and
-                            row[PRODUCT_FILE['columns']['name']['index']] == product.name):
-
-                            raise IllegalProductStructureError("Conflicting name with a registered product!")
-                    
-
-                # here we verify the category of the product, whether the market provides it
-                with open(self.category_file(), mode='r', encoding='utf-8') as categories_f:
-                    categories = csv.reader(categories_f)
-                    
-                    for metadata in categories:
-
-                        if (product.category == metadata[CATEGORY_MAP_FILE['columns']['name']['index']]):
-                            break
-    
-                    else:
-                        raise IllegalProductStructureError("The market doesn't provide such a category.")
-
-                # Finally, we can add the product for registration
-                self.__registration_buffer.append((product, norm_category))
+        with self.__buffer_lock:
+            # Let's firstly check the unregistered products to prove product's uniqueness
+            for _product in self.__registration_buffer:
+                if (product.name == _product[0].name):
+                    raise IllegalProductStructureError("Conflicting name with an unregistered product!")
             
-                if len(self.__registration_buffer) >= self.__buffer_limit:
-                    self.save_products()
-        except Exception as e:
-            print(f"Caught an exception: {e}")
+            # Now we check the registered products for the same purpose
+            
+            with open(self.product_file(), mode='r', encoding='utf-8') as product_file:
+                products = csv.DictReader(product_file)
+
+                #products = csv.reader(product_file)
+                
+                for row in products:
+                    
+                    # name attribute must be unique only within a market, therefore we verify
+                    # market_ID also
+                    if (int(row['market_ID']) == self.__ID and row['name'] == product.name):
+                        raise IllegalProductStructureError("Conflicting name with a registered product!")
+                
+
+            # here we verify the category of the product, whether the market provides it
+            with open(self.category_file(), mode='r', encoding='utf-8') as categories_f:
+                categories = csv.DictReader(categories_f)
+                
+                for metadata in categories:
+
+                    if (product.category == metadata['name']):
+                        break
+
+                else:
+                    raise IllegalProductStructureError("The market doesn't provide such a category.")
+
+            # Finally, we can add the product for registration
+            self.__registration_buffer.append((product, norm_category))
+        
+            if len(self.__registration_buffer) >= self.__buffer_limit:
+                self.save_products()
+
 
 
     def save_products(self):
@@ -359,7 +356,7 @@ class Market(MarketView):
         """
 
 
-        with open(self.product_file()[0], 'a', encoding='utf-8') as file:
+        with open(self.product_file(), 'a', encoding='utf-8') as file:
             for product, category in self.__registration_buffer:
                 id = self.__market_hub.assign_product_ID(market=self)
                 file.write(str(id) + PRODUCT_FILE['delimiter'] +
@@ -448,6 +445,8 @@ class MarketHub(ProductIdentification):
 
         print("Loading markets from a file...")
         self.load_markets()
+        self.load_products()
+        
         print(f"Successfully loaded {len(self.__markets)} markets!")
         return self
     

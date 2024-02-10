@@ -23,6 +23,7 @@ import AOSS.gui.application as app
 main_to_all = mpr.Pipe()
 hub_to_scraper = mpr.Queue(maxsize=5)
 scraper_to_hub = mpr.Queue(maxsize=5)
+hub_to_qui = mpr.Queue(maxsize=5)
 
 processes: List[mpr.Process] = []
 main_to_all: mpr_conn.PipeConnection = mpr.Pipe()
@@ -58,7 +59,7 @@ def launch_subprocesses():
     #hub_to_scraper, scraper_to_hub = mpr.Pipe()
     
     
-    market_hub = mpr.Process(target=mrk.start, args=(main_to_all[0], hub_to_scraper, scraper_to_hub))
+    market_hub = mpr.Process(target=mrk.start, args=(main_to_all[0], hub_to_scraper, scraper_to_hub, hub_to_qui))
     
     market_hub.start()
     processes.append(market_hub)
@@ -67,7 +68,7 @@ def launch_subprocesses():
     scraper.start()
     processes.append(scraper)
 
-    gui = mpr.Process(target=app.start, args=(main_to_all[0],))
+    gui = mpr.Process(target=app.start, args=(main_to_all[0], hub_to_qui))
     gui.start()
     processes.append(gui)
 
