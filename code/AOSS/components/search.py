@@ -170,6 +170,7 @@ class ProductMatcher:
 
         market_hub.load_products()
         self.__product_df = market_hub.product_df()
+        self.__subset = None
 
         for market in self.__markets:
             if not self.__product_df.filter(self.__product_df['market_ID'] == market.ID()).is_empty():
@@ -186,10 +187,14 @@ class ProductMatcher:
         row[PRODUCT_FILE['columns']['market_ID']['index']])
 
  
+    def set_subset(self, market_ID: int):
+        self.__subset = self.__product_df.filter(self.__product_df['market_ID'] == market_ID)
 
+    
 
     def match(self, text: str, markets: tuple[int] = None, category: ProductCategory = None, limit: int = 10,
-              min_match: float = 0, for_each: bool = False, sort_words: bool = False):
+              min_match: float = 0, for_each: bool = False, sort_words: bool = False, use_subset: bool = False):
+        
         
         """
             Match products based on the specified criteria.
@@ -223,7 +228,12 @@ class ProductMatcher:
                     raise ValueError("One of filtered market IDs not found in market hub!")
 
 
-        df = self.__product_df
+        df = None
+
+        if use_subset and self.__subset is not None:
+            df = self.__subset
+        else:
+            df = self.__product_df
         
         # filtering products belonging to a subset of markets
         if markets is not None and markets:
@@ -235,7 +245,6 @@ class ProductMatcher:
 
 
         df = df.apply(lambda row: self.__extract_cols(row, text))
-        #print(df)
 
         # [product_ID, match, price, market_ID]
         # here we convert necessary columns into python lists and then zip them into a list of tuples

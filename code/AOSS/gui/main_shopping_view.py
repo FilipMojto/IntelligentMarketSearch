@@ -10,6 +10,7 @@ import config_paths
 from AOSS.structure.shopping import MarketHub, ProductCategory
 from AOSS.components.marrec import MarketExplorer, Market
 from AOSS.components.processing import ProductCategorizer
+from AOSS.other.utils import TextEditor
 
 
 # --- ShoppingListItem - Class Declaration&Definition --- #
@@ -19,29 +20,37 @@ class ShoppingListDetails(LabelFrame):
         This class represents a single product item in the user's shopping list.
     """
 
-    def __init__(self,*args, name: str, category: str, ID: int, on_widget_click: callable = None, **kw):
+    def __init__(self,*args, name: str, category: int, ID: int, on_widget_click: callable = None, **kw):
         super(ShoppingListDetails, self).__init__(*args, **kw)
 
-        #self.background = 
-        #self.__parent = parent
-        self.__name_label = Label(self, text=f"Name: {name}", font=('Arial', 11))
-        self.__name_label.grid(row=0, column=0, sticky="NSW")
-        self.__name_label.bind("<Button-1>", on_widget_click)
+        self.name = name
+        self.name_text = StringVar()
+        self.name_text.set(f"Name: {name}")
 
-        
+        self.name_label = Label(self, textvariable=self.name_text, font=('Arial', 11))
+        self.name_label.grid(row=0, column=0, sticky="NSW")
+        self.name_label.bind("<Button-1>", on_widget_click)
 
-        self.__category_label = Label(self, text=f"Category: {category}", font=('Arial', 11))
-        self.__category_label.grid(row=1, column=0, sticky="NSW")
-        self.__category_label.bind("<Button-1>", on_widget_click)
+        self.category = category
+        self.category_text = StringVar()
+        self.category_text.set(f"Category: {category}")
 
-        self.__ID_label = Label(self, text=f"{ID}", font=('Arial', 11))
-        self.__ID_label.grid(row=2, column=0, sticky="NSEW")
-        self.__ID_label.bind("<Button-1>", on_widget_click)
+        self.category_label = Label(self, textvariable=self.category_text, font=('Arial', 11))
+        self.category_label.grid(row=1, column=0, sticky="NSW")
+        self.category_label.bind("<Button-1>", on_widget_click)
+
+        self.ID = ID
+        self.ID_text = StringVar()
+        self.ID_text.set(ID)
+
+        self.ID_label = Label(self, textvariable=self.ID_text, font=('Arial', 11))
+        self.ID_label.grid(row=2, column=0, sticky="NSEW")
+        self.ID_label.bind("<Button-1>", on_widget_click)
 
         if callable:
-            self.__name_label.bind("<Button-1>", on_widget_click)
-            self.__category_label.bind("<Button-1>", on_widget_click)
-            self.__ID_label.bind("<Button-1>", on_widget_click)
+            self.name_label.bind("<Button-1>", on_widget_click)
+            self.category_label.bind("<Button-1>", on_widget_click)
+            self.ID_label.bind("<Button-1>", on_widget_click)
 
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
@@ -127,13 +136,14 @@ class ShoppingListFrame(LabelFrame):
             self.canvas.itemconfigure(self.__interior_ID, height=self.canvas.winfo_height() - 4)
             #self.__interior.config(width=self.canvas.winfo_height())  # Update interior width
 
-    def items(self):
-        return self.shopping_list.items
+
     
         #return self.__items
 
-    def insert_item(self, name: str, category: ProductCategory):
-        item = ShoppingListItem(self.shopping_list, name=name, category=category.name, ID=len(self.shopping_list.items) + 1,
+    def insert_item(self, name: str, category: int):
+
+        print(name)
+        item = ShoppingListItem(self.shopping_list, name=name, category=category, ID=len(self.shopping_list.items) + 1,
                                 on_widget_click=self.shopping_list.remove_click_texture)
         
         item.pack(side="left", fill="y", expand=False, padx=2, pady=2)
@@ -257,7 +267,7 @@ class NewProductView(LabelFrame):
             messagebox.showwarning("Warning", "Name field cannot be empty!")
             return
 
-        self.__shopping_list.insert_item(name=name, category=ProductCategory(value=self.__categories.get_option()) )
+        self.__shopping_list.insert_item(name=name, category=self.__categories.get_option() )
     
 
 class CategoriesFrame(LabelFrame):
@@ -329,9 +339,116 @@ class CategoriesFrame(LabelFrame):
             self.__old_val = new_value
 
 
+
+class ExplorationTable(Frame):
+    def __init__(self, *args, markets: tuple[Market], **kw):
+        super(ExplorationTable, self).__init__(*args, **kw)
+        
+        self.cells: List[List[ tuple[StringVar, Label] ]] = []
+        market_count = len(markets)
+
+        for i in range(1 + market_count):
+            self.cells.append([])
+
+
+            for g in range(3):
+
+                var = StringVar()
+                var.set(value="")
+                label = Label(self, textvariable=var, font=("Arial",  12, "bold"))
+                label.grid(row=i, column=g, sticky="NSEW", padx=2, pady=2)
+
+                self.cells[i].append( (var, label) )
+
+        for i in range(4):
+            self.rowconfigure(i, weight=1)
+
+        for g in range(3):
+            self.columnconfigure(g, weight=1)
+
+
+
+    
+        self.cells[0][0][0].set(value="Name")
+        self.cells[0][1][0].set(value="Total Price")
+        self.cells[0][2][0].set(value="Succession Rate")
+
+
+        for index, market in enumerate(markets):
+            self.cells[index + 1][0][0].set(value=market.name().lower())
+
+    def insert_value(self, row: int, col: int, value):
+        self.cells[row][col][0].set(value=value)
+
+
+
+                
+
+
+class MarketExplorerView(LabelFrame):
+    def __init__(self, *args, **kw):
+        super(MarketExplorerView, self).__init__(*args, **kw)
+        
+        self.market_hub = MarketHub(src_file=config_paths.MARKET_HUB_FILE['path'])
+        self.market_hub.load_markets()
+        self.market_hub.load_products()
+
+
+        self.explorer = MarketExplorer(market_hub=self.market_hub)
+        
+        self.table = ExplorationTable(self, markets=self.market_hub.markets(), bg='black')
+        self.table.grid(row=0, column=0, sticky="NSEW", padx=3, pady=3)
+
+        self.padding = Frame(self)
+        self.padding.grid(row=1, column=0, sticky="NSEW")
+    
+    #def insert_items(self, items: List[tuple[str, ShoppingListItem]]):
+
+
+
+    def explore_markets(self, items: List[ShoppingListItem]):
+
+        product_list = []
+
+        for item in items:
+            product_list.append((TextEditor.standardize_str(item.item_details.name), ProductCategory(value=item.item_details.category)) ) 
+
+        results = self.explorer.explore(product_list=product_list, metric='price')
+
+        for index, exploration in enumerate(results):
+            #market_ID, products, total_price = exploration
+            
+            self.table.insert_value(row=index + 1, col=0, value=self.market_hub.market(ID=exploration.market_ID).name().lower() )
+            self.table.insert_value(row=index + 1, col=1, value=round(number=exploration.total_price, ndigits=2))
+            self.table.insert_value(row=index + 1, col=2, value=exploration.succession_rate)
+
+ 
+
+
+
+
+        # markets = ('Billa', 'Tesco', 'Coop Jednota')
+        # var = Variable(value=markets)
+
+        # self.market_list = Listbox(self, listvariable=var, selectmode=EXTENDED)
+
+
+        # #self.label = Label(self, text="NIECO!")
+        # self.market_list.grid(row=0, column=0, sticky="NSEW")
+
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=500)
+        self.columnconfigure(0, weight=1)
+
+    
+
+
+
 #class ShoppingListOptionPanel(Frame):
 
 class ShoppingListMenu(Frame):
+
+
     def __init__(self, *args, shopping_list: ShoppingListFrame, **kw):
         super(ShoppingListMenu, self).__init__(*args, **kw)
 
@@ -345,19 +462,29 @@ class ShoppingListMenu(Frame):
         #self.delete_product_button.grid(row=0, column=1, sticky="ENS", padx=5, pady=3)
 
         self.shopping_list = shopping_list
+        self.market_explorer_view: MarketExplorerView = None
        # self.rowconfigure(0, weight=1)
         #self.columnconfigure(0, weight=1)
         #self.columnconfigure(1, weight=1)
 
+        # self.market_hub = MarketHub(src_file=config_paths.MARKET_HUB_FILE['path'])
+        # self.explorer = MarketExplorer(market_hub=self.market_hub)
+
+
     
     def search_market_pressed(self):
+        items = self.shopping_list.shopping_list.items
 
-
-        items = self.shopping_list.items()
 
         if not items:
             messagebox.showwarning("Warning", "Product list contains no items!")
-            pass
+        
+        self.market_explorer_view.explore_markets(items=items)
+
+        
+        
+
+
     
     def delete_product_pressed(self):
         print("PRESSED!")
@@ -402,72 +529,6 @@ class ShoppingListView(Frame):
         return self.__list
 
 
-class ExplorationTable(Frame):
-     def __init__(self, *args, markets: tuple[Market], **kw):
-        super(ExplorationTable, self).__init__(*args, **kw)
-
-        self.market_name_col = Label(self, text="Name", font=("Arial",  12, "bold"))
-        self.market_name_col.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
-
-        self.total_price_col = Label(self, text="Total Price", font=("Arial",  12, "bold"))
-        self.total_price_col.grid(row=0, column=1, sticky="NSEW", padx=2, pady=2)
-        
-        self.succession_rate = Label(self, text="Succession Rate", font=("Arial",  12, "bold"))
-        self.succession_rate.grid(row=0, column=2, sticky="NSEW", padx=2, pady=2)
-
-        self.rowconfigure(0, weight=1)
-        self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
-        self.columnconfigure(2, weight=1)
-
-
-        for index, market in enumerate(markets):
-            cell = Label(self, text=market.name().lower(), font=('Arial', 12))
-            cell.grid(row=index + 1, column=0, sticky="NSEW", padx=1, pady=1)
-
-            self.rowconfigure(index + 1, weight=1)
-                
-
-
-class MarketExplorerView(LabelFrame):
-    def __init__(self, *args, **kw):
-        super(MarketExplorerView, self).__init__(*args, **kw)
-        
-        self.market_hub = MarketHub(src_file=config_paths.MARKET_HUB_FILE['path'])
-        self.market_hub.load_markets()
-        self.market_hub.load_products()
-
-        self.explorer = MarketExplorer(market_hub=self.market_hub)
-        
-        self.table = ExplorationTable(self, markets=self.market_hub.markets(), bg='black')
-        self.table.grid(row=0, column=0, sticky="NSEW", padx=3, pady=3)
-
-        self.padding = Frame(self)
-        self.padding.grid(row=1, column=0, sticky="NSEW")
-    
-    def explore_markets(self, product_list: List[tuple[str, ProductCategory]]):
-
-        results = self.explorer.explore(product_list=product_list)
-
-
-
-
-
-        # markets = ('Billa', 'Tesco', 'Coop Jednota')
-        # var = Variable(value=markets)
-
-        # self.market_list = Listbox(self, listvariable=var, selectmode=EXTENDED)
-
-
-        # #self.label = Label(self, text="NIECO!")
-        # self.market_list.grid(row=0, column=0, sticky="NSEW")
-
-        self.rowconfigure(0, weight=1)
-        self.rowconfigure(1, weight=500)
-        self.columnconfigure(0, weight=1)
-
-    
-
 
 
 
@@ -481,8 +542,8 @@ class SpecificationExplorationView(Frame):
         self.__product_search_view = NewProductView(self, shopping_list=shopping_list_frame.shopping_list(), bg='grey', text="New Product", font=('Arial', 20, 'bold'))
         self.__product_search_view.grid(row=0, column=0, sticky="NWS")
 
-        self.__market_explorer_view = MarketExplorerView(self, text="Market Explorer", font=('Arial', 20, 'bold'), bg='grey')
-        self.__market_explorer_view.grid(row=0, column=1, padx=5, sticky="NSEW")
+        self.market_explorer_view = MarketExplorerView(self, text="Market Explorer", font=('Arial', 20, 'bold'), bg='grey')
+        self.market_explorer_view.grid(row=0, column=1, padx=5, sticky="NSEW")
 
         
         self.columnconfigure(0, weight=1)
@@ -504,13 +565,15 @@ class MainShoppingView(Frame):
     def __init__(self, *args, product_file: str, **kw):
         super(MainShoppingView, self).__init__(*args, **kw)
 
-        self.__shopping_list_frame = ShoppingListView(self)
+        self.shopping_list_view = ShoppingListView(self)
 
-        self.__shopping_list_frame.grid(row=0, column=0, sticky="NSEW")
+        self.shopping_list_view.grid(row=0, column=0, sticky="NSEW")
 
 
-        self.specification_exploration_view = SpecificationExplorationView(self, shopping_list_frame=self.__shopping_list_frame, bg='grey')
+        self.specification_exploration_view = SpecificationExplorationView(self, shopping_list_frame=self.shopping_list_view, bg='grey')
         self.specification_exploration_view.grid(row=1, column=0, sticky="NSEW")
+
+        self.shopping_list_view.menu.market_explorer_view = self.specification_exploration_view.market_explorer_view
 
         self.padding_view = Frame(self)
         self.padding_view.grid(row=2, column=0, sticky="NSEW")

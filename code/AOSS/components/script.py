@@ -1,25 +1,43 @@
+import multiprocessing as mp
 
-import multiprocessing as mpr
-import multiprocessing.connection as mpr_conn
 
-import config_paths as cfg
-from AOSS.structure.shopping import MarketHub
-from AOSS.components.processing import ProductCategorizer
 
-def start(main_to_categorizer: mpr.Queue):
+def launch_subprocess(all_to_main: mp.Queue, product: str):
+    try:
+        
+        # Import necessary modules and functions in the subprocess
+        import time, os
 
-    with MarketHub(src_file=cfg.MARKET_HUB_FILE) as hub:
+        import config_paths as cfg
+        from AOSS.structure.marketing import MarketHub
+        from AOSS.components.processing import ProductCategorizer
+
+
+        hub = MarketHub(src_file=cfg.MARKET_HUB_FILE['path'])
+        hub.load_markets()
+        hub.load_products()
+
         categorizer = ProductCategorizer(market_hub=hub)
+        category = categorizer.categorize(product=product)
 
-    
+        while all_to_main.full():
+            print("Failed to send a reponse! Queue is full.")
+            time.sleep(1.5)
 
-        while True:
 
-            if not main_to_categorizer.empty():
-                request = main_to_categorizer.get(block=False)
+        all_to_main.put(obj=(os.getpid(), category), block=False)
+          
 
-                if isinstance(request, str):
-                    categorizer.categorize(product=request)
-                
-                else:
-                    print("Unknown request type for categorization!")
+        
+
+
+        print("END!")
+
+        # # Implement the subprocess logic
+        # while True:
+        #     message = main_to_subprocess.get()
+        #     print(f"Subprocess received: {message}")
+        #     time.sleep(2)
+
+    except Exception as e:
+        print(f"Exception in subprocess: {e}")
