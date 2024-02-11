@@ -49,7 +49,7 @@ def signal_handler(signum, frame):
 
 
 def launch_subprocesses():
-    
+        
     
 
     # main_to_all = mpr.Pipe()
@@ -67,6 +67,7 @@ def launch_subprocesses():
     scraper = mpr.Process(target=scrp.start, args=(main_to_all[0], scraper_to_hub, hub_to_scraper))
     scraper.start()
     processes.append(scraper)
+    
 
     gui = mpr.Process(target=app.start, args=(main_to_all[0], hub_to_qui))
     gui.start()

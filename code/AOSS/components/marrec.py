@@ -2,8 +2,8 @@
 __AUTHOR__ = "Evenining Programmer"
 __VERSION__ = "0.0.1"
 
-from typing import List, Dict
-import polars as pl
+from typing import List, Literal
+from dataclasses import dataclass, field
 
 from AOSS.structure.shopping import MarketHub, Market, RegisteredProduct, ProductCategory
 from AOSS.components.search import ProductMatcher
@@ -98,6 +98,28 @@ from typing import Dict
 
 
 class MarketExplorer:
+    
+    @dataclass
+    class Exploration:
+    
+        market_ID: int
+        # setting this only as [] would create a static variable, because of mutable list
+        
+        total_price: float
+        products: List[RegisteredProduct] = field(default_factory=list)
+        EXPECTED_SIZE: int = -1
+
+
+
+        def __post_init__(self):
+            if self.EXPECTED_SIZE == -1:
+                self.EXPECTED_SIZE = len(self.products)
+
+            self.succession_rate = round((len(self.products)/self.EXPECTED_SIZE) * 100, 2)   
+
+
+
+
     """
          This class explores list of registered markets and attempts to recommend the best one according to a criterium (mostly price).
          Each market gets allocated a buffer containing products that represent market's offer for the provided product list.
@@ -112,30 +134,80 @@ class MarketExplorer:
 
 
 
-    def explore(self, product_list: List[ tuple[str, ProductCategory] ]):
+    def explore(self, product_list: List[ tuple[str, ProductCategory]],
+                metric: Literal['price', 'success_rate'] = 'price'):
         """
         
             returns
                 Dictionary containing mapping of market IDs on their explored product lists.
 
         """
+        explorations: List[MarketExplorer.Exploration] = []
+        
+    
+        #ha = self.Exploration()
+        
 
-        product_lists: Dict[int, List[RegisteredProduct]] = {}
+        #explorations: List[tuple[int, List[RegisteredProduct], float]] = []
+
+        #product_lists: Dict[int, List[RegisteredProduct]] = {}
+
+        #for market in self.__markets:
+           # product_lists.append( (market.ID(), [], 0) )
+
 
         for market in self.__markets:
-            product_lists[market.ID()] = []
+            products: List[RegisteredProduct] = []
+            total_price = 0
 
-        for product, category in product_list:
-
-            for market in self.__markets:
-        
-                match_record = self.__matcher.match(text=product, markets=(market.ID(),), category=category, limit=1 )
+            for explored_product, category in product_list:
+                match_record = self.__matcher.match(text=explored_product, markets=(market.ID(),), category=category,
+                                                    limit=1 )
                 
                 #product = market.get_product(ID=match_record[0][0])
+                product = market.get_product(ID=match_record[0].product_ID)
+                products.append(product)
+                total_price += product.price
+            
+            explorations.append(self.Exploration(market_ID=market.ID(), products=products, total_price=total_price))
+            
 
-                product_lists[market.ID()].append(market.get_product(ID=match_record[0][0]))
+
+            #explorations.append( (market.ID(), products, total_price))
+
+                # for market_ID, products, total_price in product_lists:
+                    
+                #     if market_ID == market.ID():
+                #         _product = market.get_product(ID=match_record[0].product_ID)
+
+                #         products.append(_product)
+                #         total_price += _product.price
+                #         break
+
+
+        # for product, category in product_list:
+
+        #     for market in self.__markets:
         
-        return product_lists
+        #         match_record = self.__matcher.match(text=product, markets=(market.ID(),), category=category, limit=1 )
+                
+        #         #product = market.get_product(ID=match_record[0][0])
+
+        #         for market_ID, products, total_price in product_lists:
+                    
+        #             if market_ID == market.ID():
+        #                 _product = market.get_product(ID=match_record[0].product_ID)
+
+        #                 products.append(_product)
+        #                 total_price += _product.price
+        #                 break
+                #product_lists[market.ID()].append(market.get_product(ID=match_record[0].product_ID))
+        
+        if metric == 'price':
+            explorations.sort(key=lambda exploration : exploration.total_price)
+
+
+        return explorations
         
 
 

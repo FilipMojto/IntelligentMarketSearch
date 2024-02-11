@@ -39,7 +39,7 @@ from datetime import datetime
 
 from config_paths import *
 from AOSS.other.utils import PathManager, TextEditor
-from AOSS.other.exceptions import IllegalProductStructureError, InvalidFileFormatError
+from AOSS.other.exceptions import IllegalProductStructureError, InvalidMarketState
 
 class ProductCategory(Enum):
     NEURČENÁ = 0
@@ -434,8 +434,11 @@ class MarketHub(ProductIdentification):
 
             self.__training_market = int(metadata['training_market'])
 
-        
+
+        self.__product_file: str = None
+        self.__category_file: str = None
         self.__markets: List[tuple[Market, int]] = []
+        
 
 
     def __enter__(self):
@@ -469,9 +472,6 @@ class MarketHub(ProductIdentification):
                 console_log - if any errors with Market metadata are encountered, they are logged in
                                        theconsole  
         """
-
-        self.__product_file: str = None
-        self.__category_file: str = None
 
         with open(file=self.__market_file, mode='r', encoding='utf-8') as market_file:
             markets = csv.DictReader(market_file)
@@ -538,8 +538,10 @@ class MarketHub(ProductIdentification):
 
 
     def load_products(self):
-        self.__product_df = pl.read_csv(self.__product_file)
-
+        if self.__product_file is not None:
+            self.__product_df = pl.read_csv(self.__product_file)
+        else:
+            raise InvalidMarketState("At least one market must be loaded first!")
 
 
     def update(self):
@@ -639,7 +641,8 @@ class MarketHub(ProductIdentification):
         if self.can_register(market=market):
             self.__markets.append((market, self.__get_market_ID()))
         else:
-            raise ValueError("Cannot register provided market!")
+            raise InvalidMarketState("Cannot register provided market!")
+            #raise ValueError("Cannot register provided market!")
     
     def can_categorize(self):
         """
@@ -694,7 +697,7 @@ class MarketHub(ProductIdentification):
                 self.__product_ID += 1
                 return old_value
         else:
-            raise ValueError("Provided market is not aggregated by this market hub! Register it first.")
+            raise InvalidMarketState("Provided market is not aggregated by this market hub! Register it first.")
             
     
                     

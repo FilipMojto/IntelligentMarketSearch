@@ -171,6 +171,7 @@ class ProductCategorizer:
         self.__market_hub = market_hub
         self.__training_market = self.__market_hub.training_market()
         self.__matcher = ProductMatcher(market_hub=self.__market_hub)
+        self.__matcher.set_subset(market_ID=self.__training_market.ID())
 
     def recategorize(self):
 
@@ -184,7 +185,11 @@ class ProductCategorizer:
         for index, row in df.iterrows():
             # Your modification logic here, for example:
             if row['market_ID'] != training_market:
+                start = time.time()
                 row[column_to_modify] = self.categorize(product=row['normalized_name']).name
+                end = time.time()
+
+                print(f"Time: {end - start}")
             # row[column_to_modify] = modify_function(row[column_to_modify])
             #pass
 
@@ -219,12 +224,14 @@ class ProductCategorizer:
         match = None
         
         if isinstance(product, Product):
-            match = self.__matcher.match(text=product.normalized_name, markets=(self.__training_market.ID(),), limit=1, min_match=0)
+            match = self.__matcher.match(text=product.normalized_name, use_subset=True, limit=1, min_match=0)
+
+           # match = self.__matcher.match(text=product.normalized_name, markets=(self.__training_market.ID(),), limit=1, min_match=0)
         elif isinstance(product, str):
             match = self.__matcher.match(text=TextEditor.standardize_str(text=product),
-                                          markets=(self.__training_market.ID(),), limit=1, min_match=0)
-
-        print(match[0].__str__())
+                                          use_subset=True, limit=1, min_match=0)
+            
+    
 
         product_match = self.__training_market.get_product(ID=match[0].product_ID)
 
