@@ -41,7 +41,7 @@
                 "path": "../resources/data/products.csv",
                 "header": true,
                 "delimiter": ",",
-                "col_count": 10, 
+                "col_count": 11, 
                 "columns": {
                     "ID": {
                         "index": 0,
@@ -63,24 +63,28 @@
                         "index": 4,
                         "type": "bool"
                     },
-                    "category": {
+                    "quantity_left": {
                         "index": 5,
-                        "type": "string"
+                        "type": "integer"
                     },
-                    "query_string": {
+                    "category": {
                         "index": 6,
                         "type": "string"
                     },
-                    "market_ID": {
+                    "query_string_ID": {
                         "index": 7,
                         "type": "integer"
                     },
-                    "created_at": {
+                    "market_ID": {
                         "index": 8,
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "index": 9,
                         "type": "timestamp"
                     },
                     "updated_at": {
-                        "index": 9,
+                        "index": 10,
                         "type": "timestamp"
                     }                    
                 }
@@ -164,7 +168,11 @@
         "gui": {
             "path": "../resources/GUI",
             "new_item_icon": "../resources/GUI/new_item_icon.png",
-            "shopping_cart_icon": "../resources/GUI/shopping_cart_icon.png"
+            "shopping_cart_icon": "../resources/GUI/shopping_cart_icon.png",
+            "shopping_cart_icon_2": "../resources/GUI/grocery-store.png",
+            "trash_bin": "../resources/GUI/trash-bin.png",
+            "accept_icon": "../resources/GUI/accept.png",
+            "decline_icon": "../resources/GUI/decline.png"
         },
 
         "market_hub_file": {

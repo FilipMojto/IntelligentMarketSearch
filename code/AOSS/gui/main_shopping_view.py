@@ -1,4 +1,5 @@
 from typing import List
+import multiprocessing
 
 from tkinter import *
 from tkinter import ttk
@@ -11,6 +12,9 @@ from AOSS.structure.shopping import MarketHub, ProductCategory
 from AOSS.components.marrec import MarketExplorer, Market
 from AOSS.components.processing import ProductCategorizer
 from AOSS.other.utils import TextEditor
+
+
+product_file_lock: multiprocessing.Lock = None
 
 
 # --- ShoppingListItem - Class Declaration&Definition --- #
@@ -78,23 +82,33 @@ class ShoppingListItem(Frame):
 
         self.on_widget_click = on_widget_click
 
+        self.is_clicked_on = False
+
     def on_item_clicked(self, event):
         self.on_widget_click()
         self.item_details.configure(bd=3)
+        self.is_clicked_on = True
 
 
 class ShoppingList(Frame):
     def __init__(self, *args, **kw):
         super(ShoppingList, self).__init__(*args, **kw)
-
-
         self.items: List[ShoppingListItem] = []
+        self.__ID = 1
     
+    def assign_ID(self):
+        old_val = self.__ID
+        self.__ID += 1
+        return old_val
+
+    
+
     def remove_click_texture(self, event = None):
 
         for item in self.items:
             item.configure(background='white')
             item.item_details.configure(bd=1)
+            item.is_clicked_on = False
 
 
 
@@ -141,9 +155,7 @@ class ShoppingListFrame(LabelFrame):
         #return self.__items
 
     def insert_item(self, name: str, category: int):
-
-        print(name)
-        item = ShoppingListItem(self.shopping_list, name=name, category=category, ID=len(self.shopping_list.items) + 1,
+        item = ShoppingListItem(self.shopping_list, name=name, category=category, ID=self.shopping_list.assign_ID(),
                                 on_widget_click=self.shopping_list.remove_click_texture)
         
         item.pack(side="left", fill="y", expand=False, padx=2, pady=2)
@@ -155,6 +167,8 @@ class ShoppingListFrame(LabelFrame):
         
         self.shopping_list.items.append(item)
         item.bind("<Button-1>", self.shopping_list.remove_click_texture)
+
+        
 
 
 
@@ -180,83 +194,190 @@ class ShoppingListFrame(LabelFrame):
 #     ZDRAVE_POTRAVINY = 13
 
 
-class CategoryInfoView(Frame):
-    def __init__(self, *args, **kw):
-        super(CategoryInfoView, self).__init__(*args, **kw)
-        #self.__categories_frame = categories_frame
-        #self.__button = Button(self, text="More Info", font=("Bold", 12), command=self.__show_category_info).pack(side='top')
+# class CategoryInfoView(Frame):
+#     def __init__(self, *args, **kw):
+#         super(CategoryInfoView, self).__init__(*args, **kw)
+#         #self.__categories_frame = categories_frame
+#         #self.__button = Button(self, text="More Info", font=("Bold", 12), command=self.__show_category_info).pack(side='top')
 
-        self.__info_text = Text(self, height = 5, width = 52)
-        self.__info_text.pack(side='top', expand=True, fill='both', padx=10, pady=10)
-        #self.__info_text.grid(row=0, column=0, sticky="NSEW")
-        self.__info_text.config(state="disabled")
+#         self.__info_text = Text(self, height = 5, width = 52)
+#         self.__info_text.pack(side='top', expand=True, fill='both', padx=10, pady=10)
+#         #self.__info_text.grid(row=0, column=0, sticky="NSEW")
+#         self.__info_text.config(state="disabled")
     
-    def notify(self, category_name: str):
-        self.__info_text.config(state="normal")
-        self.__info_text.delete(1.0, END)
-        self.__info_text.insert(END, category_name)
-        self.__info_text.config(state="disabled")
+#     def notify(self, category_name: str):
+#         self.__info_text.config(state="normal")
+#         self.__info_text.delete(1.0, END)
+#         self.__info_text.insert(END, category_name)
+#         self.__info_text.config(state="disabled")
 
     # def __show_category_info(self):
     #     self.__categories_frame.
+
+
+# class CategoryFrame(Frame):
+#     def __init__(self, *args, shopping_list: ShoppingListFrame, **kw):
+#         super(CategoryFrame, self).__init__(*args, **kw)
+        
+
+#         self.__categories = CategoryOptionsPanel(self, text="Categories", category_info_view=self, font=(20))
+#         self.__categories.grid(row=0, column=0, sticky="WNES", padx=10, pady=10)
+
+#         self.__info_text = Text(self, width = 15)
+#         self.__info_text.grid(row=1, column=0, sticky="NSEW", padx=10, pady=10)
+#         self.__info_text.config(state="disabled")
+
+#         self.rowconfigure(0, weight=2)
+#         self.rowconfigure(1, weight=1)
+
+#         self.columnconfigure(0, weight=1)
+
+
+# class NewProductOptionsMenu(Frame):
+#     def __init__(self, *args, **kw):
+#         super(NewProductOptionsMenu, self).__init__(*args, **kw)
+
+#         # First Row Widgets
+
+#         self.product_name_label = Label(self, text="Name: ", font=("Arial", 11), padx=5, bg='grey')
+#         self.product_name_label.grid(row=0, column=0, sticky="E", pady=7)
+
+#         self.product_name_entry = Entry(self, font=('Bold', 13))
+#         self.product_name_entry.grid(row=0, column=1, sticky="WNES", pady=7)
+
+#         self.to_cart_button = Button(self, text="To Cart", font=("Arial", 12, "bold", "underline"), height=1, command=self.__on_button_clicked)
+#         self.to_cart_button.grid(row=0, column=2, sticky="EWNS", padx=3, pady=7)
+
+#         # Second Row Widgets
+
+#         self.product_amount_label = Label(self, text="Amount: ", font=("Arial", 12), padx=5, bg='grey')
+#         self.product_amount_label.grid(row=1, column=0, sticky="E", pady=7)
+        
+#         self.product_amount_entry = Entry(self, font=('Arial', 12))
+#         self.product_amount_entry.grid(row=1, column=1, sticky="WNES", pady=7)
+
+#         self.rowconfigure(0, weight=1)
+#         self.rowconfigure(1, weight=1)
+
+#         self.columnconfigure(0, weight=1, minsize=10)
+#         self.columnconfigure(1, weight=5, minsize=30)
+#         self.columnconfigure(2, weight=2, minsize=20)
+
+
 
 class NewProductView(LabelFrame):
     def __init__(self, *args, shopping_list: ShoppingListFrame, **kw):
         super(NewProductView, self).__init__(*args, **kw)
 
         self.__shopping_list = shopping_list
+        
+         # ---- BASIC DATA PANEL - ROW 1 ---- #
+        
+        self.basic_data_panel = Frame(self, bg='red')
+        self.basic_data_panel.grid(row=0, column=0, sticky="NSEW")
+       
+        # First Row Widgets
 
-        self.__product_name_label = Label(self, text="Name: ", font=("Bold", 12), padx=5, bg='grey')
-        self.__product_name_label.grid(row=0, column=0, sticky="E", pady=7)
+        self.product_name_label = Label(self.basic_data_panel, text="Name: ",
+                                        font=("Arial", 12), padx=5, bg='grey')
+        self.product_name_label.grid(row=0, column=0, sticky="E")
 
-        self.__entry = Entry(self, font=('Bold', 13))
-        self.__entry.grid(row=0, column=1, sticky="WNES", pady=7)
+        self.product_name_entry = Entry(self.basic_data_panel, font=('Arial', 13))
+        self.product_name_entry.grid(row=0, column=1, sticky="WNES", pady=0)
 
-        self.__button = Button(self, text="To Cart", font=("Arial", 12, "bold", "underline"), height=1, command=self.__on_button_clicked)
-        self.__button.grid(row=0, column=2, sticky="EWNS", padx=3, pady=7)
+        self.to_cart_button = Button(self.basic_data_panel, text="To Cart", font=("Arial", 12, "bold", "underline"),  command=self.__on_button_clicked)
+        self.to_cart_button.grid(row=0, column=2, sticky="EW", padx=3)
 
+        # Second Row Widgets
 
+        self.product_amount_label = Label(self.basic_data_panel, text="Amount: ", font=("Arial", 12), padx=5, bg='grey')
+        self.product_amount_label.grid(row=1, column=0, sticky="E")
+        
+        self.product_amount_entry = Entry(self.basic_data_panel, font=('Arial', 13))
+        self.product_amount_entry.grid(row=1, column=1, sticky="WNES", pady=0)
 
-        self.__info_text = Text(self, width = 15)
-        self.__info_text.grid(row=1, column=2, sticky="NSEW", padx=10, pady=10)
-        self.__info_text.config(state="disabled")
+        self.basic_data_panel.rowconfigure(0, weight=1)
+        self.basic_data_panel.rowconfigure(1, weight=1)
 
-
-        self.__categories = CategoriesFrame(self, text="Categories", category_info_view=self, font=(20))
-        self.__categories.grid(row=1, column=1, sticky="WNES", padx=10, pady=10)
+        self.basic_data_panel.columnconfigure(0, weight=1)#, minsize=10)
+        self.basic_data_panel.columnconfigure(1, weight=5)#, minsize=30)
+        self.basic_data_panel.columnconfigure(2, weight=2)#, minsize=20)
 
         
+
+        # # First Row Widgets
+
+        # self.product_name_label = Label(self, text="Name: ", font=("Arial", 11), padx=5, bg='grey')
+        # self.product_name_label.grid(row=0, column=0, sticky="E", pady=7)
+
+        # self.product_name_entry = Entry(self, font=('Bold', 13))
+        # self.product_name_entry.grid(row=0, column=1, sticky="WNES", pady=7)
+
+        # self.to_cart_button = Button(self, text="To Cart", font=("Arial", 12, "bold", "underline"), height=1, command=self.__on_button_clicked)
+        # self.to_cart_button.grid(row=0, column=2, sticky="EWNS", padx=3, pady=7)
+
+        # # Second Row Widgets
+
+        # self.product_amount_label = Label(self, text="Amount: ", font=("Arial", 12), padx=5, bg='grey')
+        # self.product_amount_label.grid(row=1, column=0, sticky="E", pady=7)
+        
+        # self.product_amount_entry = Entry(self, font=('Arial', 12))
+        # self.product_amount_entry.grid(row=1, column=1, sticky="WNES", pady=7)
+
+       
+
+        # ---- CATEGORIES FRAME - ROW 2 ---- #
+
+        #self.categories_frame = Frame(self, bg='green')
+        #self.categories_frame.grid(row=1, column=0, sticky="NSEW")
+
+
+        #self.category_options = CategoryOptionsPanel(self.categories_frame, text="Categories", category_info_view=self, font=(20))
+        #self.category_options.grid(row=0, column=0, sticky="WNES", padx=10, pady=5)
+
+        #self.category_info_panel = Text(self.categories_frame, width = 15)
+        #self.category_info_panel.grid(row=0, column=1, sticky="NSEW", padx=10, pady=5)
+        #self.category_info_panel.config(state="disabled")
+
+        #self.categories_frame.rowconfigure(0, weight=1)
+        #self.categories_frame.rowconfigure(1, weight=1)
+        #self.categories_frame.columnconfigure(0, weight=1)
+
+
+
         self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
-        self.columnconfigure(2, weight=1)
+        #self.columnconfigure(1, weight=1)
+        #self.columnconfigure(2, weight=1)
         #self.columnconfigure(3, weight=1)
 
         # self.columnconfigure(1, weight=2, minsize=510)
         # self.columnconfigure(2, weight=1, minsize=240)
         # self.columnconfigure(3, weight=1)
 
-
-        self.rowconfigure(0, weight=1, minsize=50)
+        
+        self.rowconfigure(0, weight=1)
+       # self.rowconfigure(1, weight=1)
         #self.rowconfigure(0, weight=1, minsize=60)
-        self.rowconfigure(1, weight=20)
+        #self.rowconfigure(2, weight=5)
+        #self.rowconfigure(3, weight=50)
 
-        self.__market_hub = MarketHub(src_file=config_paths.MARKET_HUB_FILE['path'])
-        self.__market_hub.load_markets()
+        #self.__market_hub = MarketHub(src_file=config_paths.MARKET_HUB_FILE['path'])
+        #self.__market_hub.load_markets()
 
     
     def show_category_details(self, category_name: str, details: str):
-        self.__info_text.config(state="normal")
-        self.__info_text.delete(1.0, END)
+        self.category_info_panel.config(state="normal")
+        self.category_info_panel.delete(1.0, END)
         try:
-            self.__info_text.insert(END, category_name + '\n' + details)
+            self.category_info_panel.insert(END, category_name + '\n' + details)
         except TypeError:
             pass
         
-        self.__info_text.config(state="disabled")
+        self.category_info_panel.config(state="disabled")
 
     def consume_entry(self):
-        content = self.__entry.get()
-        self.__entry.delete(0, END)
+        content = self.product_name_entry.get()
+        self.product_name_entry.delete(0, END)
 
         return content
     
@@ -267,14 +388,14 @@ class NewProductView(LabelFrame):
             messagebox.showwarning("Warning", "Name field cannot be empty!")
             return
 
-        self.__shopping_list.insert_item(name=name, category=self.__categories.get_option() )
+        self.__shopping_list.insert_item(name=name, category=self.category_options.get_option() )
     
 
-class CategoriesFrame(LabelFrame):
+class CategoryOptionsPanel(LabelFrame):
     TEXT_WIDTH = 20
 
     def __init__(self, *args, category_info_view: NewProductView, **kw):
-        super(CategoriesFrame, self).__init__(*args, **kw)
+        super(CategoryOptionsPanel, self).__init__(*args, **kw)
         self.__category_info_view = category_info_view
 
         self.__variable = IntVar()
@@ -388,10 +509,13 @@ class ExplorationTable(Frame):
 class MarketExplorerView(LabelFrame):
     def __init__(self, *args, **kw):
         super(MarketExplorerView, self).__init__(*args, **kw)
-        
+        global product_file_lock
+
         self.market_hub = MarketHub(src_file=config_paths.MARKET_HUB_FILE['path'])
         self.market_hub.load_markets()
-        self.market_hub.load_products()
+
+        with product_file_lock:
+            self.market_hub.load_products()
 
 
         self.explorer = MarketExplorer(market_hub=self.market_hub)
@@ -409,16 +533,23 @@ class MarketExplorerView(LabelFrame):
     def explore_markets(self, items: List[ShoppingListItem]):
 
         product_list = []
-
+        
         for item in items:
-            product_list.append((TextEditor.standardize_str(item.item_details.name), ProductCategory(value=item.item_details.category)) ) 
+
+            category = None
+
+            if item.item_details.category > 0:
+                category = ProductCategory(value=item.item_details.category)
+
+              
+            product_list.append((TextEditor.standardize_str(item.item_details.name), category) ) 
 
         results = self.explorer.explore(product_list=product_list, metric='price')
 
         for index, exploration in enumerate(results):
             #market_ID, products, total_price = exploration
             
-            self.table.insert_value(row=index + 1, col=0, value=self.market_hub.market(ID=exploration.market_ID).name().lower() )
+            self.table.insert_value(row=index + 1, col=0, value=self.market_hub.market(identifier=exploration.market_ID).name().lower() )
             self.table.insert_value(row=index + 1, col=1, value=round(number=exploration.total_price, ndigits=2))
             self.table.insert_value(row=index + 1, col=2, value=exploration.succession_rate)
 
@@ -461,7 +592,7 @@ class ShoppingListMenu(Frame):
         self.delete_product_button.pack(side='right', fill='y', padx=3, pady=3)
         #self.delete_product_button.grid(row=0, column=1, sticky="ENS", padx=5, pady=3)
 
-        self.shopping_list = shopping_list
+        self.shopping_list_frame = shopping_list
         self.market_explorer_view: MarketExplorerView = None
        # self.rowconfigure(0, weight=1)
         #self.columnconfigure(0, weight=1)
@@ -473,11 +604,12 @@ class ShoppingListMenu(Frame):
 
     
     def search_market_pressed(self):
-        items = self.shopping_list.shopping_list.items
+        items = self.shopping_list_frame.shopping_list.items
 
 
         if not items:
             messagebox.showwarning("Warning", "Product list contains no items!")
+            return
         
         self.market_explorer_view.explore_markets(items=items)
 
@@ -487,7 +619,19 @@ class ShoppingListMenu(Frame):
 
     
     def delete_product_pressed(self):
-        print("PRESSED!")
+
+        items = self.shopping_list_frame.shopping_list.items
+        assert(any(item.is_clicked_on for item in items))
+        
+    
+        for item in items:
+
+            if item.is_clicked_on:
+                item.destroy()
+                items.remove(item)
+                break
+    
+
 
 
 class ShoppingListView(Frame):
@@ -495,7 +639,7 @@ class ShoppingListView(Frame):
         super(ShoppingListView, self).__init__(*args, **kw)
 
         
-        self.__icon_image = PhotoImage(file=config_paths.SHOPPING_CART_ICON).subsample(17, 17)
+        self.__icon_image = PhotoImage(file=config_paths.SHOPPING_CART_ICON_2).subsample(17, 17)
         self.__label = Label(self, text="Shopping List",
                             image=self.__icon_image, compound='right', font=('Arial', 20, 'bold'), height=45, fg='black', bg='dimgrey')
 
@@ -562,8 +706,16 @@ class MainShoppingView(Frame):
     # def __on_new_item_button_click(self):
     #     self.__shopping_list.insert_item()
 
-    def __init__(self, *args, product_file: str, **kw):
+    def __init__(self, *args, _product_file_lock = None, **kw):
         super(MainShoppingView, self).__init__(*args, **kw)
+
+    
+        global product_file_lock
+
+        if _product_file_lock:
+            product_file_lock = _product_file_lock
+        else:
+            product_file_lock = multiprocessing.Lock()
 
         self.shopping_list_view = ShoppingListView(self)
 
@@ -586,7 +738,7 @@ class MainShoppingView(Frame):
 
         self.rowconfigure(0, weight=1, minsize=250)
         self.rowconfigure(1, weight=1, minsize=100)
-        self.rowconfigure(2, weight=200)
+        self.rowconfigure(2, weight=2)
 
 
         self.columnconfigure(0, weight=1)

@@ -5,6 +5,7 @@ import multiprocessing as mpr, multiprocessing.connection as mpr_conn, signal
 import msvcrt
 
 import threading
+from queue import Empty
 
 #Set the starting point to the directory containing the script
 script_directory = os.path.dirname(os.path.abspath(__file__))
@@ -49,13 +50,22 @@ def signal_handler(signum, frame):
     if signum == 2:
         terminate()
 
-def __check_main(main_to_all: mpr_conn.PipeConnection, timeout: float = 1.5):
+def __check_main(main_to_all: mpr.Queue, timeout: float = 1.5):
     """
         This function checks for any incoming request from the main process.
     """
+    
+    try:
+        if main_to_all.get(timeout=timeout) == "-end":
+            terminate()
+    except Empty:
+        pass
+    #if not main_to_all.empty() and main_to_all.get(block=False) == "-end":
+     #   terminate()
 
-    if main_to_all.poll(timeout=timeout) and main_to_all.recv() == "-end":
-        terminate()
+
+    #if main_to_all.poll(timeout=timeout) and main_to_all.recv() == "-end":
+     #   terminate()
 
 
 
@@ -85,7 +95,7 @@ def __scrape_products(scraper: ProductScraper, request: ScrapeRequest):
     """
     is_scraping.set()
 
-    products_ = scraper.scrape_categories(categories=request.categories)
+    products_ = scraper.scrape_categories(identifiers=request.categories, mode='ID')
 
     with product_lock:
         global products
@@ -100,9 +110,9 @@ def __scrape_products(scraper: ProductScraper, request: ScrapeRequest):
 
 
 
-def process_requests(main_to_all: mpr_conn.PipeConnection, scraper_to_hub: mpr.Queue):
+def process_requests(main_to_all: mpr.Queue, scraper_to_hub: mpr.Queue):
 
-    global active_scraper, processed_request
+    global active_scraper, processed_request, products
 
     if not is_scraping.is_set():
 
@@ -136,25 +146,30 @@ def process_requests(main_to_all: mpr_conn.PipeConnection, scraper_to_hub: mpr.Q
         __check_main(main_to_all=main_to_all)
    
     with product_lock:
-        if products:
+       # can_send = (products)
 
-            i = 0
-            length = len(products)
+        finished = False
 
-            while i <  length:
+        while products:
+            finished = True
+            
+            #length = len(products)
 
-                while True:
-                    if not scraper_to_hub.full():
-                        scraper_to_hub.put(obj=products[i: i + 500], block=False)
-                        break
-                    else:
-                        print("Pipe not ready for writing. Retrying...")
-                        __check_main(main_to_all=main_to_all, timeout=0.05)
+            #while i <  length:
+
+            while True:
+                if not scraper_to_hub.full():
+                    scraper_to_hub.put(obj=products[:5000], block=False)
+                    break
+                else:
+                    print("Pipe not ready for writing. Retrying...")
+                    __check_main(main_to_all=main_to_all, timeout=0.05)
                 
-                i += 500
+            products = products[5000:]
 
-            products.clear()
-
+            #products = products[5000:]
+        
+        if finished:
             while True:
                 if not scraper_to_hub.full():
                     scraper_to_hub.put(processed_request.ID, block=False)
@@ -185,24 +200,24 @@ def process_requests(main_to_all: mpr_conn.PipeConnection, scraper_to_hub: mpr.Q
 # __check_main(main_to_all=main_to_all)
 
 
-def __check_products(scraper_to_hub: mpr.Queue):
-    global products
+# def __check_products(scraper_to_hub: mpr.Queue):
+#     global products
 
-    with product_lock:
-        if products:
-            if not scraper_to_hub.full():
-                for product in products:
-                    scraper_to_hub.put(obj=product, block=False)
+#     with product_lock:
+#         if products:
+#             if not scraper_to_hub.full():
+#                 for product in products:
+#                     scraper_to_hub.put(obj=product, block=False)
                 
-                products.clear()
-            else:
-                print("Pipe not ready for writing. Retrying...")
-                time.sleep(1.5)
+#                 products.clear()
+#             else:
+#                 print("Pipe not ready for writing. Retrying...")
+#                 time.sleep(1.5)
 
 
 
 
-def start(main_to_all: mpr_conn.PipeConnection, scraper_to_hub: mpr.Queue,
+def start(main_to_all: mpr.Queue, scraper_to_hub: mpr.Queue,
           hub_to_scraper: mpr.Queue):
     
     signal.signal(signal.SIGINT, signal_handler)
