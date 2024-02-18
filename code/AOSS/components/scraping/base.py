@@ -6,7 +6,7 @@
 import time
 from datetime import datetime
 #import threading
-from typing import List
+from typing import List, Literal
 
 import os, sys
 import requests
@@ -377,6 +377,7 @@ class ProductScraper:
         """
 
         self.__market = market
+        self.__categories = market.categories()
         self.__url = ProductScraper._BASE_URL + self.__market.store_name() + ProductScraper._MARKET_MENU_URL
 
     def market(self):
@@ -385,11 +386,17 @@ class ProductScraper:
         """
         return self.__market
 
-    def scrape_categories(self, categories: (tuple[str, ...] | tuple[int, ...]), products: List[tuple[Product, int]] = None,
-                          console_log: bool = False):
 
-        if isinstance(categories[0], str) and any(category not in self.__market.categories() for category in categories):
-            raise ValueError("Provided category is not supported by the market!")
+
+    def scrape_categories(self, identifiers: tuple[int, ...], mode: Literal['ID', 'index'] = 'ID', products: List[tuple[Product, int]] = None,
+                          console_log: bool = False):
+        
+        """
+
+        """
+
+        # if isinstance(categories[0], str) and any(category not in self.__market.categories() for category in categories):
+        #     raise ValueError("Provided category is not supported by the market!")
         
         _return = False
 
@@ -397,48 +404,117 @@ class ProductScraper:
             products = []
             _return = True
 
+        categories_str = {}
 
-        for category in categories:
+        for identifier in identifiers:
 
-            category_name = ""
+            category_name = None
+            category_ID = None
 
-            if isinstance(category, str):
-                category_name = category
-            elif isinstance(category, int): 
-                category_name = self.__market.categories()[category]
-            else:
-                raise TypeError("Unsupported type of category! Must be either string or integer!")
+            if mode == 'ID':
 
+                #try:
+                for name, ID in self.__categories.items():
 
-            url = self.__url + ProductScraper._MARKET_CATEGORY_URL + category_name
-            response = requests.get(url)
-    
-            if response.status_code == 200:
-                data = response.json()
+                    if identifier == ID:
+                        categories_str[name] = ID
+                        break
+                else:                    
+                    raise ValueError("Provided category ID not supported by this market!")
 
-                for item in data['items']:
+                    #categories_str[self.__categories[category]] =  category
+                    # categories_str.append(self.__categories[category])
+                    # category_ID = category
+                # except KeyError:
+                #     raise ValueError("Provided category not supported by this market!")
+            elif mode == 'index':
+
+                # searching for a category by an index
+                for index, (ID, name) in enumerate(self.__categories.items()):
+                    if index == identifier:
+                        categories_str[ID] = name
+                        #categories_str.append(name)
+
+                        #category_name = name
+                        #category_ID = ID
+                        break
+                else:
+                    raise IndexError("Provided category index is invalid!")
                     
-                    new_product = Product(
-                        name=item.get('name', 'unknown'),
-                        price=int(item.get('baseprice', -1)) / 100,
-                        approximation=0,
-                        category=category_name,
-                        created_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),
-                        updated_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'))
 
-                    products.append( (new_product, self.__market.ID()) )
-                    
+            #     #category_name = self.__market.categories()[category]
+            # else:
+            #     raise TypeError("Unsupported type of category! Must be either string or integer!")
+
+
+        #url = self.__url + ProductScraper._MARKET_CATEGORY_URL + category_name
+        response = requests.get(self.__url)
+
+        if response.status_code == 200:
+            data = response.json()
+
+            for item in data['items']:
+                
+                category_ID = item.get('category')
+                category_name = None
+
+                for identifier in data['categories']:
+                    if identifier['id'] == category_ID:
+                        category_name = identifier['slug']
+                        break
+                
+                if not category_name in categories_str.keys():
                     if console_log:
-                        print(f"Scraped successfully: {new_product}")
+                        print(f"Category {category_name} not supported by current market! Skipping...")
+                    continue
+                
+                
+                quantity_left=item.get('quantity_left')
 
-            else:
-                raise ConnectionRefusedError(f"Received invalid status code: {response.status_code}")
-            
+                if quantity_left is None:
+                    quantity_left = 0
+                
+                new_product = Product(
+                    name=item.get('name', 'unknown'),
+                    price=int(item.get('baseprice', -1)) / 100,
+                    approximation=0,
+                    quantity_left=quantity_left,
+                    category=self.__categories[category_name],
+                    created_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),
+                    updated_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'))
+
+                products.append( (new_product, self.__market.ID()) )
+                
+                if console_log:
+                    print(f"Scraped successfully: {new_product}")
+
+        else:
+            raise ConnectionRefusedError(f"Received invalid status code: {response.status_code}")
+        
         if _return:
             return products
 
+    def get_categories(self):
+        url = self.__url
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            data = response.json()
+
+            for category in data['categories']:
+                
+                print(category.get('slug'))
+
+
 
     def scrape_all(self, products: List[Product] = None, console_log: bool = False):
+        
+        _return = False
+
+        if products is None:
+            _return = True
+            products = []
+        
 
        # url = self.__url + ProductScraper._MARKET_CATEGORY_URL + category_name
         response = requests.get(self.__url)
@@ -447,11 +523,29 @@ class ProductScraper:
             data = response.json()
 
             for item in data['items']:
+                category_ID = item.get('category')
+                category_name = None
+
+                for category in data['categories']:
+                    if category['id'] == category_ID:
+                        category_name = category['slug']
+                        break
                 
+                if not category_name in self.__categories.values():
+                    if console_log:
+                        print(f"Category {category_name} not supported by current market! Skipping...")
+                    continue
+
+                quantity_left=item.get('quantity_left')
+
+                if quantity_left is None:
+                    quantity_left = 0
+
                 new_product = Product(
                     name=item.get('name', 'unknown'),
                     price=int(item.get('baseprice', -1)) / 100,
                     approximation=0,
+                    quantity_left=quantity_left,
                     category=category_name,
                     created_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),
                     updated_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'))
@@ -464,7 +558,10 @@ class ProductScraper:
         else:
             raise ConnectionRefusedError(f"Received invalid status code: {response.status_code}")
 
-        return self.scrape_categories(categories=self.__market.categories(), console_log=console_log)
+        if _return:
+            return products
+        
+        #return self.scrape_categories(categories=self.__market.categories(), console_log=console_log)
         # products: List[tuple[Product, int]] = []
 
         # self.scrape_categories(categories=self.__market.categories(), products=products, console_log=console_log)

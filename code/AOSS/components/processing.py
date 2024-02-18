@@ -15,7 +15,7 @@ PRICE_APPROXIMATION_SIGN = '~'
 CURRENCY_SIGN='€'
 
 
-def process_scraped_products(products: (list[tuple[str, str, str]] | tuple[str, str, str]),
+def process_scraped_products(products: (list[tuple[Product, int]] | tuple[Product, int]),
                               substition: (list[tuple[str, str]] | tuple[str, str]) = (',', '.')):
 
     if isinstance(products, list):
@@ -112,7 +112,7 @@ class ProductCategorizer:
         return None
 
     @staticmethod
-    def categorize_by_mapping(product: Product, mappings_file: str, header: bool = False):
+    def categorize_by_mapping(product: Product, mappings_file: str):
         """
             This function categorizes a product manually based on category mapping in a file. This is especially useful for
             categorizing training market's products.
@@ -124,17 +124,13 @@ class ProductCategorizer:
         category_ID = -1
 
         with open(file=mappings_file, mode='r', encoding='utf-8') as file:
-            reader = csv.reader(file)
+            reader = csv.DictReader(file)
 
-            if header:
-                next(reader)
             
-
-
             for row in reader:
-                if row[CATEGORY_MAP_FILE['columns']['name']['index']] == product.category:
+                if int(row['ID']) == product.category:
 
-                    category_ID = int(row[CATEGORY_MAP_FILE['columns']['category_ID']['index']])
+                    category_ID = int(row['category_ID'])
                     break
             else:
                 raise ValueError("There is no mapping for the specified category!")
@@ -233,7 +229,7 @@ class ProductCategorizer:
             
     
 
-        product_match = self.__training_market.get_product(ID=match[0].product_ID)
+        product_match = self.__training_market.get_product(identifier=match[0].product_ID)
 
         #match = matcher.match(text=modified_name, category=None, min_match=0, limit=1, markets=market_hub.training_market().ID())
 

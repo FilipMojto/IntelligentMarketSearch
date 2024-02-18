@@ -1,6 +1,7 @@
 
 import sys, os
 import signal
+import threading
 import multiprocessing as mpr, multiprocessing.connection as mpr_conn
 from typing import List
 
@@ -20,13 +21,15 @@ import AOSS.structure.marketing as mrk
 import AOSS.components.scraping.scrape as scrp
 import AOSS.gui.application as app
 
-main_to_all = mpr.Pipe()
+main_to_all = mpr.Queue(maxsize=5)
 hub_to_scraper = mpr.Queue(maxsize=5)
 scraper_to_hub = mpr.Queue(maxsize=5)
 hub_to_qui = mpr.Queue(maxsize=5)
+product_file_lock = mpr.Lock()
+
 
 processes: List[mpr.Process] = []
-main_to_all: mpr_conn.PipeConnection = mpr.Pipe()
+#main_to_all: mpr_conn.PipeConnection = mpr.Pipe()
 
 def terminate():
 
@@ -59,17 +62,18 @@ def launch_subprocesses():
     #hub_to_scraper, scraper_to_hub = mpr.Pipe()
     
     
-    market_hub = mpr.Process(target=mrk.start, args=(main_to_all[0], hub_to_scraper, scraper_to_hub, hub_to_qui))
+    market_hub = mpr.Process(target=mrk.start, args=(main_to_all, hub_to_scraper, scraper_to_hub, hub_to_qui,
+                                                     product_file_lock))
     
     market_hub.start()
     processes.append(market_hub)
 
-    scraper = mpr.Process(target=scrp.start, args=(main_to_all[0], scraper_to_hub, hub_to_scraper))
+    scraper = mpr.Process(target=scrp.start, args=(main_to_all, scraper_to_hub, hub_to_scraper))
     scraper.start()
     processes.append(scraper)
     
 
-    gui = mpr.Process(target=app.start, args=(main_to_all[0], hub_to_qui))
+    gui = mpr.Process(target=app.start, args=(main_to_all, hub_to_qui, product_file_lock))
     gui.start()
     processes.append(gui)
 

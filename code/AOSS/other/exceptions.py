@@ -12,7 +12,7 @@ class InvalidHTMLFormat(Exception):
         super().__init__(self.message)
 
 
-class IllegalProductStructureError(Exception):
+class IllegaProductState(Exception):
     def __init__(self, message="Invalid product structure!"):
         self.message = message
         super().__init__(self.message)

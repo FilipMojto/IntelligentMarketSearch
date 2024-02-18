@@ -168,7 +168,7 @@ class ProductMatcher:
         if len(self.__markets) == 0:
             raise ValueError("Provided market hub contains no markets!")
 
-        market_hub.load_products()
+        #market_hub.load_products()
         self.__product_df = market_hub.product_df()
         self.__subset = None
 
@@ -181,10 +181,16 @@ class ProductMatcher:
         
     
 
-    def __extract_cols(self, row, text):
-        return (row[PRODUCT_FILE['columns']['ID']['index']], fuzz.token_set_ratio(row[
-            PRODUCT_FILE['columns']['normalized_name']['index']], text), row[PRODUCT_FILE['columns']['price']['index']],
-        row[PRODUCT_FILE['columns']['market_ID']['index']])
+    def __extract_cols(self, row, text, sort: bool = False):
+
+        if not sort:
+            return (row[PRODUCT_FILE['columns']['ID']['index']], fuzz.token_set_ratio(row[
+                PRODUCT_FILE['columns']['normalized_name']['index']], text), row[PRODUCT_FILE['columns']['price']['index']],
+            row[PRODUCT_FILE['columns']['market_ID']['index']])
+        else:
+            return (row[PRODUCT_FILE['columns']['ID']['index']], fuzz.token_sort_ratio(row[
+                PRODUCT_FILE['columns']['normalized_name']['index']], text), row[PRODUCT_FILE['columns']['price']['index']],
+            row[PRODUCT_FILE['columns']['market_ID']['index']])
 
  
     def set_subset(self, market_ID: int):
@@ -243,8 +249,10 @@ class ProductMatcher:
         if category is not None:
             df = df.filter(df['category'] == category.name)
 
-
-        df = df.apply(lambda row: self.__extract_cols(row, text))
+        if len(df) == 0:
+            print("NOW!")
+            
+        df = df.apply(lambda row: self.__extract_cols(row, text, sort=sort_words))
 
         # [product_ID, match, price, market_ID]
         # here we convert necessary columns into python lists and then zip them into a list of tuples
@@ -272,7 +280,7 @@ class ProductMatcher:
             
             if markets is not None and markets:
                 for market_i in markets:
-                    _markets.append(self.__market_hub.market(ID=market_i))
+                    _markets.append(self.__market_hub.market(identifier=market_i))
             else:
                 _markets = self.__markets
 

@@ -31,3 +31,7 @@ GUI = PATHS["resources"]["gui"]
 
 NEW_ITEM_ICON = GUI["new_item_icon"]
 SHOPPING_CART_ICON = GUI["shopping_cart_icon"]
+SHOPPING_CART_ICON_2 = GUI['shopping_cart_icon_2']
+TRASH_BIN_ICON = GUI['trash_bin']
+ACCEPT_ICON = GUI['accept_icon']
+DECLINE_ICON = GUI['decline_icon']

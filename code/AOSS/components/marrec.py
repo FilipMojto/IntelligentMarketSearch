@@ -106,7 +106,7 @@ class MarketExplorer:
         # setting this only as [] would create a static variable, because of mutable list
         
         total_price: float
-        products: List[RegisteredProduct] = field(default_factory=list)
+        products: List[tuple[RegisteredProduct, float]] = field(default_factory=list)
         EXPECTED_SIZE: int = -1
 
 
@@ -115,7 +115,10 @@ class MarketExplorer:
             if self.EXPECTED_SIZE == -1:
                 self.EXPECTED_SIZE = len(self.products)
 
-            self.succession_rate = round((len(self.products)/self.EXPECTED_SIZE) * 100, 2)   
+            if self.EXPECTED_SIZE == 0:
+                self.succession_rate = -1
+            else:
+                self.succession_rate = round((len(self.products)/self.EXPECTED_SIZE) * 100, 2)   
 
 
 
@@ -134,8 +137,10 @@ class MarketExplorer:
 
 
 
-    def explore(self, product_list: List[ tuple[str, ProductCategory]],
-                metric: Literal['price', 'success_rate'] = 'price'):
+
+
+    def explore(self, product_list: List[ tuple[str, ProductCategory, int]],
+                metric: Literal['price', 'success_rate'] = 'price', limit: int = 1):
         """
         
             returns
@@ -157,19 +162,28 @@ class MarketExplorer:
 
 
         for market in self.__markets:
-            products: List[RegisteredProduct] = []
-            total_price = 0
+            products: List[List[tuple[RegisteredProduct, float]]] = []
+            total_price: List[int] = []
 
-            for explored_product, category in product_list:
-                match_record = self.__matcher.match(text=explored_product, markets=(market.ID(),), category=category,
-                                                    limit=1 )
+            for i in range(limit):
+                products.append([])
+                total_price.append(0)
+
+            for explored_product, category, amount in product_list:
                 
-                #product = market.get_product(ID=match_record[0][0])
-                product = market.get_product(ID=match_record[0].product_ID)
-                products.append(product)
-                total_price += product.price
-            
-            explorations.append(self.Exploration(market_ID=market.ID(), products=products, total_price=total_price))
+
+                match_record = self.__matcher.match(text=explored_product, markets=(market.ID(),), category=None,
+                                                    limit=limit, sort_words=True)
+
+                for i in range(limit):
+
+                    #product = market.get_product(ID=match_record[0][0])
+                    product = market.get_product(identifier=match_record[i].product_ID)
+                    products[i].append((product, match_record[i].ratio))
+                    total_price[i] += product.price
+                
+            for i in range(limit):
+                explorations.append(self.Exploration(market_ID=market.ID(), products=products[i], total_price=total_price[i]))
             
 
 
@@ -203,7 +217,7 @@ class MarketExplorer:
         #                 break
                 #product_lists[market.ID()].append(market.get_product(ID=match_record[0].product_ID))
         
-        if metric == 'price':
+        if metric == 'price' and limit == 1:
             explorations.sort(key=lambda exploration : exploration.total_price)
 
 
