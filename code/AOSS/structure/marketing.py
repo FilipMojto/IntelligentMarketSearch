@@ -6,6 +6,7 @@ from dataclasses import dataclass
 import signal
 from datetime import datetime
 import math
+from queue import Empty
 
 import concurrent.futures
 
@@ -23,18 +24,9 @@ from AOSS.components.processing import ProductCategorizer
 from AOSS.components.processing import process_product
 from AOSS.other.exceptions import IllegaProductState
 
-def custom_signal_handler(signum, frame):
-    print(f"Received custom signal {signum}. Performing custom action.")
+# def custom_signal_handler(signum, frame):
+#     print(f"Received custom signal {signum}. Performing custom action.")
 
-
-def terminate():
-    exit(0)
-
-def signal_handler(signum, frame):
-
-    if signum == 2:
-        print("Terminating marketing process...")
-        terminate()
 
 
 @dataclass
@@ -50,6 +42,7 @@ request_ID = 1
 product_df = None
 
 GUI_START_SIGNAL = 100
+GUI_UPDATE_SIGNAL = 1
 
 def get_request_ID():
     global request_ID
@@ -101,45 +94,11 @@ def get_request_ID():
 #             requests.append(ScrapeRequest(ID=get_request_ID(), market_ID=market.ID(), categories=empty_categories.copy()))
 
 
-def send_or_wait(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr.Queue, request: ScrapeRequest):
-    """
-        Attempts to send a ScrapeRequest instance via hub-to-scraper Queue. If the request was not sent
-        because the queue is full it waits some time before trying again. Basically this function loops
-        until the message is sent successfully or it receives termination signal from the main process.
-    """
 
-    while True:
-        if not hub_to_scraper.full():
-            hub_to_scraper.put(obj=request, block=False)
-            break
-        else:
-            print("Unable to send scraping request!. Retrying...")
-            check_main(main_to_all=main_to_all)
-            time.sleep(1)
 
     
     
 
-def check_main(main_to_all: mpr.Queue, timeout: int = 1):
-    """
-        Checks for some predefined signals which might be sent by the main process, like termination signal.
-
-        If termination signal was received, process terminates by executing termination function.
-    """
-
-
-    try:
-        if not main_to_all.empty() and main_to_all.get(block=False) == "-quit":
-            terminate()
-
-        # sig = main_to_all.get(block=False, timeout=timeout)
-        # if sig == "-quit":
-        #     terminate()
-
-        #if main_to_all.poll(timeout=timeout) and main_to_all.recv() == "-quit":
-           # terminate()
-    except KeyboardInterrupt:
-        terminate()
 
     
 
@@ -291,14 +250,7 @@ def categorize_product(market_hub: MarketHub, market_ID: int, product):
 #             #time.sleep(1)
 
         
-def notify_gui(hub_to_gui: mpr.Queue, main_to_all: mpr.Queue, progress: int):
-    assert(0<=progress<=GUI_START_SIGNAL)
 
-    while hub_to_gui.full():
-        print("Gui process queue full! Retrying...")
-        check_main(main_to_all=main_to_all)
-    
-    hub_to_gui.put(progress, block=False)
 
 
 
@@ -336,15 +288,71 @@ def analyze_market(market: Market):
         requests.append(ScrapeRequest(ID=get_request_ID(), market_ID=market.ID(), categories=empty_categories))
 
 
-def analyze_product(row):
-    print(row[PRODUCT_FILE['columns']['updated_at']['index']])
+# def analyze_product(row):
+#     print(row[PRODUCT_FILE['columns']['updated_at']['index']])
 
 
 
-def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, 
-          scraper_to_hub: mpr.Queue, hub_to_gui: mpr.Queue,
-          product_file_lock: mpr.Lock):
-          
+def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr.Queue, hub_to_gui: mpr.Queue,
+          gui_to_hub: mpr.Queue, product_file_lock: mpr.Lock):
+    
+    def terminate():
+        nonlocal hub
+        hub.update()
+        
+
+    def signal_handler(signum, frame):
+
+        if signum == 2:
+            print("Terminating marketing process...")
+            terminate()
+            sys.exit(0)
+    
+
+    def check_main(main_to_all: mpr.Queue, timeout: int = 1):
+        """
+            Checks for some predefined signals which might be sent by the main process, like termination signal.
+
+            If termination signal was received, process terminates by executing termination function.
+        """
+
+        try:
+            try:
+                if main_to_all.get(timeout=timeout) == "-end":
+                    terminate()
+            except Empty:
+                pass
+
+        except KeyboardInterrupt:
+            terminate()
+
+
+    def send_or_wait(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr.Queue, request: ScrapeRequest):
+        """
+            Attempts to send a ScrapeRequest instance via hub-to-scraper Queue. If the request was not sent
+            because the queue is full it waits some time before trying again. Basically this function loops
+            until the message is sent successfully or it receives termination signal from the main process.
+        """
+
+        while True:
+            if not hub_to_scraper.full():
+                hub_to_scraper.put(obj=request, block=False)
+                break
+            else:
+                print("Unable to send scraping request!. Retrying...")
+                check_main(main_to_all=main_to_all)
+                time.sleep(1)
+
+
+    def notify_gui(hub_to_gui: mpr.Queue, main_to_all: mpr.Queue, progress: int):
+        assert(0<=progress<=GUI_START_SIGNAL)
+
+        while hub_to_gui.full():
+            print("Gui process queue full! Retrying...")
+            check_main(main_to_all=main_to_all)
+        
+        hub_to_gui.put(progress, block=False)
+
     
     os.chdir(parent_directory)
     signal.signal(signal.SIGINT, signal_handler)
@@ -371,16 +379,16 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue,
     training_market = hub.training_market()
     analyze_market(market=training_market)
     
-    notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL/4)
+    notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL/6)
 
 
     for market in markets:
         if market.ID() == training_market.ID(): continue
         analyze_market(market=market)
     
-    notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL/2)
+    notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL/3)
 
-    progress = GUI_START_SIGNAL/2
+    progress = GUI_START_SIGNAL/3
     
     if requests:
         progress_rate = math.floor(progress/len(requests))
@@ -468,6 +476,7 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue,
 
 
 
+    hub.update()
 
     print("Starting update process...")
     processed_categories: List[int] = []
@@ -485,7 +494,7 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue,
         market = first_row['market_ID']
         processed_categories.append(first_row['query_string_ID'][0])
 
-        category_products = product_df.filter(product_df['query_string_ID'] == first_row['query_string_ID'])['name'].to_list()
+        category_products = product_df.filter(product_df['query_string_ID'] == first_row['query_string_ID'])['ID'].to_list()
         
         #first_row = sorted_df.row(by_predicate=lambda x : x['query_string'] not in processed_categories)
 
@@ -501,7 +510,7 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue,
 
 
         #first_row = sorted_df.head(1)
-
+        # print(first_row)
         # Print the content of the first row
         print(f"Updating category {first_row['query_string_ID'][0]} of market {first_row['market_ID'][0]}.")
     
@@ -535,7 +544,7 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue,
                             market.update_product(product=product)
 
                             try:
-                                category_products.remove(product.name)
+                                category_products.remove(product.ID)
                             except ValueError:
                                 pass
 
@@ -558,6 +567,18 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue,
 
                     else:
                         print("Received response contains invalid market ID!")
+                
+            
+
+            #while gui_to_hub.empty() or gui_to_hub.get(block=False) != 1:
+                    # if not gui_to_hub.empty() and gui_to_hub.get(block=False) == 1:
+                    #     break
+                    #     #print("Gui hasnt updated yet! Retrying...")
+                    #     #time.sleep(1)
+                
+                    #time.sleep(1)
+
+                #time.sleep(1.5)
             
             # case in which we should receive the ScrapeProcessTerminationSignal
             elif isinstance(response, int):
@@ -569,11 +590,21 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue,
                     #if market.
 
                     if category_products:
-                        market.remove_products(products=category_products)
+                        market.remove_products(identifiers=category_products)
                     
 
                     print(f"Request {processed_request.ID} fulfilled!")
                     #market.save_products()
+
+                    while hub_to_gui.full():
+                        print("GUI's queue is full! Retrying...")
+                        check_main(main_to_all=main_to_all)
+                    
+                    hub_to_gui.put(obj=GUI_UPDATE_SIGNAL, block=False)
+
+                    while gui_to_hub.empty() or gui_to_hub.get(block=False) != 1:
+                        time.sleep(1)
+
 
                     with product_file_lock:
                         market.save_products()

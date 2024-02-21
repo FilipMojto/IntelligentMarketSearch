@@ -126,19 +126,25 @@ class ShoppingList(Frame):
         self.__ID += 1
         return old_val
 
-    def remove_selected_item(self):
+    def remove_selected_item(self, return_: bool = False):
 
         for item in self.items:
 
             if item.is_clicked_on:
                 item.destroy()
                 self.items.remove(item)
-                break
+
+                if return_:
+                    return item
+                else:
+                    break
 
 
 
     def get_items(self):
-        
+        """
+            Returns currently stored items in the form a tuple.
+        """
         product_data: List[tuple[str, ProductCategory, int]] = []
 
 
@@ -199,6 +205,17 @@ class ShoppingListFrame(LabelFrame):
 
 
     def insert_item(self, name: str, category: int, amount: int):
+
+        """
+            Inserts a new ShoppingListItem instance into the shopping list.
+
+            Items are stored by using pack manager, they are appended to the top, so that they are
+            placed vertically representing a shopping list.
+
+            Newly created instance is returned immediatelly.
+        
+        """
+
         item = ShoppingListItem(self.product_list,
                                 name=name,
                                 category=category,
@@ -222,3 +239,5 @@ class ShoppingListFrame(LabelFrame):
 
         self.canvas.update_idletasks()
         self.canvas.update()
+
+        return item

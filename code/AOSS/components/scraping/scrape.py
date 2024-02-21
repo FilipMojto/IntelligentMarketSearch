@@ -50,7 +50,7 @@ def signal_handler(signum, frame):
     if signum == 2:
         terminate()
 
-def __check_main(main_to_all: mpr.Queue, timeout: float = 1.5):
+def check_main(main_to_all: mpr.Queue, timeout: float = 1.5):
     """
         This function checks for any incoming request from the main process.
     """
@@ -136,14 +136,14 @@ def process_requests(main_to_all: mpr.Queue, scraper_to_hub: mpr.Queue):
             else:
                 print("Received a request with unknown market ID! Dumping...")
 
-            __check_main(main_to_all=main_to_all)
+            check_main(main_to_all=main_to_all)
 
             # while there are still requests available and scraper was not found program
             # continues the loop
             if scraper_found:
                 break
                 
-        __check_main(main_to_all=main_to_all)
+        check_main(main_to_all=main_to_all)
    
     with product_lock:
        # can_send = (products)
@@ -163,7 +163,7 @@ def process_requests(main_to_all: mpr.Queue, scraper_to_hub: mpr.Queue):
                     break
                 else:
                     print("Pipe not ready for writing. Retrying...")
-                    __check_main(main_to_all=main_to_all, timeout=0.05)
+                    check_main(main_to_all=main_to_all, timeout=0.05)
                 
             products = products[5000:]
 
@@ -176,7 +176,7 @@ def process_requests(main_to_all: mpr.Queue, scraper_to_hub: mpr.Queue):
                     break
                 else:
                     print("Pipe not ready for writing. Retrying...")
-                    __check_main(main_to_all=main_to_all, timeout=0.05)
+                    check_main(main_to_all=main_to_all, timeout=0.05)
 
 
 
@@ -226,7 +226,7 @@ def start(main_to_all: mpr.Queue, scraper_to_hub: mpr.Queue,
     
 
 
-    __check_main(main_to_all=main_to_all)
+    check_main(main_to_all=main_to_all)
 
     # here we initialize a scraper for each market availale in the market hub
     with MarketHub(src_file=MARKET_HUB_FILE['path']) as hub:
@@ -244,7 +244,7 @@ def start(main_to_all: mpr.Queue, scraper_to_hub: mpr.Queue,
 
             __check_market_hub(hub_to_scraper=hub_to_scraper)
             process_requests(main_to_all=main_to_all, scraper_to_hub=scraper_to_hub)
-            __check_main(main_to_all=main_to_all)
+            check_main(main_to_all=main_to_all)
 
             time.sleep(1)
     

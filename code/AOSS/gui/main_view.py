@@ -9,13 +9,13 @@ from AOSS.structure.shopping import MarketHub
 
 class MainView(Frame):
 
-    def __init__(self, *args, root: Tk, **kw):
+    def __init__(self, *args, root: Tk, market_hub: MarketHub, **kw):
         super(MainView, self).__init__(*args, **kw)
         self.root = root
 
-        self.market_hub = MarketHub(src_file=cfg.MARKET_HUB_FILE['path'])
-        self.market_hub.load_markets()
-        self.market_hub.load_products()
+        self.market_hub = market_hub
+
+     
 
 
         # ------- Frame Layout ------- #

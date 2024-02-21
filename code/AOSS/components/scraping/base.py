@@ -531,7 +531,7 @@ class ProductScraper:
                         category_name = category['slug']
                         break
                 
-                if not category_name in self.__categories.values():
+                if not category_name in self.__categories.keys():
                     if console_log:
                         print(f"Category {category_name} not supported by current market! Skipping...")
                     continue

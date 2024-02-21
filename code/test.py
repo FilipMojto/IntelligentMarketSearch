@@ -57,107 +57,123 @@ def on_key_press(event, main_view: MainView):
 
 def main():
 
-    with MarketHub(src_file=cfg.MARKET_HUB_FILE['path']) as hub:
+    hub = MarketHub(src_file=cfg.MARKET_HUB_FILE['path'])
+    hub.load_markets()
+
+    start = time.time()
+    hub.load_products()
+    end = time.time()
+
+    matcher = ProductMatcher(market_hub=hub)
+    ha = matcher.match(text="rozok biely", markets=(1,))
+    
+
+    print(end - start)
+
+    # with MarketHub(src_file=cfg.MARKET_HUB_FILE['path']) as hub:
+    #     scraper = ProductScraper(market=hub.market(identifier=2))
+    #     products = scraper.scrape_all(console_log=True)
+    #     print("haha")
         
-    #     matcher = ProductMatcher(market_hub=hub)
-    #     match_ = matcher.match(text="Hell energeticky napoj 500", markets=(2,),
-    #                            category=None, limit=5, min_match=0, sort_words=True)
-    #     market = hub.market(identifier=2)
+    # #     matcher = ProductMatcher(market_hub=hub)
+    # #     match_ = matcher.match(text="Hell energeticky napoj 500", markets=(2,),
+    # #                            category=None, limit=5, min_match=0, sort_words=True)
+    # #     market = hub.market(identifier=2)
         
-    #     for mat in match_:
-    #        print(f"{market.get_product(identifier=mat.product_ID)}: {mat.ratio}\n")
+    # #     for mat in match_:
+    # #        print(f"{market.get_product(identifier=mat.product_ID)}: {mat.ratio}\n")
 
 
-        explorer = MarketExplorer(market_hub=hub)
+    #     # explorer = MarketExplorer(market_hub=hub)
 
-        exploration = explorer.explore(product_list=[('Travanlive mlieko polotucne 1.5',
-                                                      None,
-                                                      1), ('Hell energeticky napoj 500', None, 1)],
-                                                      metric='price', limit=3)
+    #     # exploration = explorer.explore(product_list=[('Travanlive mlieko polotucne 1.5',
+    #     #                                               None,
+    #     #                                               1), ('Hell energeticky napoj 500', None, 1)],
+    #     #                                               limit=3)
         
-        #exploration.sort(key=lambda x : (x.market_ID, -x.products[0][1]) )
+    #     # #exploration.sort(key=lambda x : (x.market_ID, -x.products[0][1]) )
 
-        for expl in exploration:
+    #     # for expl in exploration:
             
-            for product in expl.products:
-                print(f"{product[0].name}: {product[1]}: {expl.total_price}")
+    #     #     for product in expl.products:
+    #     #         print(f"{product[0].name}: {product[1]}: {expl.total_price}")
 
         
 
-    app = Tk()
-    app.geometry("1295x520")
+    # app = Tk()
+    # app.geometry("1295x520")
     
-    #app.resizable(width=False, height=False)
+    # #app.resizable(width=False, height=False)
     
-    # frame = Frame(app, bg="RED")
-    # frame.grid(row=0, column=0, sticky="NSEW")
+    # # frame = Frame(app, bg="RED")
+    # # frame.grid(row=0, column=0, sticky="NSEW")
 
-    # frame.rowconfigure(0, weight=0)
-    # frame.columnconfigure(0, weight=0)
+    # # frame.rowconfigure(0, weight=0)
+    # # frame.columnconfigure(0, weight=0)
 
-    # icon = PhotoImage(file=cfg.SHOPPING_CART_ICON_2).subsample(17, 17)
+    # # icon = PhotoImage(file=cfg.SHOPPING_CART_ICON_2).subsample(17, 17)
 
-    # button = Button(frame, text="  to Cart", font=("Arial", 13), image=icon, compound='left')
-    # button.grid(row=0, column=0)
-
-
-
-    scroller = MainView(app, root=app)
-    scroller.grid(row=0, column=0, sticky="NSEW")
-
-    app.bind("<Key>", lambda event, main_view=scroller: on_key_press(event, main_view))
-
-    # scroller.shopping_list.insert_item("DLD", 0)
-    # scroller.shopping_list.insert_item("NIENCOO KD", 1)
-
-    #    scroller.insert_item("DLD", 0)
-    #scroller.insert_item("DLD", 1)
-    #scroller.insert_item("DLD", 1)
-    #scroller.insert_item("DLD", 1)
-    #scroller.insert_item("DLD", 1)
-    #scroller.insert_item("DLD", 1)
-    #scroller.insert_item("DLD", 1)
+    # # button = Button(frame, text="  to Cart", font=("Arial", 13), image=icon, compound='left')
+    # # button.grid(row=0, column=0)
 
 
-    #specification_menu = ProductSpecificationMenu(app, text="Product Specification", font=('Arial', 18, 'bold'), bg="dimgrey")
-    #specification_menu.grid(row=0, column=0, sticky="NEW")
 
-    # wide_panel = Frame(app, bg='dimgrey')
-    # wide_panel.grid(row=0, column=0, sticky="NSEW")
-    # wide_panel.rowconfigure(0, weight=1, minsize=50)
-    # wide_panel.rowconfigure(1, weight=1, minsize=50)
-    # wide_panel.columnconfigure(0, weight=1)
-    # wide_panel.columnconfigure(1, weight=200)
+    # scroller = MainView(app, root=app)
+    # scroller.grid(row=0, column=0, sticky="NSEW")
 
-    # # name configuration
+    # app.bind("<Key>", lambda event, main_view=scroller: on_key_press(event, main_view))
 
-    # name_frame = Frame(wide_panel, bg='grey')
-    # name_frame.grid(row=0, column=0, sticky="NSEW")
-    # name_frame.rowconfigure(0, weight=1)
-    # name_frame.columnconfigure(0, weight=1)
+    # # scroller.shopping_list.insert_item("DLD", 0)
+    # # scroller.shopping_list.insert_item("NIENCOO KD", 1)
 
-    # name_frame_label = Label(name_frame, text="Enter name:", bg='dimgrey', font=("Arial", 12))
-    # name_frame_label.grid(row=0, column=0, sticky="E", padx=5)
+    # #    scroller.insert_item("DLD", 0)
+    # #scroller.insert_item("DLD", 1)
+    # #scroller.insert_item("DLD", 1)
+    # #scroller.insert_item("DLD", 1)
+    # #scroller.insert_item("DLD", 1)
+    # #scroller.insert_item("DLD", 1)
+    # #scroller.insert_item("DLD", 1)
 
-    # name_frame_entry = Entry(wide_panel, font=("Arial", 13))
-    # name_frame_entry.grid(row=0, column=1, sticky="NSEW", pady=3, padx=5)
 
-    # # amount configuration
+    # #specification_menu = ProductSpecificationMenu(app, text="Product Specification", font=('Arial', 18, 'bold'), bg="dimgrey")
+    # #specification_menu.grid(row=0, column=0, sticky="NEW")
 
-    # amount_frame = Frame(wide_panel, bg='grey')
-    # amount_frame.grid(row=1, column=0, sticky="NSEW")
-    # amount_frame.rowconfigure(0, weight=1)
-    # amount_frame.columnconfigure(0, weight=1)
+    # # wide_panel = Frame(app, bg='dimgrey')
+    # # wide_panel.grid(row=0, column=0, sticky="NSEW")
+    # # wide_panel.rowconfigure(0, weight=1, minsize=50)
+    # # wide_panel.rowconfigure(1, weight=1, minsize=50)
+    # # wide_panel.columnconfigure(0, weight=1)
+    # # wide_panel.columnconfigure(1, weight=200)
 
-    # amount_frame_label = Label(amount_frame, text="Enter amount:", bg='dimgrey', font=("Arial", 12))
-    # amount_frame_label.grid(row=0, column=0, sticky="E", padx=5)
+    # # # name configuration
 
-    # amount_frame_entry = Entry(wide_panel, font=("Arial", 13))
-    # amount_frame_entry.grid(row=1, column=1, sticky="NSEW", pady=3, padx=5)
+    # # name_frame = Frame(wide_panel, bg='grey')
+    # # name_frame.grid(row=0, column=0, sticky="NSEW")
+    # # name_frame.rowconfigure(0, weight=1)
+    # # name_frame.columnconfigure(0, weight=1)
 
-    app.rowconfigure(0, weight=1)
-    app.columnconfigure(0, weight=1)
-    app.mainloop()
+    # # name_frame_label = Label(name_frame, text="Enter name:", bg='dimgrey', font=("Arial", 12))
+    # # name_frame_label.grid(row=0, column=0, sticky="E", padx=5)
+
+    # # name_frame_entry = Entry(wide_panel, font=("Arial", 13))
+    # # name_frame_entry.grid(row=0, column=1, sticky="NSEW", pady=3, padx=5)
+
+    # # # amount configuration
+
+    # # amount_frame = Frame(wide_panel, bg='grey')
+    # # amount_frame.grid(row=1, column=0, sticky="NSEW")
+    # # amount_frame.rowconfigure(0, weight=1)
+    # # amount_frame.columnconfigure(0, weight=1)
+
+    # # amount_frame_label = Label(amount_frame, text="Enter amount:", bg='dimgrey', font=("Arial", 12))
+    # # amount_frame_label.grid(row=0, column=0, sticky="E", padx=5)
+
+    # # amount_frame_entry = Entry(wide_panel, font=("Arial", 13))
+    # # amount_frame_entry.grid(row=1, column=1, sticky="NSEW", pady=3, padx=5)
+
+    # app.rowconfigure(0, weight=1)
+    # app.columnconfigure(0, weight=1)
+    # app.mainloop()
     
 
 
