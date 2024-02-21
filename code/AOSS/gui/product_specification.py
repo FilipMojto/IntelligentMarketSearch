@@ -93,6 +93,8 @@ class ProductSpecificationMenu(LabelFrame):
         btn_ok = Button(error_window, text="OK", command=error_window.destroy)
         btn_ok.pack()
 
+
+
     def insert_item(self):
 
 
@@ -123,7 +125,10 @@ class ProductSpecificationMenu(LabelFrame):
             self.name_frame_entry.delete(0, END)
             self.amount_frame_entry.delete(0, END)
 
-            self.shopping_list_f.insert_item(name=name, category=category, amount=amount)
+            # here program sents the newly inserted item to the market explorer so that it can pre-explore it
+            item = self.shopping_list_f.insert_item(name=name, category=category, amount=amount)
+            self.market_explorer_f.explore_product(item=item)
+
             self.market_explorer_f.search_button.config(state='normal')
             
         except ValueError as error:

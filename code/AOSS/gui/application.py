@@ -7,6 +7,7 @@ import tkinter
 from tkinter import TclError
 import os, sys
 import signal, multiprocessing as mpr, multiprocessing.connection as mpr_conn
+import threading
 import threading as thrd
 import time
 
@@ -20,9 +21,10 @@ parent_directory = os.path.abspath(os.path.join(script_directory, '..', '..'))
 sys.path.append(parent_directory)
 
 from config_paths import *
-from AOSS.gui.main_shopping_view import MainShoppingView
+from AOSS.gui.main_view import MainView
 from AOSS.gui.loading_screen import LoadingScreen
-from AOSS.structure.marketing import GUI_START_SIGNAL
+from AOSS.structure.marketing import GUI_START_SIGNAL, GUI_UPDATE_SIGNAL
+from AOSS.structure.shopping import MarketHub
 
 def terminate():
     print("Terminating GUI process...")
@@ -35,19 +37,37 @@ def signal_handler(signum, frame):
 
 class Application(tkinter.Tk):
 
+    def on_key_press(self, event, main_view: MainView):
+
+        key_pressed = event.keysym
+
+        if key_pressed == "Delete":
+            main_view.market_explorer_frame.delete_product()
+
+            
     def __init__(self, *args, lock: mpr.Lock = None, **kw) -> None:
         super(Application, self).__init__(*args, **kw)
         #self.__app = tkinter.Tk()
 
+        self.market_hub = MarketHub(src_file=MARKET_HUB_FILE['path'])
+        self.market_hub.load_markets()
+
+        with lock:
+            self.market_hub.load_products()
+
         self.title("AOSS Application 1.2.0")
-        self.geometry("1000x580")
-        self.minsize(700, 500)
+        #app = Tk()
+    #app.geometry("1295x520")
+        self.geometry("1295x520")
+        #self.minsize(700, 500)
         
-        self.__main_shoppping_view = MainShoppingView(self, _product_file_lock=lock,  bg='black')
-        self.__main_shoppping_view.grid(row=0, column=0, sticky="NSEW", padx=10)
+        self.main_view = MainView(self, root=self, market_hub=self.market_hub,  bg='black')
+        self.main_view.grid(row=0, column=0, sticky="NSEW", padx=10)
 
         self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
+
+        self.bind("<Key>", lambda event, main_view=self.main_view: self.on_key_press(event, main_view))
         
 
         #self.mainloop()
@@ -59,7 +79,11 @@ class Application(tkinter.Tk):
 
 
 
-def start(main_to_all: mpr.Queue = None, hub_to_gui: mpr.Queue = None, product_file_lock: mpr.Lock = None):
+def start(main_to_all: mpr.Queue = None, hub_to_gui: mpr.Queue = None, gui_to_hub: mpr.Queue = None, 
+          product_file_lock: mpr.Lock = None):
+    
+    UPDATE_FINISH_SIGNAL = 1
+
     """
         This function starts a GUI process for AOSS app.
 
@@ -76,6 +100,14 @@ def start(main_to_all: mpr.Queue = None, hub_to_gui: mpr.Queue = None, product_f
 
 
     app: Application = None
+    update_thread: threading.Thread = None
+    progress_signal_mappings = {
+        GUI_START_SIGNAL/6: "analyzing training market...",
+        GUI_START_SIGNAL/3: "analyzing the rest of markets...",
+
+
+    }
+
 
     def __start_app(lock: mpr.Lock = None):
         nonlocal app
@@ -114,9 +146,19 @@ def start(main_to_all: mpr.Queue = None, hub_to_gui: mpr.Queue = None, product_f
                 loading_screen.progress_bar['value'] = progress
                 loading_screen.update_idletasks()
 
-                if progress == 100:                    
-                    loading_screen.quit()
+        
+                if progress == GUI_START_SIGNAL:
+                    loading_screen.info_text.config(text="finishing...")
+                    loading_screen.after(500, loading_screen.quit)
                     return
+                elif progress == (GUI_START_SIGNAL/6):
+                    loading_screen.info_text.config(text="analyzing training market...", font=('Arial', 11))
+                elif progress == (GUI_START_SIGNAL/3):
+                    loading_screen.info_text.config(text="analyzing the rest of markets...", font=('Arial', 11))
+                elif 0<=progress<100:
+                    loading_screen.info_text.config(text="scraping missing products...", font=('Arial', 11))
+                
+                
     
             # Schedule the next after() call and save the after ID
             loading_screen_after_ids.append(loading_screen.after(1500, check_progress_reports, main_to_all, hub_to_gui))
@@ -125,6 +167,51 @@ def start(main_to_all: mpr.Queue = None, hub_to_gui: mpr.Queue = None, product_f
             #time.sleep(1.5)
         except KeyboardInterrupt:
             terminate()
+
+    def update(app: Application, gui_to_hub: mpr.Queue, lock: mpr.Lock):
+        
+        start = time.time()
+
+        with lock:
+            end = time.time()
+            print(f"time: {end - start}")
+            app.market_hub.load_dataset()
+        
+        while gui_to_hub.full():
+
+            print("Hub's queue full! Retrying...")
+            time.sleep(1)
+        
+        gui_to_hub.put(obj=UPDATE_FINISH_SIGNAL)
+        
+
+
+        
+
+        
+
+    
+    def check_update_signal(app: Application, lock: mpr.Lock, hub_to_gui: mpr.Queue, gui_to_hub: mpr.Queue, repeat_after: int):
+        print("CHECKING!!")
+        nonlocal update_thread
+
+        if not hub_to_gui.empty() and hub_to_gui.get(block=False) == GUI_UPDATE_SIGNAL:
+
+            if update_thread and update_thread.is_alive():
+                update_thread.join()
+                #time.sleep(0.3)
+            
+
+            print("NOW")
+            update_thread = threading.Thread(target=update, args=(app, gui_to_hub, lock))
+            update_thread.start()
+
+
+
+        app.after(repeat_after, check_update_signal, app, lock, hub_to_gui, gui_to_hub, repeat_after)
+
+
+
    
     
     # starting the loadscreen
@@ -146,6 +233,8 @@ def start(main_to_all: mpr.Queue = None, hub_to_gui: mpr.Queue = None, product_f
     #global app
     app = Application(lock=product_file_lock)
     app.after(1500, check_main, app, 1500)
+    time.sleep(1)
+    app.after(1500, check_update_signal, app, product_file_lock, hub_to_gui, gui_to_hub, 1500)
 
     try:
         app.mainloop()

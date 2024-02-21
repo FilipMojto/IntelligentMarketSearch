@@ -14,6 +14,7 @@ sys.path.append(parent_dir)
 from AOSS.structure.shopping import MarketHub, ProductCategory
 from config_paths import *
 from dataclasses import dataclass
+import polars.exceptions
 
 
 # class ProductMatcher:
@@ -249,10 +250,11 @@ class ProductMatcher:
         if category is not None:
             df = df.filter(df['category'] == category.name)
 
-        if len(df) == 0:
-            print("NOW!")
-            
-        df = df.apply(lambda row: self.__extract_cols(row, text, sort=sort_words))
+
+        try:    
+            df = df.apply(lambda row: self.__extract_cols(row, text, sort=sort_words))
+        except polars.exceptions.ComputeError:
+            return
 
         # [product_ID, match, price, market_ID]
         # here we convert necessary columns into python lists and then zip them into a list of tuples

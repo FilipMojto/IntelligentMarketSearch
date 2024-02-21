@@ -23,6 +23,7 @@ class CircularProgress(tk.Canvas):
             self.center_x + self.radius, self.center_y + self.radius,
             start=0, extent=0, outline="blue", width=3, style=tk.ARC
         )
+        
         self.after(50, self.update)
 
     def update(self):

@@ -6,7 +6,7 @@ class LoadingScreen(Tk):
 
     WIDTH = 500
     HEIGHT = 290
-    SCROLLBAR_WIDTH = 200
+    SCROLLBAR_WIDTH = 250
 
 
     def __init__(self, *args, **kw):
@@ -22,20 +22,31 @@ class LoadingScreen(Tk):
 
         self.geometry(f"{LoadingScreen.WIDTH}x{LoadingScreen.HEIGHT}+{x}+{y}")
 
-        self.frame = Frame(self)
-        self.frame.grid(row=0, column=0, sticky="NSEW")
+        # self.frame = Frame(self)
+        # self.frame.pack()
+        #self.frame.grid(row=0, column=0, sticky="NSEW")
+
+        
+
 
         self.progress_bar = ttk.Progressbar(self, orient=HORIZONTAL, length=LoadingScreen.SCROLLBAR_WIDTH, mode='determinate')
-        self.progress_bar.grid(row=0, column=0, sticky="S", pady=5)
+        self.progress_bar.pack(side='bottom')
+
+
+
+        self.info_text = Label(self, text="loading...", font=('Arial', 11))
+        self.info_text.pack(side='bottom')
+
+        #self.progress_bar.grid(row=0, column=0, sticky="S", pady=5)
 
         #self.label = Label(self.frame, text="THIS IS LOADING SCREEN!", font=("Arial", 12))
         #self.label.grid(row=0, column=0)
 
-        self.frame.rowconfigure(0, weight=1)
-        self.frame.columnconfigure(0, weight=1)
+        #self.frame.rowconfigure(0, weight=1)
+        #self.frame.columnconfigure(0, weight=1)
 
         
 
-        self.rowconfigure(0, weight=1)
-        self.columnconfigure(0, weight=1)
+        #self.rowconfigure(0, weight=1)
+        #self.columnconfigure(0, weight=1)
 

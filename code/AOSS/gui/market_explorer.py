@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter.ttk import Combobox
 
 import threading
+import multiprocessing as mpr
 from typing import List, Dict
 #import math
 
@@ -9,8 +10,9 @@ import config_paths as cfg
 
 from AOSS.gui.shopping_list import ShoppingListFrame, ShoppingListItem, ShoppingListDetails
 from AOSS.gui.utils import CircularProgress
-from AOSS.structure.shopping import MarketHub
+from AOSS.structure.shopping import MarketHub, ProductCategory
 from AOSS.components.marrec import MarketExplorer
+from AOSS.other.utils import TextEditor
 
 
 
@@ -199,7 +201,8 @@ class ExplorerView(Frame):
 
 
 class MarketExplorerFrame(LabelFrame):
-    def __init__(self, *args, root: Tk, market_hub: MarketHub, shopping_list_frame: ShoppingListFrame, **kw):
+    def __init__(self, *args, root: Tk, market_hub: MarketHub, shopping_list_frame: ShoppingListFrame,
+                 **kw):
         super(MarketExplorerFrame, self).__init__(*args, **kw)
 
         self.accept_icon = PhotoImage(file=cfg.ACCEPT_ICON).subsample(18, 18)
@@ -209,7 +212,11 @@ class MarketExplorerFrame(LabelFrame):
         self.shopping_list = shopping_list_frame
         self.market_hub = market_hub
         self.markets = market_hub.markets()
-        self.market_explorer = MarketExplorer(market_hub=market_hub)
+        self.market_explorer = MarketExplorer(market_hub=market_hub, limit=5)
+
+
+        self.product_items: List[ShoppingListItem] = []
+        self.explorations: List[List[MarketExplorer.Exploration]] = []
 
         # ---- Frame Configuration ---- #
 
@@ -254,11 +261,16 @@ class MarketExplorerFrame(LabelFrame):
         self.explorer_view.detailed_results_table.insert_value(row=0, column=1, value="Product")
         self.explorer_view.detailed_results_table.insert_value(row=0, column=2, value="Price")
     
+    
     def delete_product(self):
-        self.shopping_list.product_list.remove_selected_item()
+        item = self.shopping_list.product_list.remove_selected_item(return_=True)
         
         if not self.shopping_list.product_list.items:
             self.search_button.config(state='disabled')
+
+
+        self.market_explorer.remove_target(ID=item.details.ID)
+        self.product_items.remove(item)
         
 
     def combobox_selected(self, event, box: Combobox):
@@ -308,15 +320,21 @@ class MarketExplorerFrame(LabelFrame):
             
             #k = (i * 5) + 5
 
-            markets.append(self.exploration[i * 5].market_ID)
-            prices.append(self.exploration[i * 5].products[0][0].price)
+            markets.append(self.explorations[i][0].market_ID)
+            prices.append(self.explorations[i][0].products[0][1].price)
 
-            for g in range(i * 5, (i * 5) + 5):
+            for g in range(5):
+                expl = self.explorations[i][g]
+                self.product_price_mappings[i][expl.products[index][1].name] = expl.products[index][1].price
+                products[i].append(expl.products[index][1].name)
+                prices[i].append(expl.products[index][1].price)
+
+            # for g in range(i * 5, (i * 5) + 5):
                 
-                expl = self.exploration[g]
-                self.product_price_mappings[i][expl.products[index][0].name] = expl.products[index][0].price
-                products[i].append(expl.products[index][0].name)
-                prices[i].append(expl.products[index][0].price)
+            #     expl = self.explorations[g]
+            #     self.product_price_mappings[i][expl.products[index][0].name] = expl.products[index][0].price
+            #     products[i].append(expl.products[index][0].name)
+            #     prices[i].append(expl.products[index][0].price)
 
 
                 # for index, product in enumerate(expl.products):
@@ -408,17 +426,32 @@ class MarketExplorerFrame(LabelFrame):
                     self.explorer_view.table.insert_value(row=3, col=i + 1,
                                                           value=self.decline_icon)
 
+    def explore_product(self, item: ShoppingListItem):
+
+        self.product_items.append(item)
+
+        category = None if item.details.category == 0 else ProductCategory(value=item.details.category)
+    
+        item_data = [(item.details.ID,
+                      TextEditor.standardize_str(item.details.name),
+                      category,
+                      item.details.amount)]
+        
+        self.market_explorer.explore(product_list=item_data)
+        #self.product_data.extend(item_data)
+
+
     def do_sth(self):
         
-        self.product_data = self.shopping_list.product_list.get_items()
-        self.items = self.shopping_list.product_list.items
+        # self.product_data = self.shopping_list.product_list.get_items()
+        # self.items = self.shopping_list.product_list.items
         
         #bind_widgets_recursive(widget=self.items[0], event="<Button-1>", handler=lambda event: self.show_product_details(event=event, item=self.items[0].details))
         #bind_widgets_recursive(widget=self.items[1], event="<Button-1>", handler=lambda event: self.show_product_details(event=event, item=self.items[1].details))
 
         
 
-        for i, item in enumerate(self.items):
+        for i, item in enumerate(self.product_items):
             bind_widgets_recursive(widget=item, event="<Button-1>", handler=self.create_handler(index=i, item=item))
             #bind_widgets_recursive(widget=item, event="<Button-1>", handler=self.do_sth)
 
@@ -439,44 +472,50 @@ class MarketExplorerFrame(LabelFrame):
 
            # item.bind_all("<Button-1>", lambda event, item=item: self.show_product_details(event, item))
 
-        self.exploration = self.market_explorer.explore(product_list=self.product_data, metric='price', limit=5)
+        #self.exploration = self.market_explorer.explore(product_list=self.product_data, metric='price', limit=5)
         
-        
+        #self.market_explorer.expected_size(size=len(self.product_items))
+        self.explorations = self.market_explorer.get_explorations()
         best_market = []
-        best_market.append((self.exploration[0].market_ID, self.exploration[0].total_price))
+        best_market.append((self.explorations[0][0].market_ID, self.explorations[0][0].total_price))
 
 
         
-        for index, expl in enumerate(self.exploration):
+        for index, expl in enumerate(self.explorations):
+            expl = expl[0]
 
-            if index % 5 == 0:
-                if best_market[0][1] > expl.total_price:
-                    best_market.clear()
-                    best_market.append((expl.market_ID, expl.total_price))
-                elif best_market[0][1] == expl.total_price:
-                    best_market.append((expl.market_ID, expl.total_price))
-                
-                #assert(expl.total_price >= best_price)
-
-                
-                self.explorer_view.table.insert_value(row=0, col=expl.market_ID, value=self.market_hub.market(identifier=expl.market_ID).name().lower())
-                self.explorer_view.table.insert_value(row=1, col=expl.market_ID, value= round(expl.total_price, 2))
-                self.explorer_view.table.insert_value(row=2, col=expl.market_ID, value=expl.succession_rate)
+            #if index % 5 == 0:
+            if best_market[0][1] > expl.total_price:
+                best_market.clear()
+                best_market.append((expl.market_ID, expl.total_price))
+            elif best_market[0][1] == expl.total_price:
+                best_market.append((expl.market_ID, expl.total_price))
             
-            
-        for index, expl in enumerate(self.exploration):
+            #assert(expl.total_price >= best_price)
 
-            if index % 5 == 0:
-                if any([market == expl.market_ID for market, price in best_market]):
-                    self.explorer_view.table.insert_value(row=3, col=expl.market_ID, value=self.accept_icon)
-                else:
-                    self.explorer_view.table.insert_value(row=3, col=expl.market_ID, value=self.decline_icon)
+            
+            self.explorer_view.table.insert_value(row=0, col=expl.market_ID, value=self.market_hub.market(identifier=expl.market_ID).name().lower())
+            self.explorer_view.table.insert_value(row=1, col=expl.market_ID, value= round(expl.total_price, 2))
+            self.explorer_view.table.insert_value(row=2, col=expl.market_ID, value=expl.succession_rate)
+            
+        self.explorations = self.market_explorer.get_explorations(metric='price')
+        #self.market_explorer.clear_buffer()
+
+        for index, expl in enumerate(self.explorations):
+            expl = expl[0]
+
+           # if index % 5 == 0:
+            if any([market == expl.market_ID for market, price in best_market]):
+                self.explorer_view.table.insert_value(row=3, col=expl.market_ID, value=self.accept_icon)
+            else:
+                self.explorer_view.table.insert_value(row=3, col=expl.market_ID, value=self.decline_icon)
             
                 
 
-        best_price = self.exploration[0].total_price
+        #best_price = self.explorations[0][0].total_price
 
         self.search_bar.grid_forget()
+        self.search_bar.config(state="disabled")
         self.search_button.config(text="search")
 
 
@@ -487,6 +526,7 @@ class MarketExplorerFrame(LabelFrame):
 
         #self.search_bar = CircularProgress(self.control_panel, width=40, height=40)
         self.search_bar.grid(row=0, column=1, pady=(5, 12))
+        self.search_bar.config(state="normal")
         # self.control_panel.columnconfigure(0, weight=1)
         # self.control_panel.columnconfigure(1, weight=1)
 

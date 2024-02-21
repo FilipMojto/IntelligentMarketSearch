@@ -25,6 +25,7 @@ main_to_all = mpr.Queue(maxsize=5)
 hub_to_scraper = mpr.Queue(maxsize=5)
 scraper_to_hub = mpr.Queue(maxsize=5)
 hub_to_qui = mpr.Queue(maxsize=5)
+gui_to_hub = mpr.Queue(maxsize=5)
 product_file_lock = mpr.Lock()
 
 
@@ -63,7 +64,7 @@ def launch_subprocesses():
     
     
     market_hub = mpr.Process(target=mrk.start, args=(main_to_all, hub_to_scraper, scraper_to_hub, hub_to_qui,
-                                                     product_file_lock))
+                                                     gui_to_hub, product_file_lock))
     
     market_hub.start()
     processes.append(market_hub)
@@ -73,7 +74,7 @@ def launch_subprocesses():
     processes.append(scraper)
     
 
-    gui = mpr.Process(target=app.start, args=(main_to_all, hub_to_qui, product_file_lock))
+    gui = mpr.Process(target=app.start, args=(main_to_all, hub_to_qui, gui_to_hub, product_file_lock))
     gui.start()
     processes.append(gui)
 
