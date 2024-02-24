@@ -265,6 +265,10 @@ class MarketExplorerFrame(LabelFrame):
     def delete_product(self):
         item = self.shopping_list.product_list.remove_selected_item(return_=True)
         
+        if item is None:
+            return
+        
+    
         if not self.shopping_list.product_list.items:
             self.search_button.config(state='disabled')
 
@@ -441,7 +445,7 @@ class MarketExplorerFrame(LabelFrame):
         #self.product_data.extend(item_data)
 
 
-    def do_sth(self):
+    def serch_markets(self):
         
         # self.product_data = self.shopping_list.product_list.get_items()
         # self.items = self.shopping_list.product_list.items
@@ -531,7 +535,7 @@ class MarketExplorerFrame(LabelFrame):
         # self.control_panel.columnconfigure(1, weight=1)
 
 
-        thread = threading.Thread(target=self.do_sth)
+        thread = threading.Thread(target=self.serch_markets)
         thread.start()
 
     

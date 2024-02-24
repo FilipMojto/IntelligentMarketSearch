@@ -276,7 +276,7 @@ def analyze_market(market: Market):
     categories = market.categories()
     empty_categories = []
 
-    for name, ID in categories.items():
+    for ID, name in categories.items():
         if len( product_df.filter( (product_df['market_ID'] == market.ID() ) &
                                 (product_df['query_string_ID'] == ID) )) == 0:
             
@@ -376,19 +376,23 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
 
     check_main(main_to_all=main_to_all)
 
+    notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL/6)
+
     training_market = hub.training_market()
     analyze_market(market=training_market)
     
-    notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL/6)
+    notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL/3)
 
 
     for market in markets:
         if market.ID() == training_market.ID(): continue
         analyze_market(market=market)
-    
-    notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL/3)
 
-    progress = GUI_START_SIGNAL/3
+    notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL/2)
+    
+    #notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL/3)
+
+    progress = GUI_START_SIGNAL/2
     
     if requests:
         progress_rate = math.floor(progress/len(requests))
@@ -608,6 +612,7 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
 
                     with product_file_lock:
                         market.save_products()
+                        hub.update()
                         hub.load_products()
                     break
                 else:

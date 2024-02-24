@@ -392,7 +392,11 @@ class ProductScraper:
                           console_log: bool = False):
         
         """
+            This function allows filtering the scraped to only certain categories provided by the market.
 
+            Returns
+            ---
+            A list of tuples in which each tuple maps the scraped product to its market.
         """
 
         # if isinstance(categories[0], str) and any(category not in self.__market.categories() for category in categories):
@@ -404,7 +408,7 @@ class ProductScraper:
             products = []
             _return = True
 
-        categories_str = {}
+        market_categories: List[str] = []
 
         for identifier in identifiers:
 
@@ -412,34 +416,45 @@ class ProductScraper:
             category_ID = None
 
             if mode == 'ID':
-
-                #try:
-                for name, ID in self.__categories.items():
-
-                    if identifier == ID:
-                        categories_str[name] = ID
-                        break
-                else:                    
+                try:
+                    for id in identifiers:
+                        market_categories.append(self.__categories[identifier])
+                except KeyError:
                     raise ValueError("Provided category ID not supported by this market!")
-
-                    #categories_str[self.__categories[category]] =  category
-                    # categories_str.append(self.__categories[category])
-                    # category_ID = category
-                # except KeyError:
-                #     raise ValueError("Provided category not supported by this market!")
             elif mode == 'index':
 
-                # searching for a category by an index
-                for index, (ID, name) in enumerate(self.__categories.items()):
-                    if index == identifier:
-                        categories_str[ID] = name
-                        #categories_str.append(name)
+                for index, value in enumerate(self.__categories.values()):
+                    if index in identifiers:
+                        market_categories.append(value)
 
-                        #category_name = name
-                        #category_ID = ID
-                        break
-                else:
-                    raise IndexError("Provided category index is invalid!")
+
+            #     #try:
+            #     for name, ID in self.__categories.items():
+
+            #         if identifier == ID:
+            #             market_categories[name] = ID
+            #             break
+            #     else:                    
+            #         raise ValueError("Provided category ID not supported by this market!")
+
+            #         #categories_str[self.__categories[category]] =  category
+            #         # categories_str.append(self.__categories[category])
+            #         # category_ID = category
+            #     # except KeyError:
+            #     #     raise ValueError("Provided category not supported by this market!")
+            # elif mode == 'index':
+
+            #     # searching for a category by an index
+            #     for index, (ID, name) in enumerate(self.__categories.items()):
+            #         if index == identifier:
+            #             market_categories[ID] = name
+            #             #categories_str.append(name)
+
+            #             #category_name = name
+            #             #category_ID = ID
+            #             break
+            #     else:
+            #         raise IndexError("Provided category index is invalid!")
                     
 
             #     #category_name = self.__market.categories()[category]
@@ -463,23 +478,30 @@ class ProductScraper:
                         category_name = identifier['slug']
                         break
                 
-                if not category_name in categories_str.keys():
+                if not category_name in market_categories:
                     if console_log:
-                        print(f"Category {category_name} not supported by current market! Skipping...")
+                        print(f"Category {category_name} filtered out!")
                     continue
                 
+                category_ID = None
+                for key, value in self.__categories.items():
+                    if value == category_name:
+                        category_ID = key
+                        break
                 
                 quantity_left=item.get('quantity_left')
 
                 if quantity_left is None:
                     quantity_left = 0
                 
+
+
                 new_product = Product(
                     name=item.get('name', 'unknown'),
                     price=int(item.get('baseprice', -1)) / 100,
                     approximation=0,
                     quantity_left=quantity_left,
-                    category=self.__categories[category_name],
+                    category_ID=category_ID,
                     created_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),
                     updated_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'))
 
@@ -494,16 +516,16 @@ class ProductScraper:
         if _return:
             return products
 
-    def get_categories(self):
-        url = self.__url
-        response = requests.get(url)
+    # def get_categories(self):
+    #     url = self.__url
+    #     response = requests.get(url)
 
-        if response.status_code == 200:
-            data = response.json()
+    #     if response.status_code == 200:
+    #         data = response.json()
 
-            for category in data['categories']:
+    #         for category in data['categories']:
                 
-                print(category.get('slug'))
+    #             print(category.get('slug'))
 
 
 
@@ -546,7 +568,7 @@ class ProductScraper:
                     price=int(item.get('baseprice', -1)) / 100,
                     approximation=0,
                     quantity_left=quantity_left,
-                    category=category_name,
+                    category_ID=category_name,
                     created_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),
                     updated_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'))
 

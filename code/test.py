@@ -59,16 +59,28 @@ def main():
 
     hub = MarketHub(src_file=cfg.MARKET_HUB_FILE['path'])
     hub.load_markets()
-
-    start = time.time()
     hub.load_products()
-    end = time.time()
-
     matcher = ProductMatcher(market_hub=hub)
-    ha = matcher.match(text="rozok biely", markets=(1,))
+    ha = matcher.match(text="rozok biely", category=None, limit=5, for_each=True)
+
+
+    explorer = MarketExplorer(market_hub=hub, limit=5)
+    explorer.explore(product_list=[(1, "rozok biely", None, 1)])
     
 
-    print(end - start)
+    # scraper = ProductScraper(market=hub.market(identifier=2))
+    # products = scraper.scrape_categories(identifiers=(0, 1), mode='index', console_log=True)
+
+
+    # start = time.time()
+    # hub.load_products()
+    # end = time.time()
+
+    matcher = ProductMatcher(market_hub=hub)
+    ha = matcher.match(text="hell energeticky napoj 500", markets=(3,))
+    
+
+    print("KAKA")
 
     # with MarketHub(src_file=cfg.MARKET_HUB_FILE['path']) as hub:
     #     scraper = ProductScraper(market=hub.market(identifier=2))

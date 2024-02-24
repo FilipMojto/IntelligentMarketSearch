@@ -85,7 +85,7 @@ class Product:
     _: KW_ONLY
     price: float = -1
     approximation: int = -1
-    category: int = -1
+    category_ID: int = -1
     quantity_left: int = -1
     created_at: str
     updated_at: str
@@ -116,7 +116,7 @@ class RegisteredProduct(Product):
             name=attributes[PRODUCT_FILE['columns']['name']['index']],
             price=float(attributes[ PRODUCT_FILE['columns']['price']['index']]),
             approximation=int(attributes[PRODUCT_FILE['columns']['approximation']['index']]),
-            category=int(attributes[PRODUCT_FILE['columns']['query_string_ID']['index']]),
+            category_ID=int(attributes[PRODUCT_FILE['columns']['query_string_ID']['index']]),
             normalized_category=ProductCategory[attributes[PRODUCT_FILE['columns']['category']['index']]],
             market_ID=attributes[PRODUCT_FILE['columns']['market_ID']['index']],
             quantity_left=int(attributes[PRODUCT_FILE['columns']['quantity_left']['index']]),
@@ -138,7 +138,7 @@ class RegisteredProduct(Product):
             price=float(row['price']),
             approximation=int(row['approximation']),
             quantity_left=int(row['quantity_left']),
-            category=row['query_string_ID'],
+            category_ID=row['query_string_ID'],
             normalized_category=ProductCategory[row['category']],
             market_ID=int(row['market_ID']),
             created_at=row['created_at'],
@@ -177,7 +177,7 @@ class MarketView:
         self.__ID = ID
         self.__name = name
         self.__store_name = store_name
-        self.__categories: Dict[str, int] = {}
+        self.__categories: Dict[int, str] = {}
         self.__products: Dict[int, RegisteredProduct] = {}
 
         self.__product_file = product_file
@@ -196,7 +196,8 @@ class MarketView:
             for metadata in categories:
 
                 if int(metadata['market_ID']) == self.__ID:
-                    self.__categories[metadata['name']] =  int(metadata['ID'])
+                    self.__categories[int(metadata['ID'])] = metadata['name'] 
+                   # self.__categories[metadata['name']] =  int(metadata['ID'])
                     #self.__categories.append(metadata['ID'])
             
 
@@ -324,7 +325,7 @@ class Market(MarketView):
         super().__init__(ID=ID, name=name, store_name=store_name, product_file=product_file, category_file=category_file)
 
         # --- Market Attributes --- #
-        self.__ID = ID
+        #self.__ID = ID
         self.__market_hub = market_hub
      
 
@@ -348,7 +349,7 @@ class Market(MarketView):
                                     approximation=product_ID.approximation,
                                     quantity_left=product_ID.quantity_left,
                                     normalized_category=category.name,
-                                    category=product_ID.category,
+                                    category_ID=product_ID.category_ID,
                                     market_ID=self.__ID,
                                     created_at=product_ID.created_at,
                                     updated_at=product_ID.updated_at
@@ -382,11 +383,6 @@ class Market(MarketView):
         
         
         return super().load_products()
-
-
-    def ID(self) -> int:
-        return self.__ID
-
 
 
     def buffer(self, size: int):
@@ -450,7 +446,7 @@ class Market(MarketView):
                 
                 for metadata in categories:
 
-                    if (product.category == int(metadata['ID'])):
+                    if (product.category_ID == int(metadata['ID'])):
                         break
 
                 else:
@@ -617,8 +613,8 @@ class Market(MarketView):
                             str(int(product.approximation)) + PRODUCT_FILE['delimiter'] +
                             str(product.quantity_left) + PRODUCT_FILE['delimiter'] +
                             category.name + PRODUCT_FILE['delimiter'] +
-                            str(product.category) + PRODUCT_FILE['delimiter'] +
-                            str(self.__ID) + PRODUCT_FILE['delimiter'] +
+                            str(product.category_ID) + PRODUCT_FILE['delimiter'] +
+                            str(self.ID()) + PRODUCT_FILE['delimiter'] +
                             product.created_at + PRODUCT_FILE['delimiter'] +
                                 datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\n')
                 elif isinstance(element, RegisteredProduct):
@@ -810,12 +806,16 @@ class MarketHub(ProductIdentification):
             # eventually sets the training market
             self.__training_market = self.market(identifier=self.__training_market)
 
+
+
     def load_dataset(self):
         if self.__product_file is not None:
 
             self.__product_df = pl.read_csv(self.__product_file)
         else:
             raise InvalidMarketState("At least one market must be loaded first!")
+
+
 
     def load_products(self):
         """
@@ -951,7 +951,7 @@ class MarketHub(ProductIdentification):
         else:
             categories = self.__training_market.categories()
 
-            for ID in categories.values():
+            for ID in categories.keys():
                 if len(self.__product_df.filter((self.__product_df['market_ID'] == self.__training_market.ID()) &
                                         (self.__product_df['query_string_ID'] == ID))) == 0:
                     return False
@@ -1007,6 +1007,6 @@ class MarketHub(ProductIdentification):
 
 if __name__ == "__main__":
 
-    product = Product(name="Hrusky zelene", price=1.23, approximation=0, category="ovocie&zelenina")
+    product = Product(name="Hrusky zelene", price=1.23, approximation=0, category_ID="ovocie&zelenina")
     product.__str__()
 

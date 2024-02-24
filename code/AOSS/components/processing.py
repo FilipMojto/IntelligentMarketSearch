@@ -49,7 +49,7 @@ def process_scraped_products(products: (list[tuple[Product, int]] | tuple[Produc
                 name=name,
                 price=float(price),
                 approximation=approximation,
-                category=category,
+                category_ID=category,
                 created_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),
                 updated_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'))
             )
@@ -77,7 +77,7 @@ def process_scraped_products(products: (list[tuple[Product, int]] | tuple[Produc
         # We remove the potential price approximation sign from the price text
         price = price.split(CURRENCY_SIGN)[0].strip()
 
-        return Product(name=name, price=float(price), approximation=approximation, category=products[2],
+        return Product(name=name, price=float(price), approximation=approximation, category_ID=products[2],
                        created_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),
                        updated_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'))
     else:
@@ -128,7 +128,7 @@ class ProductCategorizer:
 
             
             for row in reader:
-                if int(row['ID']) == product.category:
+                if int(row['ID']) == product.category_ID:
 
                     category_ID = int(row['category_ID'])
                     break
