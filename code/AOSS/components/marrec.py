@@ -184,7 +184,7 @@ class MarketExplorer:
             self.total_expected_quantity += quantity
             self.total_quantity_left += (product.quantity_left if product.quantity_left <= quantity else quantity)
             self.succession_rate = (self.total_quantity_left/self.total_expected_quantity) * 100
-            print("DONE")
+      
 
 
     """

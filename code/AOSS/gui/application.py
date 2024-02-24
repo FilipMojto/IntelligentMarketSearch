@@ -52,8 +52,9 @@ class Application(tkinter.Tk):
         self.market_hub = MarketHub(src_file=MARKET_HUB_FILE['path'])
         self.market_hub.load_markets()
 
-        with lock:
-            self.market_hub.load_products()
+        if lock:
+            with lock:
+                self.market_hub.load_products()
 
         self.title("AOSS Application 1.2.0")
         #app = Tk()
@@ -151,10 +152,13 @@ def start(main_to_all: mpr.Queue = None, hub_to_gui: mpr.Queue = None, gui_to_hu
                     loading_screen.info_text.config(text="finishing...")
                     loading_screen.after(500, loading_screen.quit)
                     return
+                
                 elif progress == (GUI_START_SIGNAL/6):
                     loading_screen.info_text.config(text="analyzing training market...", font=('Arial', 11))
                 elif progress == (GUI_START_SIGNAL/3):
-                    loading_screen.info_text.config(text="analyzing the rest of markets...", font=('Arial', 11))
+                    loading_screen.info_text.config(text="analyzing markets...", font=('Arial', 11))
+                # elif progress == (GUI_START_SIGNAL/3):
+                #     loading_screen.info_text.config(text="analyzing markets...", font=('Arial', 11))
                 elif 0<=progress<100:
                     loading_screen.info_text.config(text="scraping missing products...", font=('Arial', 11))
                 
