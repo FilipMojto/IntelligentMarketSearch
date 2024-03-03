@@ -22,7 +22,8 @@ from config_paths import *
 from AOSS.structure.shopping import MarketHub, Market, ProductCategory
 from AOSS.components.processing import ProductCategorizer
 from AOSS.components.processing import process_product
-from AOSS.other.exceptions import IllegaProductState
+from AOSS.other.exceptions import IllegalProductState
+
 
 # def custom_signal_handler(signum, frame):
 #     print(f"Received custom signal {signum}. Performing custom action.")
@@ -36,13 +37,17 @@ class ScrapeRequest():
     categories: List[int]
 
 
-
 requests: List[ScrapeRequest] = []
 request_ID = 1
 product_df = None
 
-GUI_START_SIGNAL = 100
-GUI_UPDATE_SIGNAL = 1
+#GUI_START_SIGNAL = 100
+
+UPDATE_PRODUCTS_SIGNAL = 1
+PROGRESS_BAR_SIGNAL = 2
+UPDATE_INTERVAL_SIGNAL = 3
+UPDATE_STOP_SIGNAL = -1
+
 
 def get_request_ID():
     global request_ID
@@ -122,7 +127,7 @@ def categorize_product(market_hub: MarketHub, market_ID: int, product):
     try:
         market_hub.market(identifier=market_ID).register_product(product=product, norm_category=category)
         print(f"Product {product.name} registered successfully!")
-    except IllegaProductState:
+    except IllegalProductState:
         print(f"Product {product.name} already registered!")
 
 
@@ -299,32 +304,43 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
     def terminate():
         nonlocal hub
         hub.update()
+        exit(0)
         
 
     def signal_handler(signum, frame):
 
         if signum == 2:
-            print("Terminating marketing process...")
-            terminate()
-            sys.exit(0)
+            # Since proess might be in the middle of update or something like that, 
+            # some exceptions might be uncaught
+            try:
+                print("Terminating marketing process...")
+                terminate()
+            except Exception:
+                pass
+            #sys.exit(0)
     
 
-    def check_main(main_to_all: mpr.Queue, timeout: int = 1):
+    def check_main(main_to_all, timeout: int = 1):
         """
             Checks for some predefined signals which might be sent by the main process, like termination signal.
 
             If termination signal was received, process terminates by executing termination function.
         """
 
-        try:
-            try:
-                if main_to_all.get(timeout=timeout) == "-end":
-                    terminate()
-            except Empty:
-                pass
-
-        except KeyboardInterrupt:
+        
+        if main_to_all.value:
             terminate()
+        
+        time.sleep(timeout)
+
+        # try:
+        #     #print(main_to_all.get(timeout=timeout))
+        #     if main_to_all.get(timeout=timeout) == "-end":
+        #         terminate()
+        # except Empty:
+        #     pass
+
+   
 
 
     def send_or_wait(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr.Queue, request: ScrapeRequest):
@@ -344,14 +360,28 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
                 time.sleep(1)
 
 
-    def notify_gui(hub_to_gui: mpr.Queue, main_to_all: mpr.Queue, progress: int):
-        assert(0<=progress<=GUI_START_SIGNAL)
+    def send_progress_signal(hub_to_gui: mpr.Queue, main_to_all: mpr.Queue, progress: int):
+        assert(0<=progress<=100)
 
         while hub_to_gui.full():
             print("Gui process queue full! Retrying...")
             check_main(main_to_all=main_to_all)
         
-        hub_to_gui.put(progress, block=False)
+        hub_to_gui.put(obj=(PROGRESS_BAR_SIGNAL, progress), block=False)
+    
+    def check_update_interval_signals(gui_to_hub: mpr.Queue, interval: int, timeout: int = 1):
+
+        try:
+            signal = gui_to_hub.get(timeout=timeout)
+
+            if signal[0] == UPDATE_INTERVAL_SIGNAL:
+                return int(signal[1])
+            
+        except Empty:
+            pass
+
+        return interval
+
 
     
     os.chdir(parent_directory)
@@ -376,23 +406,23 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
 
     check_main(main_to_all=main_to_all)
 
-    notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL/6)
+    send_progress_signal(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=100/6)
 
     training_market = hub.training_market()
     analyze_market(market=training_market)
     
-    notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL/3)
+    send_progress_signal(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=100/3)
 
 
     for market in markets:
         if market.ID() == training_market.ID(): continue
         analyze_market(market=market)
 
-    notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL/2)
+    send_progress_signal(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=100/2)
     
     #notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL/3)
 
-    progress = GUI_START_SIGNAL/2
+    progress = 100/2
     
     if requests:
         progress_rate = math.floor(progress/len(requests))
@@ -414,38 +444,25 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
                 if isinstance(scraped_data, list):
                     print("Received scraped data! Processing...")
                     
-                    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-                        futures = []
+          
+                    for product_data in scraped_data:
+                        check_main(main_to_all=main_to_all, timeout=0.001)
 
-                        for product_data in scraped_data:
+                        product, market_ID = product_data
+                        market = hub.market(identifier=market_ID)
 
-                            product, market_ID = product_data
-                            market = hub.market(identifier=market_ID)
-
-                            process_product(product=product)
-                            category = ProductCategory.NEURČENÁ
-                            if market_ID == training_market.ID():
-                                category = ProductCategorizer.categorize_by_mapping(product=product, mappings_file=CATEGORY_MAP_FILE['path'])
-                            
-                            try:
-                                market.register_product(product=product, norm_category=category)
-                                print(f"Registered successfully: {{{product.name}}}")
-                            except IllegaProductState:
-                                print(f"Product {{{product.name}}} already registered!")
-                            
-                            # try:
-                            #     training_market.register_product(product=product, norm_category=category)
-                            #     print(f"Registered successfully: {{{product.name}}}")
-                            # except IllegaProductState:
-                            #     print(f"Product {{{product.name}}} already registered!")
-
-
-                    
-                                #future = executor.submit(categorize_product, hub, market_ID, product)
-                                #futures.append(future)
-            
+                        process_product(product=product)
+                        category = ProductCategory.NEURČENÁ
+                        if market_ID == training_market.ID():
+                            category = ProductCategorizer.categorize_by_mapping(product=product, mappings_file=CATEGORY_MAP_FILE['path'])
                         
-                        #concurrent.futures.wait(futures)
+                        try:
+                            market.register_product(product=product, norm_category=category)
+                            print(f"Registered successfully: {{{product.name}}}")
+                        except IllegalProductState:
+                            print(f"Product {{{product.name}}} already registered!")
+                            
+              
 
                 elif isinstance(scraped_data, int):
 
@@ -459,7 +476,7 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
 
                         with product_file_lock:
                             hub.load_products()
-                        notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=progress + progress_rate)
+                        send_progress_signal(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=progress + progress_rate)
                         progress += progress_rate
                         break
                 else:
@@ -468,7 +485,7 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
             time.sleep(1.5)
 
 
-    notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL)
+    send_progress_signal(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=100)
 
     # now gui can start, since all necessary data are present   
     while hub_to_gui.full():
@@ -527,6 +544,8 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
         
         send_or_wait(main_to_all=main_to_all, hub_to_scraper=hub_to_scraper, request=processed_request)
 
+        update_interval = 0
+
         # here we wait until the request is fulfilled
         while True:
             # here we wait until we receive and answer
@@ -540,6 +559,15 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
                 print("Received scraped data! Processing...")
                 
                 for product, market_ID in response:
+                    check_main(main_to_all=main_to_all, timeout=0.1)
+                    update_interval = check_update_interval_signals(gui_to_hub=gui_to_hub,
+                                                                    interval=update_interval)
+                    
+                    while update_interval == -1:
+        
+                        check_main(main_to_all=main_to_all)
+                        update_interval = check_update_interval_signals(gui_to_hub=gui_to_hub, interval=update_interval)
+
                     process_product(product=product)
 
                     if market_ID == processed_request.market_ID:
@@ -554,7 +582,7 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
 
 
                         # we received a new data which are not yet registered
-                        except IllegaProductState:
+                        except IllegalProductState:
                             
                             if market.ID() == training_market.ID():
                                 category = categorizer.categorize_by_mapping(product=product, mappings_file=CATEGORY_MAP_FILE['path'])
@@ -566,7 +594,7 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
                                 
                                 market.register_product(product=product, norm_category=category)
                                 print(f"Registered successfully: {{{product.name}}}")
-                            except IllegaProductState:
+                            except IllegalProductState:
                                 print(f"Product {{{product.name}}} already registered!")
 
                     else:
@@ -604,9 +632,9 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
                         print("GUI's queue is full! Retrying...")
                         check_main(main_to_all=main_to_all)
                     
-                    hub_to_gui.put(obj=GUI_UPDATE_SIGNAL, block=False)
+                    hub_to_gui.put(obj=(UPDATE_PRODUCTS_SIGNAL,), block=False)
 
-                    while gui_to_hub.empty() or gui_to_hub.get(block=False) != 1:
+                    while gui_to_hub.empty() or gui_to_hub.get(block=False)[0] != UPDATE_PRODUCTS_SIGNAL:
                         time.sleep(1)
 
 
@@ -626,6 +654,9 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
            # print(first_row)
 
 
+        
+        else:
+            time.sleep(update_interval)
         # for row in product_df.iter_rows():
 
 

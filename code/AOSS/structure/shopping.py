@@ -39,7 +39,7 @@ from datetime import datetime
 
 from config_paths import *
 from AOSS.other.utils import PathManager, TextEditor
-from AOSS.other.exceptions import IllegaProductState, InvalidMarketState
+from AOSS.other.exceptions import IllegalProductState, InvalidMarketState
 
 class ProductCategory(Enum):
     NEURČENÁ = 0
@@ -419,12 +419,12 @@ class Market(MarketView):
             # Let's firstly check the unregistered products to prove product's uniqueness
             for _product in self.__registration_buffer:
                 if (product.name == _product[0].name):
-                    raise IllegaProductState("Conflicting name with an unregistered product!")
+                    raise IllegalProductState("Conflicting name with an unregistered product!")
             
             # Now we check the registered products for the same purpose
             
             if product.name in self.products():
-                raise IllegaProductState("Conflicting name with a registered product!")
+                raise IllegalProductState("Conflicting name with a registered product!")
 
 
             # with open(self.product_file(), mode='r', encoding='utf-8') as product_file:
@@ -450,7 +450,7 @@ class Market(MarketView):
                         break
 
                 else:
-                    raise IllegaProductState("The market doesn't provide such a category.")
+                    raise IllegalProductState("The market doesn't provide such a category.")
 
             # Finally, we can add the product for registration
             self.__registration_buffer.append((product, norm_category))
@@ -466,7 +466,7 @@ class Market(MarketView):
             #product = self.__update_buffer[product.name]      
             self.__update_buffer.append(product)
         else:
-            raise IllegaProductState("Provided product not registered!")
+            raise IllegalProductState("Provided product not registered!")
 
 
             
@@ -506,7 +506,7 @@ class Market(MarketView):
                 # _product = _products[id]
                 # self.__delete_buffer.append(_product.ID)
             except KeyError:
-                raise IllegaProductState(message="Provided product not found in the dataset!")
+                raise IllegalProductState(message="Provided product not found in the dataset!")
 
 
 

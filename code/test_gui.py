@@ -1,12 +1,11 @@
 from tkinter import *
 
-import multiprocessing as mpr
 
 import config_paths as cfg
 from AOSS.gui.product_specification import ProductSpecificationMenu
 from AOSS.gui.shopping_list import ShoppingListFrame
 from AOSS.gui.market_explorer import MarketExplorerFrame
-from AOSS.gui.settings import SettingsFrame
+from AOSS.gui.settings import SettingsPanel
 
 from AOSS.structure.shopping import MarketHub
 
@@ -17,7 +16,7 @@ class MainMenu(Frame):
 
 class MainView(Frame):
 
-    def __init__(self, *args, root: Tk, market_hub: MarketHub, gui_to_hub: mpr.Queue, **kw):
+    def __init__(self, *args, root: Tk, market_hub: MarketHub, **kw):
         super(MainView, self).__init__(*args, **kw)
         self.root = root
         self.market_hub = market_hub
@@ -70,7 +69,7 @@ class MainView(Frame):
         #self.explorer_frame = Frame(self.main_window)
 
        
-        self.settings_frame = SettingsFrame(self.main_window, gui_to_hub=gui_to_hub)
+        self.settings_panel = SettingsPanel(self.main_window)
 
         #market_explorer_window 
     
@@ -205,7 +204,7 @@ class MainMenu(Frame):
         for child in self.parent.main_window.winfo_children():
             child.pack_forget()
         
-        self.parent.settings_frame.pack(side='left', fill='both', expand=True, padx=(0, 5), pady=6)
+        self.parent.settings_panel.pack(side='left', fill='both', expand=True, padx=(0, 5), pady=6)
 
         self.selected_option.config(state='normal')
         self.settings_option.config(state='disabled')

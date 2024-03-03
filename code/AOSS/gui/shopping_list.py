@@ -1,7 +1,9 @@
 from tkinter import *
+from tkinter import ttk
 
 from typing import List
 
+import config_paths as cfg
 from AOSS.structure.shopping import ProductCategory
 
 # class BoundableFrame(Frame):
@@ -166,25 +168,51 @@ class ShoppingList(Frame):
 
 
 class ShoppingListFrame(LabelFrame):
+    WIDTH = 268
+
     def __init__(self, *args, **kw):
         super(ShoppingListFrame, self).__init__(*args, **kw)
+        self.config(width=self.WIDTH)
+        self.pack_propagate(0)
+        
+        self.list_view = Frame(self)
+        self.list_view.pack(side='top', fill='both', expand=True, pady=(13, 0))
 
-        self.canvas = Canvas(self, bg='grey', width=5)
+
+
+        self.canvas = Canvas(self.list_view, width=5, bg='lightgrey')
         self.canvas.pack(side='left', fill='both', expand=True, pady=5)
-              #  self.canvas.pack(side='left', fill='both', expand=True)  # Expand in both directions
 
-        self.scrollbar = Scrollbar(self, orient='vertical',background='grey', bg='dimgrey', command=self.canvas.yview)
+        self.scrollbar = Scrollbar(self.list_view, orient='vertical',  command=self.canvas.yview)
         self.scrollbar.pack(side='right', fill='y', expand=False, pady=5, padx=3)
 
         self.scrollbar.config(command=self.canvas.yview)
 
-        self.product_list = ShoppingList(self.canvas, bg='grey', width=15)
+        self.product_list = ShoppingList(self.canvas, bg='lightgrey', width=15)
 
         self.product_list.bind('<Configure>', self.configure_interior)
         self.canvas.bind('<Configure>', self.configure_canvas)
-        self.__interior_ID = self.canvas.create_window(0, 0, window=self.product_list, width=222, anchor='nw')
+        self.__interior_ID = self.canvas.create_window(0, 0, window=self.product_list, width=236, anchor='nw')
 
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        self.trash_bin_icon = PhotoImage(file=cfg.TRASH_BIN_ICON).subsample(18, 18)
+
+        self.style_1 = ttk.Style()
+        self.style_1.configure("TButton", font=("Arial", 15), background="skyblue", foreground="black")
+
+        self.delete_product_button = ttk.Button(self,
+                                            text='remove',
+                                            style="TButton",
+                                            width=27,
+                                            padding=(0, 6),
+                                            #pady=6,
+                                            image=self.trash_bin_icon,
+                                            compound='left',
+                                            command=self.product_list.remove_selected_item)
+        self.delete_product_button.pack_propagate(0)
+        self.delete_product_button.pack(side='top', fill='y', expand=False, pady=(7, 5))
+
 
     def configure_interior(self, event):
         size = (self.product_list.winfo_reqwidth(), self.product_list.winfo_reqheight())
@@ -222,7 +250,7 @@ class ShoppingListFrame(LabelFrame):
                                 amount=amount,
                                 ID=self.product_list.assign_ID(),
                                 on_widget_click=self.product_list.remove_click_texture,
-                                width=240, bg='grey')
+                                width=240, bg='lightgrey')
 
         item.pack(side="top", fill="x", expand=False, padx=2, pady=2)
 

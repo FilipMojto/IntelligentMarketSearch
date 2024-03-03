@@ -40,6 +40,7 @@ class CircularProgress(tk.Canvas):
             outline="blue" if self.angle <= 180 else "red"
         )
 
+
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Circular progress indicator")
