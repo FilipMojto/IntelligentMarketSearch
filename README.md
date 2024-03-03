@@ -58,6 +58,34 @@ a) Fixed __loading screen progress reports__
 
 b) Fixed a bug in __DPMP update synchronization__, next_product_ID for market ID wasn't saved properly 
 
+### Version 2.0.0
 
+#### Release Date: 03.03.2024
+
+#### Description
+
+New version with brand new gui and other features!
+
+#### Features
+
+    a) New GUI layout
+
+        a1) MainMenu included!
+        a2) New background coloring!
+        a3) Settings also included!
+        a3) Neater styling for several widgets, like buttons, entries, etc.!
+
+    
+    b) Improved IPC
+        - GUI process now has to send signals related to Settings tuning. Therefore IPC and the signals got more detailed structure to process all various types of messages more efficiently.
+    
+    c) Bug fixes
+        
+        c1) Bugs in GUI window resizing fixed!
+        c2) Rounding succession rate in MarketExplorer to 2 decimal places fixed!
+        c2) Bugs in IPC, processes DPMP and GUI contained communication errors, these have been fixed!
+
+
+    
 
 
