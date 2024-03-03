@@ -22,9 +22,10 @@ os.chdir(parent_directory)
 
 
 from config_paths import *
+from AOSS.structure.marketing import ScrapeRequest
 from AOSS.structure.shopping import MarketHub, Product
 from AOSS.components.scraping.base import ProductScraper
-from AOSS.structure.marketing import ScrapeRequest
+
 
 
 scrapers: List[ProductScraper] = []
@@ -50,16 +51,21 @@ def signal_handler(signum, frame):
     if signum == 2:
         terminate()
 
-def check_main(main_to_all: mpr.Queue, timeout: float = 1.5):
+def check_main(main_to_all, timeout: float = 1.5):
     """
         This function checks for any incoming request from the main process.
     """
+
+    if main_to_all.value:
+         terminate()
+        
+    time.sleep(timeout)
     
-    try:
-        if main_to_all.get(timeout=timeout) == "-end":
-            terminate()
-    except Empty:
-        pass
+    # try:
+    #     if main_to_all.get(timeout=timeout) == "-end":
+    #         terminate()
+    # except Empty:
+    #     pass
     #if not main_to_all.empty() and main_to_all.get(block=False) == "-end":
      #   terminate()
 

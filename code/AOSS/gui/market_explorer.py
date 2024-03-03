@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter.ttk import Combobox
+from tkinter import ttk
 
 import threading
 import multiprocessing as mpr
@@ -14,7 +14,7 @@ from AOSS.structure.shopping import MarketHub, ProductCategory
 from AOSS.components.marrec import MarketExplorer
 from AOSS.other.utils import TextEditor
 
-
+BACKGROUND = 'lightblue'
 
 def bind_widgets_recursive(widget, event, handler):
     widget.bind(event, handler)
@@ -32,7 +32,7 @@ class Table(Frame):
         self.columns = columns
         self.cells: List[List[Label]] = []
 
-        self.config(bg='black')
+        self.config(bg='lightgrey')
 
         for i in range(columns):
             self.columnconfigure(i, weight=1)
@@ -171,24 +171,24 @@ class ExplorerView(Frame):
         self.columnconfigure(0, weight=1)
 
         self.table = ExplorationTable(self, bg='black', market_hub=market_hub)
-        self.table.grid(row=0, column=0, sticky="NSEW", pady=5)
+        self.table.grid(row=0, column=0, sticky="NSEW", padx=5, pady=(54, 5))
 
         self.detailed_results = LabelFrame(self,
-                                           bg='dimgrey',
+                                           bg=BACKGROUND,
                                            text='Product Details',
                                            font=('Arial', 15, 'bold'))
         
-        self.detailed_results.grid(row=1, column=0, sticky="NSEW", pady=5)
+        self.detailed_results.grid(row=1, column=0, sticky="NSEW", pady=(58, 5))
         self.detailed_results.rowconfigure(0, weight=1, minsize=50)
         self.detailed_results.rowconfigure(1, weight=200)
         self.detailed_results.columnconfigure(0, weight=1)
 
         self.detailed_results_table = Table(self.detailed_results, rows=4, columns=3)
-        self.detailed_results_table.grid(row=0, column=0, sticky="NSEW")
+        self.detailed_results_table.grid(row=0, column=0, sticky="NSEW", padx=5)
         self.detailed_results_table.col_proportion(values=(2, 40, 1))
 
 
-        self.detailed_results_padding = Frame(self.detailed_results, bg='dimgrey')
+        self.detailed_results_padding = Frame(self.detailed_results, bg=BACKGROUND)
         self.detailed_results_padding.grid(row=1, column=0, sticky="NSEW")
 
         
@@ -207,6 +207,7 @@ class MarketExplorerFrame(LabelFrame):
 
         self.accept_icon = PhotoImage(file=cfg.ACCEPT_ICON).subsample(18, 18)
         self.decline_icon = PhotoImage(file=cfg.DECLINE_ICON).subsample(18, 18)
+        self.search_icon = PhotoImage(file=cfg.SEARCH_ICON).subsample(18, 18)
         
         self.root = root
         self.shopping_list = shopping_list_frame
@@ -220,40 +221,46 @@ class MarketExplorerFrame(LabelFrame):
 
         # ---- Frame Configuration ---- #
 
-        self.rowconfigure(0, weight=40)
-        self.rowconfigure(1, weight=2)
+        self.rowconfigure(0, weight=11)
+        self.rowconfigure(1, weight=10, minsize=20)
         self.columnconfigure(0, weight=1)
 
         # ---- ExplorerView Configuration ---- #
 
-        self.explorer_view = ExplorerView(self, market_hub=market_hub, bg='dimgrey')
-        self.explorer_view.grid(row=0, column=0, sticky="NSEW")
+        self.explorer_view = ExplorerView(self, market_hub=market_hub, bg=BACKGROUND)
+        self.explorer_view.grid(row=0, column=0, sticky="NSEW", pady=(15, 0))
 
         # ---- ControlPanel Configuration ---- #
 
-        self.control_panel = Frame(self)
-        self.control_panel.grid(row=1, column=0, sticky="NSEW")
+        self.control_panel = Frame(self, bg='skyblue')
+    
+        self.control_panel.grid(row=1, column=0, sticky="NSEW")#,pady=(20, 0))
         self.control_panel.rowconfigure(0, weight=1)
         self.control_panel.columnconfigure(0, weight=1)
         self.control_panel.columnconfigure(1, weight=1)
+        self.control_panel.grid_propagate(0)
         
 
-        self.delete_button = Button(self.control_panel,
-                                    text="delete",
-                                    font=('Arial', 13),
-                                    command=self.delete_product,
-                                    width=10)
+        # self.delete_button = ttk.Button(self.control_panel,
+        #                             text="delete",
+        #                             style='TButton',
+        #                             command=self.delete_product,
+        #                             padding=(0, 7))
+        #                             #width=200)
                                     
-        self.delete_button.grid(row=0, column=0, sticky="ENSW", padx=3, pady=(5, 12))
-        
+        # self.delete_button.grid(row=0, column=0, sticky="EW", padx=3, pady=(0, 8))
+        # self.delete_button.grid_propagate(False)
 
-        self.search_button = Button(self.control_panel,
-                                    text="search",
-                                    font=("Arial", 13),
+        self.search_button = ttk.Button(self.control_panel,
+                                    text="   search",
+                                    style='TButton',
                                     command=self.explore_markets,
                                     state='disabled',
-                                    width=10)
-        self.search_button.grid(row=0, column=1, sticky="EWSN", padx=3, pady=(5, 12))
+                                    #width=1800,
+                                    padding=(0, 7),
+                                    image=self.search_icon,
+                                    compound='left')
+        self.search_button.grid(row=0, column=1, sticky="EWS", padx=3, pady=(8, 6))
 
         self.search_bar = CircularProgress(self.control_panel, width=30, height=30)
 
@@ -277,7 +284,7 @@ class MarketExplorerFrame(LabelFrame):
         self.product_items.remove(item)
         
 
-    def combobox_selected(self, event, box: Combobox):
+    def combobox_selected(self, event, box: ttk.Combobox):
         info = box.grid_info()
         cur_price = float(self.explorer_view.detailed_results_table.cells[info['row']][info['column'] + 1].cget('text'))
         new_price = self.product_price_mappings[info['row'] - 1][box.get()]
@@ -350,7 +357,7 @@ class MarketExplorerFrame(LabelFrame):
         combo_boxes = []
 
         for i in range(market_len):
-            box = Combobox(self.explorer_view.detailed_results_table, state='readonly')
+            box = ttk.Combobox(self.explorer_view.detailed_results_table, state='readonly')
             #text = products[i]
             box['values'] = products[i]
             box.set(box['values'][0])
@@ -500,7 +507,7 @@ class MarketExplorerFrame(LabelFrame):
             
             self.explorer_view.table.insert_value(row=0, col=expl.market_ID, value=self.market_hub.market(identifier=expl.market_ID).name().lower())
             self.explorer_view.table.insert_value(row=1, col=expl.market_ID, value= round(expl.total_price, 2))
-            self.explorer_view.table.insert_value(row=2, col=expl.market_ID, value=expl.succession_rate)
+            self.explorer_view.table.insert_value(row=2, col=expl.market_ID, value=round(expl.succession_rate, 2))
             
         self.explorations = self.market_explorer.get_explorations(metric='price')
         #self.market_explorer.clear_buffer()
@@ -520,6 +527,8 @@ class MarketExplorerFrame(LabelFrame):
 
         self.search_bar.grid_forget()
         self.search_bar.config(state="disabled")
+        
+
         self.search_button.config(text="search")
 
 

@@ -172,7 +172,12 @@
             "shopping_cart_icon_2": "../resources/GUI/grocery-store.png",
             "trash_bin": "../resources/GUI/trash-bin.png",
             "accept_icon": "../resources/GUI/accept.png",
-            "decline_icon": "../resources/GUI/decline.png"
+            "decline_icon": "../resources/GUI/decline.png",
+            "search_icon": "../resources/GUI/loupe.png",
+            "gear_icon": "../resources/GUI/gear.png",
+            "exit_icon": "../resources/GUI/exit.png",
+            "magnifier_icon": "../resources/GUI/magnifier.png",
+            "eraser_icon": "../resources/GUI/eraser.png"
         },
 
         "market_hub_file": {
