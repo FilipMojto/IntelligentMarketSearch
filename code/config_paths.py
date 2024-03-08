@@ -25,6 +25,7 @@ PRODUCT_FILE = DATA["products"]
 CATEGORY_FILE = DATA["categories"]
 CATEGORY_MAP_FILE = DATA["category_mappings"]
 MARKET_HUB_FILE = DATA["market_hub"]
+SEARCHED_PRODUCTS_FILE = DATA["searched_products"]
 
 
 GUI = PATHS["resources"]["gui"]
@@ -40,3 +41,5 @@ GEAR_ICON = GUI['gear_icon']
 EXIT_ICON = GUI['exit_icon']
 MAGNIFIER_ICON = GUI['magnifier_icon']
 ERASER_ICON = GUI['eraser_icon']
+PLUS_ICON = GUI['plus_icon']
+MINUS_ICON = GUI['minus_icon']

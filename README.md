@@ -85,6 +85,46 @@ New version with brand new gui and other features!
         c2) Rounding succession rate in MarketExplorer to 2 decimal places fixed!
         c2) Bugs in IPC, processes DPMP and GUI contained communication errors, these have been fixed!
 
+### Version 2.1.0
+
+#### Release Date: 08.03.2024
+
+#### Description
+
+Improvement of version 2.0.0 including various new functionality in GUI.
+
+#### Features
+
+##### Improved GUI Visualization&Usage
+        
+    a1) Implemented history of searched products
+
+        - User is intelligently offered to choose from their history of searched products, therefore there is no need to search the same product again and again.
+        - The history is stored persistently in a new .csv file called searched_products.
+
+    a2) Quantity specification menu
+
+        - This includes preventing user from entering something else than numerical data. The Entry is highlighted in red if invalid input is entered.
+        - The Default quantity value is automatically set to 1.
+        - User can also use increment&decrement buttons.
+    
+    a3) New progress reports during the loading screen
+
+        - This includes additional update process explained further below.
+
+##### Improved DPMP logic
+
+    - If certain amount of data are outdated, all data will be completely scraped and updated again.
+
+##### Bug Fixes
+
+    - Fixed fonting when entering product quantity.
+
+
+
+        
+    
+
 
     
 

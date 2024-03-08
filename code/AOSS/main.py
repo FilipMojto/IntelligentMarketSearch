@@ -65,11 +65,9 @@ def signal_handler(signum, frame):
 
 
     if signum == 2:
-
         print("Ctrl + C received. Terminating subprocesses.")
-        #send_termination_signals()
         terminate()
-        #exit(0)
+
 
 
 

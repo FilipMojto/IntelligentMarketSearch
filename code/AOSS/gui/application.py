@@ -24,6 +24,7 @@ from AOSS.main import GUI_TERMINATION_SIGNAL
 from main_view import MainView
 from AOSS.gui.loading_screen import LoadingScreen
 from AOSS.structure.marketing import PROGRESS_BAR_SIGNAL, UPDATE_INTERVAL_SIGNAL, UPDATE_PRODUCTS_SIGNAL
+from AOSS.components.IPC.IPC import PROGRESS_REPORTS as PR, ProgressReportPoints as PRP
 from AOSS.structure.shopping import MarketHub
 
 def terminate(gui_to_main: mpr.Queue = None):
@@ -45,9 +46,13 @@ class Application(tkinter.Tk):
             main_view.market_explorer_window.delete_product()
            # main_view.market_explorer_frame.delete_product()
 
+    # def do_sth(self, event):
+    #     print("NOW")
             
     def __init__(self, *args, lock: mpr.Lock = None, gui_to_hub: mpr.Queue = None, **kw) -> None:
         super(Application, self).__init__(*args, **kw)
+
+        #self.bind("<Configure>", self.do_sth)
         #self.__app = tkinter.Tk()
 
         self.market_hub = MarketHub(src_file=MARKET_HUB_FILE['path'])
@@ -153,18 +158,20 @@ def start(main_to_all: mpr.Queue = None, gui_to_main: mpr.Queue = None, hub_to_g
                     loading_screen.update_idletasks()
 
             
-                    if signal[1] == 100:
+                    if signal[1] == PRP.FINISHING_POINT:
                         loading_screen.info_text.config(text="finishing...")
                         loading_screen.after(500, loading_screen.quit)
                         return
                     
-                    elif signal[1] == (100/6):
-                        loading_screen.info_text.config(text="analyzing training market...", font=('Arial', 11))
-                    elif signal[1] == (100/3):
-                        loading_screen.info_text.config(text="analyzing markets...", font=('Arial', 11))
-                    elif 0<=signal[1]<100:
-                        loading_screen.info_text.config(text="scraping missing products...", font=('Arial', 11))
-                
+                    elif signal[1] == PRP.TRAINING_MARKET_ANALYSIS:
+                        loading_screen.info_text.config(text=PR[PRP.TRAINING_MARKET_ANALYSIS])
+                    elif signal[1] == PRP.MARKETS_ANALYSIS:
+                        loading_screen.info_text.config(text=PR[PRP.MARKETS_ANALYSIS])
+                    elif PRP.MARKETS_ANALYSIS<=signal[1]<PRP.UPDATING_DATA:
+                        loading_screen.info_text.config(text=PR[PRP.SCRAPING_MISSING_DATA])
+                    elif signal[1] == PRP.UPDATING_DATA:
+                        loading_screen.info_text.config(text=PR[PRP.SCRAPING_MISSING_DATA])
+
                 
     
             # Schedule the next after() call and save the after ID

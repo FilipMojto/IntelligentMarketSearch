@@ -1,14 +1,12 @@
 import sys, os, time
-import polars as pl
 from typing import List
 import multiprocessing as mpr, multiprocessing.connection as mpr_conn
 from dataclasses import dataclass
 import signal
-from datetime import datetime
 import math
 from queue import Empty
-
-import concurrent.futures
+import threading
+from datetime import datetime
 
 #Set the starting point to the directory containing the script
 script_directory = os.path.dirname(os.path.abspath(__file__))
@@ -24,14 +22,11 @@ from AOSS.components.processing import ProductCategorizer
 from AOSS.components.processing import process_product
 from AOSS.other.exceptions import IllegalProductState
 
-
-# def custom_signal_handler(signum, frame):
-#     print(f"Received custom signal {signum}. Performing custom action.")
-
-
+from AOSS.components.IPC.IPC import ProgressReportPoints as PRP
+from AOSS.components.IPC.IPC import PROGRESS_REPORTS as PR
 
 @dataclass
-class ScrapeRequest():
+class ScrapeRequest:
     ID: int
     market_ID: int
     categories: List[int]
@@ -41,12 +36,16 @@ requests: List[ScrapeRequest] = []
 request_ID = 1
 product_df = None
 
-#GUI_START_SIGNAL = 100
 
 UPDATE_PRODUCTS_SIGNAL = 1
 PROGRESS_BAR_SIGNAL = 2
 UPDATE_INTERVAL_SIGNAL = 3
 UPDATE_STOP_SIGNAL = -1
+
+UPDATE_LIMIT = 0.75
+MAX_UPDATE_DELAY = 30
+
+
 
 
 def get_request_ID():
@@ -55,215 +54,9 @@ def get_request_ID():
     request_ID += 1
     return old_ID
 
-# def __check_training_set(hub: MarketHub):
-#     training_market = hub.training_market()
-#     market_categories = training_market.categories()
-    
-#     empty_categories = []
 
-#     # firstly we analyze whether there are any products for each category for the training market
-#     # if there are not, script creates a new request
-#     for category in market_categories:
-#         if len( product_df.filter( (product_df['market_ID'] == training_market.ID() ) &
-#                                  (product_df['query_string'] == category) )) == 0:
-            
-#             print(f"Detected no products for training market {training_market.name()}. Category: {category}")
-#             empty_categories.append(category)
-    
-#     # now we create a request if necessary
-#     if len(empty_categories) > 0:
-
-#         requests.append(ScrapeRequest(ID=get_request_ID(), market_ID=training_market.ID(), categories=empty_categories))
-        
-
-        
-# def __check_product_sets(hub: MarketHub):
-#     markets = hub.markets()
-#     training_market = hub.training_market()
-#     empty_categories: List[str] = []
-
-#     for market in markets:
-#         if market.ID() == training_market.ID(): continue
-        
-#         empty_categories.clear()
-#         market_categories = market.categories()
-
-#         for category in market_categories:
-#             if len( product_df.filter( (product_df['market_ID'] == market.ID() ) &
-#                                 (product_df['query_string'] == category) )) == 0:
-        
-#                 print(f"Detected no products for market {market.name()}. Category: {category}")
-#                 empty_categories.append(category)
-        
-#         if len(empty_categories) > 0:            
-#             requests.append(ScrapeRequest(ID=get_request_ID(), market_ID=market.ID(), categories=empty_categories.copy()))
-
-
-
-
-    
-    
-
-
-    
-
-import threading
 
 market_hub_lock = threading.Lock()
-
-
-def categorize_product(market_hub: MarketHub, market_ID: int, product):
-    categorizer = None
-
-    with market_hub_lock:
-        categorizer = ProductCategorizer(market_hub=market_hub)
-
-    start = time.time()
-    category =  categorizer.categorize(product=product)
-    end = time.time()
-
-    print(f"Time: {end - start}")
-
-    try:
-        market_hub.market(identifier=market_ID).register_product(product=product, norm_category=category)
-        print(f"Product {product.name} registered successfully!")
-    except IllegalProductState:
-        print(f"Product {product.name} already registered!")
-
-
-# def start_market_hub(main_to_all: mpr_conn.PipeConnection, hub_to_scraper: mpr.Queue,
-#                      scraper_to_hub: mpr.Queue, hub_to_gui: mpr.Queue):
-
-
-
-#     with MarketHub(src_file=MARKET_HUB_FILE['path']) as hub:
-
-#         global product_df
-#         product_df = pl.read_csv(hub.product_file())
-
-#         for market in hub.markets():
-#             market.buffer(size=10000)
-
-#         training_market = hub.training_market()
-
-#         __check_main(main_to_all=main_to_all)
-
-        
-#         market_categories = training_market.categories()
-        
-#         empty_categories = []
-
-
-
-#         # firstly we analyze whether there are any products for each category for the training market
-#         # if there are not, script creates a new request
-#         for category in market_categories:
-#             if len( product_df.filter( (product_df['market_ID'] == training_market.ID() ) &
-#                                     (product_df['query_string'] == category) )) == 0:
-                
-#                 print(f"Detected no products for training market {training_market.name()}. Category: {category}")
-#                 empty_categories.append(category)
-        
-#         # now we create a request if necessary
-#         if len(empty_categories) > 0:
-
-#             requests.append(ScrapeRequest(ID=get_request_ID(), market_ID=training_market.ID(), categories=empty_categories))
-
-
-
-
-#         #__check_training_set(hub=hub)
-#         __check_product_sets(hub=hub)
-
-#         # here we start sending necessary scraping requets
-#         while len(requests) > 0:
-#             processed_request = requests.pop(0)
-#             __send_scrape_request(main_to_all=main_to_all, hub_to_scraper=hub_to_scraper,
-#                                     request=processed_request)
-
-#             # in this loop, we wait until the request was finished successfully
-#             while True:
-                
-#                 if not scraper_to_hub.empty():
-
-#                     try:
-#                         scraped_data = scraper_to_hub.get(block=False)
-#                     except Exception:
-#                         pass
-
-#                     if isinstance(scraped_data, list):
-#                         print("Received scraped data! Processing...")
-                        
-#                         with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-#                             futures = []
-
-#                             for product_data in scraped_data:
-
-#                                 product, market_ID = product_data
-#                                 process_product(product=product)
-                                
-#                                 if market_ID == training_market.ID():
-#                                     category = ProductCategorizer.categorize_by_mapping(product=product, mappings_file=CATEGORY_MAP_FILE['path'],
-#                                                             header=CATEGORY_MAP_FILE['header'])
-                                    
-#                                     try:
-#                                         training_market.register_product(product=product, norm_category=category)
-#                                         print(f"Registered successfully: {{{product.name}}}")
-#                                     except IllegalProductStructureError:
-#                                         print(f"Product {{{product.name}}} already registered!")
-#                                 else:
-#                                     #categorizer = ProductCategorizer(market_hub=hub)
-#                                     assert(hub.can_categorize())
-
-#                                     if hub.can_categorize():
-                                        
-#                                         # start = time.time()
-                                
-#                                         future = executor.submit(categorize_product, hub, market_ID, product)
-#                                         futures.append(future)
-#                                         # category = categorizer.categorize(product=product)
-#                                         # end = time.time()
-
-#                                         # print(f"time:{end - start}")
-
-#                                         # try:
-#                                         #     hub.market(ID=market_ID).register_product(product=product, norm_category=category)
-#                                         #     print(f"Product {product.name} registered successfully!")
-#                                         # except IllegalProductStructureError:
-#                                         #     print(f"Product {product.name} already registered!")
-                            
-#                             concurrent.futures.wait(futures)
-
-#                     elif isinstance(scraped_data, int):
-
-#                         if processed_request.ID == scraped_data:
-#                             print(f"Request {processed_request.ID} fulfilled!")
-#                             hub.market(ID=processed_request.market_ID).save_products()
-#                             hub.update()
-#                             hub.load_products()
-#                             break
-#                     else:
-#                         print("Unsupported response type!")
-                
-#                 time.sleep(1.5)
-
-#         if not hub_to_gui.full():
-#             hub_to_gui.put(obj=GUI_START_SIGNAL, block=False)
-#         else:
-#             print("Unable to send scraping request!. Retrying...")
-#             __check_main(main_to_all=main_to_all)
-#             #time.sleep(1)
-
-        
-
-
-
-
-
-
-            
-            
-
 
 
                                 
@@ -293,16 +86,17 @@ def analyze_market(market: Market):
         requests.append(ScrapeRequest(ID=get_request_ID(), market_ID=market.ID(), categories=empty_categories))
 
 
-# def analyze_product(row):
-#     print(row[PRODUCT_FILE['columns']['updated_at']['index']])
 
 
 
 def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr.Queue, hub_to_gui: mpr.Queue,
           gui_to_hub: mpr.Queue, product_file_lock: mpr.Lock):
     
+    update_interval = 0
+
     def terminate():
         nonlocal hub
+        hub.save_markets()
         hub.update()
         exit(0)
         
@@ -332,14 +126,6 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
             terminate()
         
         time.sleep(timeout)
-
-        # try:
-        #     #print(main_to_all.get(timeout=timeout))
-        #     if main_to_all.get(timeout=timeout) == "-end":
-        #         terminate()
-        # except Empty:
-        #     pass
-
    
 
 
@@ -360,6 +146,107 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
                 time.sleep(1)
 
 
+    def process_request_data(request: ScrapeRequest):
+        nonlocal scraper_to_hub, gui_to_hub, main_to_all, update_interval
+
+        while True:
+            # here we wait until we receive and answer
+            while scraper_to_hub.empty():
+                check_main(main_to_all=main_to_all)
+
+            response = scraper_to_hub.get(block=False)
+
+            # case in which we should receive updated product data
+            if isinstance(response, list):
+                print("Received scraped data! Processing...")
+                
+                for product, market_ID in response:
+                    check_main(main_to_all=main_to_all, timeout=0.1)
+                    update_interval = check_update_interval_signals(gui_to_hub=gui_to_hub,
+                                                                    interval=update_interval)
+                    
+                    while update_interval == -1:
+        
+                        check_main(main_to_all=main_to_all)
+                        update_interval = check_update_interval_signals(gui_to_hub=gui_to_hub, interval=update_interval)
+
+                    process_product(product=product)
+
+                    if market_ID == request.market_ID:
+                        market = hub.market(identifier=market_ID)
+                        try:
+                            market.update_product(product=product)
+
+                            print(f"Updated successfully: {product.name}")
+                            try:
+                                # we remove this product as it has been updated and is still at disposal
+                                category_products.remove(product.name)
+                            except ValueError:
+                                pass
+
+
+                        # we received a new data which are not yet registered
+                        except IllegalProductState:
+                            
+                            if market.ID() == training_market.ID():
+                                category = categorizer.categorize_by_mapping(product=product, mappings_file=CATEGORY_MAP_FILE['path'])
+                            else:
+                                category = categorizer.categorize(product=product)
+
+                            process_product(product=product)
+                            try:
+                                
+                                market.register_product(product=product, norm_category=category)
+                                print(f"Registered successfully: {{{product.name}}}")
+                            except IllegalProductState:
+                                print(f"Product {{{product.name}}} already registered!")
+
+                    else:
+                        print("Received response contains invalid market ID!")
+            
+            
+            # case in which we should receive the ScrapeProcessTerminationSignal
+            elif isinstance(response, int):
+                
+                # here all updated data have to be saved to the product file and market hub
+                # has to be refreshed
+                if request.ID == response:
+                    market = hub.market(identifier=request.market_ID)
+                    #if market.
+
+                    if category_products:
+                        market.remove_products(identifiers=category_products)
+                    
+
+                    print(f"Request {request.ID} fulfilled!")
+
+                    while hub_to_gui.full():
+                        print("GUI's queue is full! Retrying...")
+                        check_main(main_to_all=main_to_all)
+                    
+                    hub_to_gui.put(obj=(UPDATE_PRODUCTS_SIGNAL,), block=False)
+
+                    while gui_to_hub.empty() or gui_to_hub.get(block=False)[0] != UPDATE_PRODUCTS_SIGNAL:
+                        time.sleep(1)
+
+
+                    with product_file_lock:
+                        market.save_products()
+                        hub.update()
+                        hub.load_products()
+
+                    break
+                else:
+                    print("Received invalid Scrape Process Termination Signal!")
+            else:
+                print("Unsupported response type!")
+            
+            check_main(main_to_all=main_to_all)
+
+        
+        time.sleep(update_interval)
+
+
     def send_progress_signal(hub_to_gui: mpr.Queue, main_to_all: mpr.Queue, progress: int):
         assert(0<=progress<=100)
 
@@ -369,6 +256,9 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
         
         hub_to_gui.put(obj=(PROGRESS_BAR_SIGNAL, progress), block=False)
     
+
+
+
     def check_update_interval_signals(gui_to_hub: mpr.Queue, interval: int, timeout: int = 1):
 
         try:
@@ -406,26 +296,26 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
 
     check_main(main_to_all=main_to_all)
 
-    send_progress_signal(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=100/6)
+    # analyzing training market
+    send_progress_signal(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=PRP.TRAINING_MARKET_ANALYSIS)
 
     training_market = hub.training_market()
     analyze_market(market=training_market)
     
-    send_progress_signal(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=100/3)
+    send_progress_signal(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=PRP.MARKETS_ANALYSIS)
 
 
     for market in markets:
         if market.ID() == training_market.ID(): continue
         analyze_market(market=market)
 
-    send_progress_signal(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=100/2)
-    
-    #notify_gui(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=GUI_START_SIGNAL/3)
+    send_progress_signal(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=PRP.SCRAPING_MISSING_DATA)
 
-    progress = 100/2
     
     if requests:
-        progress_rate = math.floor(progress/len(requests))
+        progress = PRP.SCRAPING_MISSING_DATA
+        progress_rate = math.floor((PRP.UPDATING_DATA - PRP.SCRAPING_MISSING_DATA)
+                                   /len(requests))
 
     # here we start sending  scraping requets
     while requests:
@@ -485,22 +375,47 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
             time.sleep(1.5)
 
 
-    send_progress_signal(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=100)
+    send_progress_signal(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=PRP.UPDATING_DATA)
+
+    sorted_df = product_df.sort('updated_at')
+
+    # firsly we check whether certain fraction of products are out-of-date
+    update_limit_row = sorted_df.row(int((len(product_df)/100) * UPDATE_LIMIT))
+    
+    # we convert the string into a timestamp    
+    timestamp = datetime.strptime(update_limit_row[PRODUCT_FILE['columns']['updated_at']['index']], "%Y-%m-%d %H:%M:%S")
+    current_date = datetime.now()
+
+    # now we get the update delay
+    update_delay = current_date - timestamp
+
+    if (update_delay.total_seconds())/60 > MAX_UPDATE_DELAY:
+        print("Detected a lot of out-of-date data! Updating...")
+        hub.remove_local_products()
+        return start(main_to_all, hub_to_scraper, scraper_to_hub, hub_to_gui,
+          gui_to_hub, product_file_lock)
+
+        # for market in markets:
+        #     request = ScrapeRequest(ID=get_request_ID(), market_ID=market.ID(), 
+        #                             categories=None)
+            
+        #     send_or_wait(main_to_all=main_to_all, hub_to_scraper=hub_to_scraper, request=request)
+        #     process_request_data(request=request)
+
+    send_progress_signal(hub_to_gui=hub_to_gui, main_to_all=main_to_all, progress=PRP.FINISHING_POINT)
 
     # now gui can start, since all necessary data are present   
-    while hub_to_gui.full():
-        print("Unable to send scraping request!. Retrying...")
-        check_main(main_to_all=main_to_all)
+    # while hub_to_gui.full():
+    #     print("Unable to send scraping request!. Retrying...")
+    #     check_main(main_to_all=main_to_all)
 
     #hub_to_gui.put(obj=GUI_START_SIGNAL, block=False)
     
 
-
-
     hub.update()
 
     print("Starting update process...")
-    processed_categories: List[int] = []
+    processed_categories: List[str] = []
     
     categorizer = ProductCategorizer(market_hub=hub)
 
@@ -508,43 +423,41 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
         # we update product_df to get latest version of dataframe
         product_df = hub.product_df()
 
+        # sorting the product dataframe by the updated_at attribute
         # we find the earliest updated record in dataframe
-        # Get the first row
-        sorted_df = product_df.sort('updated_at')
-        first_row = sorted_df.filter(sorted_df['query_string_ID'].is_in(processed_categories).not_()).head(1)
-        market = first_row['market_ID']
-        processed_categories.append(first_row['query_string_ID'][0])
+    
 
-        category_products = product_df.filter(product_df['query_string_ID'] == first_row['query_string_ID'])['ID'].to_list()
+        print(f"The difference between {current_date} and {timestamp} is: {update_delay.total_seconds()/60}")
+
+
+        earliest_updated = sorted_df.filter(sorted_df['query_string_ID'].is_in(processed_categories).not_()).head(1)
         
-        #first_row = sorted_df.row(by_predicate=lambda x : x['query_string'] not in processed_categories)
+        #print(earliest_updated)
+        
 
 
 
+        market = earliest_updated['market_ID']
+        processed_categories.append(earliest_updated['query_string_ID'][0])
+        
+        # here we store products belonging to the same category as the earliest updated product
+        # products which will remain here after update process is finished are removed from the
+        # market
+        category_products = product_df.filter(product_df['query_string_ID'] == earliest_updated['query_string_ID'])['name'].to_list()
+        
 
-        # for row in sorted_df.iter_rows(named=True):
-        #     if row['query_string'] not in processed_categories:
-        #         #here I need to store the reference to this row
-        #         processed_categories.append(row['query_string'])
-        #         sorted_df.row()
-
-
-
-        #first_row = sorted_df.head(1)
-        # print(first_row)
-        # Print the content of the first row
-        print(f"Updating category {first_row['query_string_ID'][0]} of market {first_row['market_ID'][0]}.")
+        print(f"Updating category {earliest_updated['query_string_ID'][0]} of market {earliest_updated['market_ID'][0]}.")
     
 
         # now we create a ScrapeRequest isntance and send it to the scraper process
-        processed_request = ScrapeRequest(ID=get_request_ID(), market_ID=first_row['market_ID'][0], categories=[first_row['query_string_ID'][0]])
+        processed_request = ScrapeRequest(ID=get_request_ID(), market_ID=earliest_updated['market_ID'][0], categories=[earliest_updated['query_string_ID'][0]])
         
         with product_file_lock:
             hub.market(identifier=processed_request.market_ID).load_products()
         
         send_or_wait(main_to_all=main_to_all, hub_to_scraper=hub_to_scraper, request=processed_request)
 
-        update_interval = 0
+        #update_interval = 0
 
         # here we wait until the request is fulfilled
         while True:
@@ -575,8 +488,10 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
                         try:
                             market.update_product(product=product)
 
+                            print(f"Updated successfully: {product.name}")
                             try:
-                                category_products.remove(product.ID)
+                                # we remove this product as it has been updated and is still at disposal
+                                category_products.remove(product.name)
                             except ValueError:
                                 pass
 
@@ -599,18 +514,7 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
 
                     else:
                         print("Received response contains invalid market ID!")
-                
             
-
-            #while gui_to_hub.empty() or gui_to_hub.get(block=False) != 1:
-                    # if not gui_to_hub.empty() and gui_to_hub.get(block=False) == 1:
-                    #     break
-                    #     #print("Gui hasnt updated yet! Retrying...")
-                    #     #time.sleep(1)
-                
-                    #time.sleep(1)
-
-                #time.sleep(1.5)
             
             # case in which we should receive the ScrapeProcessTerminationSignal
             elif isinstance(response, int):
@@ -654,78 +558,7 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
            # print(first_row)
 
 
-        
-        else:
-            time.sleep(update_interval)
-        # for row in product_df.iter_rows():
-
-
-
-        #     category = row[PRODUCT_FILE['columns']['query_string']['index']]
-        #     market_ID = row[PRODUCT_FILE['columns']['market_ID']['index']]
-
-        #     if len(requests) < limit and category not in updated:
-        #         request = ScrapeRequest(ID=get_request_ID(), market_ID=market_ID, categories=[category])
-        #         send_or_wait(main_to_all=main_to_all, hub_to_scraper=hub_to_scraper, request=request)
-        #         requests.append(requests)
-            
-        #     while scraper_to_hub.empty():
-        #         check_main(main_to_all=main_to_all)
-
-        #     response = scraper_to_hub.get()
-
-        #     if isinstance(response, list):
-        #         print("Received scraped data. Processing...")
-
-        #         for product, market_ID in response:
-        #             market = hub.market(ID=market_ID)
-        #             market.update_product(product=product)
-            
-        #     elif isinstance(response, int):
-        #         print(f"Request {processed_request.ID} fulfilled!")
-
-
-
-
-                
-
-
-
-
-
-
-
-        # for market in markets:
-        #     df = product_df.filter(product_df['market_ID'] == market.ID())
-
-        #     for row in df.iter_rows():
-
-        #         _datetime = datetime.strptime(row[PRODUCT_FILE['columns']['updated_at']['index']],
-        #                                     "%Y-%m-%d %H:%M:%S")
-                
-        #         _timedelta = datetime.today() - _datetime
-
-        #         if len(categories_to_update) < limit:
-        #             categories_to_update.insert( (row[PRODUCT_FILE['columns']['query_string']['index']],
-        #                                            _timedelta.total_seconds()) )
-        #         else:
-
-
-            
-        #     categories_to_update.clear()
-            
-            
-
-
-
-
-      #  result_df = product_df.map_rows(function=lambda row : analyze_product(row=row), return_dtype=None)
-
-
-
-    
-
-
+        time.sleep(update_interval)
 
 
 if __name__ == "__main__":

@@ -61,17 +61,7 @@ def check_main(main_to_all, timeout: float = 1.5):
         
     time.sleep(timeout)
     
-    # try:
-    #     if main_to_all.get(timeout=timeout) == "-end":
-    #         terminate()
-    # except Empty:
-    #     pass
-    #if not main_to_all.empty() and main_to_all.get(block=False) == "-end":
-     #   terminate()
 
-
-    #if main_to_all.poll(timeout=timeout) and main_to_all.recv() == "-end":
-     #   terminate()
 
 
 
@@ -101,7 +91,12 @@ def __scrape_products(scraper: ProductScraper, request: ScrapeRequest):
     """
     is_scraping.set()
 
-    products_ = scraper.scrape_categories(identifiers=request.categories, mode='ID')
+    products_ = None
+
+    if request.categories is None:
+        products_ = scraper.scrape_all(console_log=True)
+    else:
+        products_ = scraper.scrape_categories(identifiers=request.categories, mode='ID', console_log=True)
 
     with product_lock:
         global products
