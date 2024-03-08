@@ -2,21 +2,158 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 
+import csv
+from typing import List, Dict
+import threading
+import time
+from datetime import datetime
+
 from AOSS.structure.shopping import ProductCategory
 from AOSS.components.processing import ProductCategorizer
 
 from AOSS.gui.shopping_list import ShoppingListFrame
 from AOSS.gui.market_explorer import MarketExplorerFrame
+from AOSS.gui.utils import AmountEntryFrame
+
 
 from config_paths import *
 
 BACKGROUND = 'lightblue'
 
+class SearchedProductWindow(Toplevel):
+
+    WIDTH = 38
+    FONT = ("Arial", 13, 'italic')
+
+    def __init__(self, *args, row_limit, min_char_limit = 10, max_char_limit, **kw):
+        super(SearchedProductWindow, self).__init__(*args, **kw)
+
+        self.row_limit = row_limit
+        self.min_char_limit = min_char_limit
+        self.max_char_limit = max_char_limit
+
+        self.overrideredirect(True)
+        self.bind("<Destroy>", self.save_products)
+
+
+        self.listbox = Listbox(self, width=self.WIDTH, font=self.FONT)
+        self.listbox.bind("<Motion>", self.on_motion)
+        self.listbox.bind("<Leave>", self.on_leave)
+        self.listbox.pack(side='left')
+
+        self.close_window_button = Button(self, text='-', padx=2, pady=0, height=1)
+        self.close_window_button.pack(side='top')
+
+        self.products: Dict[str, List[int, str, str]] = {}
+        self.next_ID = None
+
+    def on_motion(self, event):
+        index = self.listbox.nearest(event.y)
+        self.listbox.selection_clear(0, END)  # Clear previous selection
+        self.listbox.selection_set(index)  # Set new selection
+        self.listbox.activate(index)  # Set the item as active
+
+    def on_leave(self, event):
+        self.listbox.selection_clear(0, END)  # Clear selection
+
+
+    def update_listbox_size(self, char_count: int = None):
+        # Get the number of items in the listbox
+        num_items = self.listbox.size()
+
+        # Set the height of the listbox based on the number of items
+        self.listbox.config(height=num_items if num_items < self.row_limit else self.row_limit)
+
+        # if char_count is not None and char_count > self.listbox.winfo_width():
+
+        #     # if char_count > self.max_char_limit:
+        #     #     char_count = self.max_char_limit
+            
+        #     self.listbox.config(width=self.max_char_limit if char_count > self.max_char_limit else char_count)
+
+    
+    def insert_product(self, content: str):
+        """
+            Inserts new searched product and its metadata to the dictionary.
+
+            If the content is already present in the dictionary, searched_at attribute is updated.
+        """
+
+        if content in self.products:
+            self.products[content][2] = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+        else:
+            self.products[content] = [self.next_ID, content, datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')]
+            self.next_ID += 1
+            self.update_listbox_size(char_count=len(content))
+
+
+
+    def show_matches(self, content: str):
+       
+        self.listbox.delete(0, END)
+
+        # Filter and display matching recommendations
+        matching_results = [element for element in self.products.values() if content in element[1].lower()]
+        for result in matching_results:
+            self.listbox.insert(END, result[1])
+        
+        self.update_listbox_size(char_count=None)
+
+        
+    def load_products(self):
+        """
+            Loads the history of previosly searched products into the dictionary.
+            Searched text is used as a key which maps a tuple containing metadata about
+            the search.
+        """
+
+        with open(file=SEARCHED_PRODUCTS_FILE['path'], mode='r', encoding='utf-8') as file:
+            reader = csv.reader(file)
+        
+            if SEARCHED_PRODUCTS_FILE['header']:
+                try:
+                    next(reader)
+                except StopIteration:
+                    self.next_ID = 1
+                    return
+
+
+            for row in reader:
+                cur_ID = int(row[SEARCHED_PRODUCTS_FILE['cols']['ID']])
+
+                if self.next_ID is None or self.next_ID < cur_ID:
+                    self.next_ID = cur_ID
+
+                self.products[row[SEARCHED_PRODUCTS_FILE['cols']['content']]] = [row[SEARCHED_PRODUCTS_FILE['cols']['ID']],
+                                                                                row[SEARCHED_PRODUCTS_FILE['cols']['content']],
+                                                                                row[SEARCHED_PRODUCTS_FILE['cols']['searched_at']]]
+                
+
+
+        self.next_ID += 1
+                
+        
+    def save_products(self, event = None):
+        """
+            Saves the object's current dictionary data back to the source file.
+        """
+
+        with open(file=SEARCHED_PRODUCTS_FILE['path'], mode='w', encoding='utf-8', newline='') as file:
+            
+            writer = csv.writer(file)
+            writer.writerow(('ID', 'content', 'searched_at'))
+
+            for element in self.products.values():
+                writer.writerow(element)
+        
+            #writer.writerows(self.products)
+
 class ProductSpecificationMenu(LabelFrame):
 
     BACKGROUND = 'lightblue'
 
-    def __init__(self, *args, root, shopping_list_frame: ShoppingListFrame,
+
+    def __init__(self, *args, root: Tk, shopping_list_frame: ShoppingListFrame,
                    market_explorer_frame: MarketExplorerFrame, **kw):
         super(ProductSpecificationMenu, self).__init__(*args, **kw)
         
@@ -24,6 +161,7 @@ class ProductSpecificationMenu(LabelFrame):
         #self.config(background=BACKGROUND)
 
         self.root = root
+        self.root.bind("<Configure>", self.on_root_window_moved)
         self.shopping_list_f = shopping_list_frame
         self.market_explorer_f = market_explorer_frame
 
@@ -56,6 +194,8 @@ class ProductSpecificationMenu(LabelFrame):
         self.name_frame .columnconfigure(0, weight=1)
 
         self.name_frame_label = Label(self.name_frame, text="Enter Name:", bg=BACKGROUND, font=("Arial", 12))
+        
+        
         self.name_frame_label.grid(row=0, column=0, sticky="E")
 
         s = ttk.Style()
@@ -66,19 +206,21 @@ class ProductSpecificationMenu(LabelFrame):
 
         self.name_frame_entry = ttk.Entry(self.main_details_menu, style='Rounded.TEntry', font=("Arial", 13))
         self.name_frame_entry.grid(row=0, column=1, sticky="NSEW", pady=3, padx=8)
-
+        self.name_frame_entry.bind("<KeyRelease>", self.show_product_name_matches)
+        self.name_frame_entry.bind("<FocusOut>", self.destroy_product_name_matches)
         # amount configuration
 
-        self.amount_frame = Frame(self.main_details_menu, bg=BACKGROUND)
+        self.amount_frame = Frame(self.main_details_menu, bg=self.BACKGROUND)
         self.amount_frame.grid(row=1, column=0, sticky="NSEW", pady=8, padx=3)
         self.amount_frame.rowconfigure(0, weight=1)
         self.amount_frame.columnconfigure(0, weight=1)
 
-        self.amount_frame_label = Label(self.amount_frame, text="Enter Amount:", bg=BACKGROUND, font=("Arial", 12))
+        self.amount_frame_label = Label(self.amount_frame, text="Enter Amount:", bg=BACKGROUND, font=("Arial", 13))
         self.amount_frame_label.grid(row=0, column=0, sticky="E")
-
-        self.amount_frame_entry = ttk.Entry(self.main_details_menu, style='Rounded.TEntry', font=("Arial", 10))
-        self.amount_frame_entry.grid(row=1, column=1, sticky="NSEW", pady=3, padx=8)
+        
+        #self.amount_frame_entry = ttk.Entry(self.main_details_menu, style='Rounded.TEntry', font=("Arial", 13))
+        self.amount_frame_entry = AmountEntryFrame(self.main_details_menu)
+        self.amount_frame_entry.grid(row=1, column=1, sticky="NSEW", padx=8, pady=(0, 3))
 
 
 
@@ -94,6 +236,52 @@ class ProductSpecificationMenu(LabelFrame):
         self.button_panel.grid(row=2, column=0, sticky="NEW", pady=5, padx=5)
 
 
+        
+
+        # Create a modal window positioned beneath the Entry widget
+        self.modal_window = SearchedProductWindow(self.root, row_limit=5, max_char_limit=50)
+        #self.modal_window.listbox.config(width=self.name_frame_entry.winfo_width())
+
+        self.modal_window.load_products()
+        self.modal_window.withdraw()
+
+    def on_root_window_moved(self, event):
+
+        # Catching some exceptions that will be thrown when the main window is created and the modal
+        # window not yet.
+        try:
+            self.modal_window.withdraw()
+        except AttributeError:
+            pass   
+
+
+    def show_product_name_matches(self, event):
+        self.modal_window.deiconify()
+
+        x, y = self.name_frame_entry.winfo_rootx(), self.name_frame_entry.winfo_rooty()
+        _, h = self.name_frame_entry.winfo_width(), self.name_frame_entry.winfo_height()
+
+        self.modal_window.geometry(f"+{x}+{y + h}")
+        
+        self.modal_window.show_matches(content=self.name_frame_entry.get())
+
+    def get_selected_product(self):
+        time.sleep(0.1)
+        selection = self.modal_window.listbox.curselection()
+        
+        if selection:
+            self.name_frame_entry.delete(0, END)
+            self.name_frame_entry.insert(0, self.modal_window.listbox.get(selection[0]))
+            #print(self.modal_window.listbox.get(selection[0]))
+
+
+
+        self.modal_window.withdraw()
+        
+    
+    def destroy_product_name_matches(self, event):
+        thread = threading.Thread(target=self.get_selected_product)
+        thread.start()
     
     def show_error(self):
         # Create a Toplevel window
@@ -129,7 +317,7 @@ class ProductSpecificationMenu(LabelFrame):
         category = self.categories_menu.buttons_pane.get_option()
 
         try:
-            amount = int(self.amount_frame_entry.get())
+            amount = int(self.amount_frame_entry.entry.get())
 
             if amount < 1:
                 raise ValueError("Product amount must be positive integer!")
@@ -138,7 +326,8 @@ class ProductSpecificationMenu(LabelFrame):
             
 
             self.name_frame_entry.delete(0, END)
-            self.amount_frame_entry.delete(0, END)
+            self.amount_frame_entry.entry.delete(0, END)
+            self.amount_frame_entry.entry.insert(0, 1)
 
             # here program sents the newly inserted item to the market explorer so that it can pre-explore it
             item = self.shopping_list_f.insert_item(name=name, category=category, amount=amount)
@@ -150,11 +339,14 @@ class ProductSpecificationMenu(LabelFrame):
             messagebox.showerror("Product Specification", error)
             return
         
+        return 0
+        
         
 
     def clear_all_data(self):
         self.name_frame_entry.delete(0, END)
-        self.amount_frame_entry.delete(0, END)
+        self.amount_frame_entry.entry.delete(0, END)
+        self.amount_frame_entry.entry.insert(0, 1)
 
 
 
@@ -317,12 +509,18 @@ class ButtonPanel(Frame):
         self.to_cart_button = ttk.Button(self,
                                          text="   to List",
                                          style="TButton",
-                                     command=self.parent.insert_item,
+                                     command=self.to_list,
                                      image=self.cart_icon,
                                      compound='left',
                                      padding=(0, 8))
         
         self.to_cart_button.grid(row=0, column=1, sticky="SNEW")
+    
+    def to_list(self):
+        content = self.parent.name_frame_entry.get()
+        if self.parent.insert_item() == 0:
+            self.parent.modal_window.insert_product(content=content)
+        
 
         
         

@@ -62,7 +62,7 @@ class SettingsPanel(LabelFrame):
         # ------- PerformUpdatesOptions Configuration -------- #
 
         self.perform_updates_panel = LabelFrame(self, bg=self.CHILD_FRAME_BG)
-        self.perform_updates_panel.grid(row=1, column=0, padx=(10, 30), sticky="WNSE")
+        self.perform_updates_panel.grid(row=1, column=0, pady=(10, 0), padx=(10, 30), sticky="WNSE")
 
         #self.perform_updates_panel.pack(side='top', fill='x', expand=False, padx=20)
 
@@ -73,7 +73,7 @@ class SettingsPanel(LabelFrame):
         self.perform_updates_label.pack(side='top', expand=False, fill='y')
 
         self.perform_updates_option_frame = LabelFrame(self, bg=self.CHILD_FRAME_BG)
-        self.perform_updates_option_frame.grid(row=1, column=1, padx=(0, 10), sticky="WNSE")
+        self.perform_updates_option_frame.grid(row=1, column=1, pady=(10, 0), padx=(0, 10), sticky="WNSE")
 
 
 

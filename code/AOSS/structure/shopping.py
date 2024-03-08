@@ -127,10 +127,6 @@ class RegisteredProduct(Product):
     @staticmethod
     def to_obj_from_dict(row):
         
-        #attributes = row.split(PRODUCT_FILE['delimiter'])
-
-        #if len(attributes) != PRODUCT_FILE['col_count']:
-        #    raise ValueError("Provided row contains invalid amount of attributes!")
 
         return RegisteredProduct(
             ID=int(row['ID']),
@@ -189,7 +185,7 @@ class MarketView:
 
 
 
-        #we laod categories from provided file
+        # we load categories from provided file
         with open(file=self.__category_file, mode='r', encoding='utf-8') as file:
             categories = csv.DictReader(file)
 
@@ -197,8 +193,6 @@ class MarketView:
 
                 if int(metadata['market_ID']) == self.__ID:
                     self.__categories[int(metadata['ID'])] = metadata['name'] 
-                   # self.__categories[metadata['name']] =  int(metadata['ID'])
-                    #self.__categories.append(metadata['ID'])
             
 
 
@@ -217,7 +211,8 @@ class MarketView:
                 if int(product['market_ID']) == self.__ID:
 
                     _product = RegisteredProduct.to_obj_from_dict(row=product)
-                    self.__products[_product.ID] = _product
+                    self.__products[_product.name] = _product
+                
 
 
 
@@ -264,44 +259,26 @@ class MarketView:
         """
         
         if isinstance(identifier, int):
+            for product in self.__products.values():
+                if product.ID == identifier:
+                    return product
             
-                return self.__products[identifier]
+                #return self.__products[identifier]
                 # if value.ID == identifier:
                 #     return value
             
         elif isinstance(identifier, str):
-            for value in self.__products.values():
-                if value.name == identifier:
-                    return value
-            else:
-                return None
+            return self.__products[identifier]
+            # for value in self.__products.values():
+
+            #     if value.name == identifier:
+            #         return value
+            # else:
+            #     return None
         else:
             raise TypeError("Unsupported type of identifier!")
 
-        # with open(file=self.__product_file, mode='r', encoding='utf-8') as product_file:
-        #     products = csv.DictReader(product_file)
-
-        #     for metadata in products:
-                
-        #         # return the object only if provided ID was found and if the market_ID equals to this market's
-        #         if ( int(metadata['ID']) == ID and self.__ID == int(metadata['market_ID'])):
-                    
-        #             return RegisteredProduct(
-        #                 ID=metadata['ID'],
-        #                 name=metadata['name'],
-        #                 price=float(metadata['price']),
-        #                 approximation=int(metadata['approximation']),
-        #                 category=metadata['query_string'],
-        #                 normalized_category=ProductCategory[metadata['category']],
-        #                 market_ID=metadata['market_ID'],
-        #                 created_at=metadata['created_at'],
-        #                 updated_at=metadata['updated_at']
-        #             )
-            
-        # return None
-    
-    # def get_product_by_name(self, name: str):
-    #     return self.__products[name]
+ 
     
     
 # --- Market - Class Declaration&Definition --- #
@@ -325,7 +302,6 @@ class Market(MarketView):
         super().__init__(ID=ID, name=name, store_name=store_name, product_file=product_file, category_file=category_file)
 
         # --- Market Attributes --- #
-        #self.__ID = ID
         self.__market_hub = market_hub
      
 
@@ -362,16 +338,6 @@ class Market(MarketView):
         for product_ID in self.__update_buffer:
             products[product_ID.ID] = product_ID
 
-
-                       # product.normalized_name + PRODUCT_FILE['delimiter'] +
-                        # str(product.price) + PRODUCT_FILE['delimiter'] +
-                        # str(int(product.approximation)) + PRODUCT_FILE['delimiter'] +
-                        # str(product.quantity_left) + PRODUCT_FILE['delimiter'] +
-                        # category.name + PRODUCT_FILE['delimiter'] +
-                        # str(product.category) + PRODUCT_FILE['delimiter'] +
-                        # str(self.__ID) + PRODUCT_FILE['delimiter'] +
-                        # product.created_at + PRODUCT_FILE['delimiter'] +
-                        #     datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\n')
         for product_ID in self.__delete_buffer:
             del products[product_ID].ID
         
@@ -427,18 +393,6 @@ class Market(MarketView):
                 raise IllegalProductState("Conflicting name with a registered product!")
 
 
-            # with open(self.product_file(), mode='r', encoding='utf-8') as product_file:
-            #     products = csv.DictReader(product_file)
-
-            #     #products = csv.reader(product_file)
-                
-            #     for row in products:
-                    
-            #         # name attribute must be unique only within a market, therefore we verify
-            #         # market_ID also
-            #         if (int(row['market_ID']) == self.__ID and row['name'] == product.name):
-            #             raise IllegalProductStructureError("Conflicting name with a registered product!")
-                
 
             # here we verify the category of the product, whether the market provides it
             with open(self.category_file(), mode='r', encoding='utf-8') as categories_f:
@@ -462,38 +416,16 @@ class Market(MarketView):
 
     def update_product(self, product: RegisteredProduct):
 
-        if product.name in self.products():
-            #product = self.__update_buffer[product.name]      
+        if product.name in self.products(): 
             self.__update_buffer.append(product)
         else:
             raise IllegalProductState("Provided product not registered!")
+        
+    # def remove_local_products(self):
+    #     "Clears the product file and removes all local products. Use carefully!"
 
-
-            
-
-            #product.approximation = product.approximation
-            #product.price = product.price
-            #product.updated_at = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
-
-
-        #except KeyError:
-         #   raise IllegalProductStructureError("Provided product not found in local product dataframe!")
-        # if product.name in super().__products:
-        #     self.__update_buffer.append(product)
-        # else:
-        #     raise IllegalProductStructureError("Provided product not found in local product dataframe!")
-
-
-        # with open(file=self.__product_file, mode='r', encoding='utf-8') as product_f:
-        #     products = csv.DictReader(product_f)
-
-        #     for _product in products:
-
-        #         if product.name == _product['name']:
-        #             self.__update_buffer.append(product)
-        #             break
-        #     else:
-        #         raise IllegalProductStructureError("Provided product not found in local product dataframe!")
+    #     with open(file=self.product_file(), mode='w', encoding='utf-8'):
+    #         pass
         
 
     def remove_products(self, identifiers: List[int]):
@@ -510,35 +442,6 @@ class Market(MarketView):
 
 
 
-        # if isinstance(products, str):
-            
-        #     try:
-        #         product = self.products()[products]
-        #         self.__delete_buffer.append(product.ID)
-        #     except KeyError:
-        #         raise IllegaProductState(message="Provided product not found in the dataset!")
-                    
-
-        #     # try:
-        #     #     products.pop(identifier)
-        #     # except KeyError:
-        #     #     raise IllegaProductState(message="Provided product not found in the dataset!")
-        # elif isinstance(products, int):
-            
-        #     for product in products.values():
-
-        #         if product.ID == products:
-        #             self.__delete_buffer.append(product.ID)
-        #             break
-        #     else:
-        #         raise IllegaProductState(message="Provided product not found in the dataset!")
-
-
-
-
-
-
-
 
     def save_products(self):
 
@@ -549,20 +452,18 @@ class Market(MarketView):
 
         if self.__update_buffer or self.__delete_buffer:
 
-   
-
             with open(file=self.product_file(), mode='r', encoding='utf-8') as product_f:
                 products = list(csv.DictReader(product_f))
 
             # Update products based on the __update_buffer
-            for _upd_product in self.__update_buffer:
+            for upd_product in self.__update_buffer:
                 for product in products:
-                    if _upd_product.name == product['name'] and self.__ID == int(product['market_ID']):
-                        # if _upd_product.name == "Reďkovka červená zväzok":
-                        #     print("HERE")
-                        product['price'] = _upd_product.price
-                        product['approximation'] = _upd_product.approximation
-                        product['quantity_left'] = _upd_product.quantity_left
+                    if upd_product.name == product['name'] and self.ID() == int(product['market_ID']):
+
+                        product['price'] = upd_product.price
+                        #product['category'] = upd_product.normalized_category
+                        product['approximation'] = upd_product.approximation
+                        product['quantity_left'] = upd_product.quantity_left
                         product['updated_at'] = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
                         break
                 else:
@@ -574,13 +475,11 @@ class Market(MarketView):
                 fieldnames = ('ID','name','normalized_name','price','approximation','quantity_left',
                               'category', 'query_string_ID','market_ID','created_at','updated_at')
                 
-                #fieldnames = ['name', 'price', 'approximation', 'updated_at']
                 products_writer = csv.DictWriter(product_f, fieldnames=fieldnames)
 
                 # Write the header
                 products_writer.writeheader()
             
-
 
                 # if there are products to remove we exlude their rows from the dataset
                 if self.__delete_buffer:
@@ -590,15 +489,10 @@ class Market(MarketView):
                 # Write the updated products
                 products_writer.writerows(products)
         
-            #assert(not self.__delete_buffer)
             self.__delete_buffer.clear()
             self.__update_buffer.clear()
 
                         
-
-        
-
-
 
         with open(self.product_file(), 'a', encoding='utf-8') as file:
             for element in self.__registration_buffer:
@@ -727,6 +621,7 @@ class MarketHub(ProductIdentification):
     def __exit__(self, exc_type, exc_value, traceback):
         print("Updating hub stats to file...")
         self.update()
+        
 
 
     # ------ MarketHub - Public Interface ------- #
@@ -846,8 +741,6 @@ class MarketHub(ProductIdentification):
 
         metadata: List[str] = None
 
-        # updating MarketHub metadata
-
         with open(self.__src_file, mode='r', encoding='utf-8') as file:
             reader = csv.DictReader(file)
             metadata = next(reader)
@@ -883,6 +776,12 @@ class MarketHub(ProductIdentification):
 
         print("Data updated successfully!")
 
+    def save_markets(self):
+        """
+            Saves all markets' products back to their product file.
+        """
+        for market in self.__markets:
+            market[0].save_products()
 
     
     def product_file(self):
@@ -988,6 +887,21 @@ class MarketHub(ProductIdentification):
         """
 
         return tuple(market for market, _ in self.__markets)
+    
+    def remove_local_products(self):
+        header = ""
+
+        if (PRODUCT_FILE['header']):
+            with open(file=self.__product_file, mode='r', encoding='utf-8') as file:
+                header = file.readline()
+        
+
+        
+
+        with open(file=self.__product_file, mode='w', encoding='utf-8', newline='') as file:
+            file.write(header)
+
+    
     
 
     

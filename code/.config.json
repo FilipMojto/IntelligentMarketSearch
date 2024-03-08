@@ -162,6 +162,18 @@
                         "type": "integer"
                     }   
                 }
+            },
+
+            "searched_products": {
+                "name": "searched_products.csv",
+                "path": "../resources/data/searched_products.csv",
+                "header": true,
+                "delimiter": ",",
+                "cols": {
+                    "ID": 0,
+                    "content": 1,
+                    "searched_at": 2
+                }
             }
         },
 
@@ -177,7 +189,9 @@
             "gear_icon": "../resources/GUI/gear.png",
             "exit_icon": "../resources/GUI/exit.png",
             "magnifier_icon": "../resources/GUI/magnifier.png",
-            "eraser_icon": "../resources/GUI/eraser.png"
+            "eraser_icon": "../resources/GUI/eraser.png",
+            "plus_icon": "../resources/GUI/plus_symbol.png",
+            "minus_icon": "../resources/GUI/minus_symbol.png"
         },
 
         "market_hub_file": {

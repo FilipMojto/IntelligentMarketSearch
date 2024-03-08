@@ -60,7 +60,7 @@ class MainView(Frame):
         self.specification_window = ProductSpecificationMenu(self.list_frame,
                                                 text='Specify Product',
                                                 font=('Arial', 17, 'bold'),
-                                                root=self.list_frame,
+                                                root=self.root,
                                                 shopping_list_frame=self.shopping_list_window,
                                                 market_explorer_frame=self.market_explorer_window,
                                                 bg='skyblue')
@@ -212,46 +212,3 @@ class MainMenu(Frame):
         self.selected_option = self.settings_option
 
         self.parent.main_window.config(bg='skyblue')
-
-        
-    #     clear_frame(self.parent.cur_frame)
-
-    #     for widget in self.parent.cur_frame.winfo_children():
-    #         widget.grid_remove()
-
-    #     # Configure layout for the new widget
-    #     self.parent.rowconfigure(0, weight=1)
-    #     self.parent.columnconfigure(0, weight=1)
-
-    #     # Add the new widget to the grid
-    #     self.parent.settings_panel.grid(row=0, column=0, sticky="NSEW")
-
-    #     # Update column configurations of self.parent instead of self.parent.cur_frame
-    #     self.parent.columnconfigure(1, weight=1, minsize=800)
-
-    #     self.selected_option.config(state='normal')
-    #     self.settings_option.config(state='disabled')
-
-    #     self.selected_option = self.settings_option
-
-
-
-
-#root = Tk()
-#root.geometry("1030x560")
-
-#main_view = MainView(root, root=root)
-#main_view.pack(side='left', fill='both', expand=True)
-
-# Configure row and column weight for the root window
-# root.rowconfigure(0, weight=1)
-# root.columnconfigure(0, weight=1)  # Set column weight to 1 to take up available space
-
-
-
-
-
-
-
-
-#root.mainloop()
