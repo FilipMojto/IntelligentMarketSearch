@@ -5,11 +5,11 @@ ID,name,details
 3,maso_mrazene_potraviny,"Obsahuje rôzne formy mäsa (kuracie, telacie...), ryby a ďalšie mrazené potraviny (pizza, hranolky, zmrzlinu...)."
 4,udeniny_natierky_pastety,"Obsahuje rôzne typy udenín (salámy, šunky...), klobásy, špekačky či  nátierky."
 5,mliecne_vyrobky,"Zahŕňa mlieko, maslo a tuky, jogurty, smotany, syry, tvarohy, bryndza, rôzne mliečne dezerty."
-6,trvanlive_potraviny_vajcia,
+6,trvanlive_potraviny_vajcia,"Obsahuje také produkty, ktoré nie sú zahrnuté v ostatných kategoriách."
 7,sladkosti,"Obsahuje čokolády, cukríky, lizátka, žuvačky, piškoty či perníky."
 8,slane_snacky_semienka,"Zahŕňa napríklad chipsy, snacky, chrumky, orechy a semienka, popcorn a iné."
 9,nealkoholicke_napoje,"Obsahuje minerálky, sýtené nápoje, džúsy, sirupy či energetické nápoje"
 10,teple_napoje,"Zahŕňa čaje, kávy a kakao na varenie."
 11,alkohol,"Obsahuje rôzne formy alkoholu ako napríklad vína, sekty, pivá či rôzne tvrdé alkoholické nápoje."
 12,zdrave_potraviny,"Zahŕňa musli a kaše, zdravé tyčinky, rôzne vegetarianské či vegánske potraviny a nápoje."
-13,hotove_instantne,"Obsahuje bagety, sendviče, "
+13,hotove_instantne,"Obsahuje bagety, sendviče..."

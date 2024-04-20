@@ -23,7 +23,8 @@ class ShoppingListDetails(LabelFrame):
         This class represents a single product item in the user's shopping list.
     """
 
-    def __init__(self,*args, name: str, category: int, amount: int, ID: int, on_widget_click: callable = None, **kw):
+    def __init__(self, *args, name: str, category: int, amount: int, ID: int,
+                  category_search_mode: str, on_widget_click: callable = None, **kw):
         super(ShoppingListDetails, self).__init__(*args, **kw)
 
         self.name = name
@@ -34,11 +35,13 @@ class ShoppingListDetails(LabelFrame):
         self.name_label.grid(row=0, column=0, sticky="NSW")
         self.name_label.bind("<Button-1>", on_widget_click)
 
-    
+        
+        self.category_search_mode = category_search_mode
 
         self.category = category
         self.category_text = StringVar()
         self.category_text.set(f"Category: {category}")
+
 
         self.amount = amount
         self.amount_text = IntVar()
@@ -93,10 +96,10 @@ class ShoppingListItem(Frame):
         This class represents a single product item in the user's shopping list.
     """
 
-    def __init__(self, *args, name: str, category: str, amount: int, ID: int, on_widget_click: callable = None, **kw):
+    def __init__(self, *args, name: str, category: str, amount: int, category_search_mode: str, ID: int, on_widget_click: callable = None, **kw):
         super(ShoppingListItem, self).__init__(*args, **kw)
 
-        self.details = ShoppingListDetails(self,  name=name, category=category, amount=amount, ID=ID, on_widget_click=self.on_item_clicked, bd=1)
+        self.details = ShoppingListDetails(self,  name=name, category_search_mode=category_search_mode, category=category, amount=amount, ID=ID, on_widget_click=self.on_item_clicked, bd=1)
 
         self.details.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
         self.details.bind("<Button-1>", self.on_item_clicked)
@@ -128,18 +131,22 @@ class ShoppingList(Frame):
         self.__ID += 1
         return old_val
 
-    def remove_selected_item(self, return_: bool = False):
+    def remove_selected_item(self, return_: bool = False, executable = None):
 
         for item in self.items:
 
             if item.is_clicked_on:
                 item.destroy()
                 self.items.remove(item)
+                
+                if executable is not None:
+                    executable(item)
 
                 if return_:
                     return item
                 else:
                     break
+        
 
 
 
@@ -170,7 +177,7 @@ class ShoppingList(Frame):
 class ShoppingListFrame(LabelFrame):
     WIDTH = 268
 
-    def __init__(self, *args, **kw):
+    def __init__(self, *args, on_delete, **kw):
         super(ShoppingListFrame, self).__init__(*args, **kw)
         self.config(width=self.WIDTH)
         self.pack_propagate(0)
@@ -209,7 +216,7 @@ class ShoppingListFrame(LabelFrame):
                                             #pady=6,
                                             image=self.trash_bin_icon,
                                             compound='left',
-                                            command=self.product_list.remove_selected_item)
+                                            command=lambda: self.product_list.remove_selected_item(False, on_delete))
         self.delete_product_button.pack_propagate(0)
         self.delete_product_button.pack(side='top', fill='y', expand=False, pady=(7, 5))
 
@@ -232,7 +239,7 @@ class ShoppingListFrame(LabelFrame):
 
 
 
-    def insert_item(self, name: str, category: int, amount: int):
+    def insert_item(self, name: str, category: int, amount: int, category_search_mode: str):
 
         """
             Inserts a new ShoppingListItem instance into the shopping list.
@@ -248,6 +255,7 @@ class ShoppingListFrame(LabelFrame):
                                 name=name,
                                 category=category,
                                 amount=amount,
+                                category_search_mode=category_search_mode,
                                 ID=self.product_list.assign_ID(),
                                 on_widget_click=self.product_list.remove_click_texture,
                                 width=240, bg='lightgrey')

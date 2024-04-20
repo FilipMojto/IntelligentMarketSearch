@@ -21,7 +21,7 @@ def process_scraped_products(products: (list[tuple[Product, int]] | tuple[Produc
     if isinstance(products, list):
         results: List[Product] = []
 
-        for name, price, category, market_ID in products:
+        for name, price, category, _ in products:
             
             if isinstance(substition, list):
 
@@ -152,7 +152,6 @@ class ProductCategorizer:
 
                 if int(attributes[CATEGORY_FILE['columns']['ID']['index']]) == category_ID:
                     return ProductCategory(value=category_ID)
-                    #returnproduct 
 
                 line = file.readline()
             else:
@@ -169,6 +168,7 @@ class ProductCategorizer:
         self.__matcher = ProductMatcher(market_hub=self.__market_hub)
         self.__matcher.set_subset(market_ID=self.__training_market.ID())
 
+
     def recategorize(self):
 
         # Step 1: Load the CSV file into a Pandas DataFrame
@@ -178,7 +178,7 @@ class ProductCategorizer:
 
         # Step 2: Iterate and Modify Rows
         column_to_modify = 'category'
-        for index, row in df.iterrows():
+        for _, row in df.iterrows():
             # Your modification logic here, for example:
             if row['market_ID'] != training_market:
                 start = time.time()
@@ -210,12 +210,6 @@ class ProductCategorizer:
             Otherwise ValueError exception is thrown.
         """
 
-        # if not market_hub.can_categorize():
-        #     raise ValueError("""Cannot categorize product because training market is unspecified or contains no data for one of
-        #                     its categories!""")
-        
-        
-       # matcher = ProductMatcher(market_hub=self.__market_hub)
 
         match = None
         
@@ -230,54 +224,16 @@ class ProductCategorizer:
     
 
         product_match = self.__training_market.get_product(identifier=match[0].product_ID)
-
-        #match = matcher.match(text=modified_name, category=None, min_match=0, limit=1, markets=market_hub.training_market().ID())
-
         return product_match.normalized_category
     
-        #    product.normalized_category = product.normalized_category
-    
-    # def __function(self, element, matcher: ProductMatcher):
-        
-    #     # start = time.time()
-
-    #     # #return ProductCategory.NEURČENÁ.name
-    #     # name=  self.__market_hub.training_market().get_product(
-    #     #     ID=matcher.match(element, markets=(2,), limit=1)[0][0]).normalized_category.name
-
-    #     # end = time.time()
-
-    #     # print(f"time: {end - start}")
-    #     return ProductCategory.NEURČENÁ.name
-
-    # def categorize_all(self):
-    #     df = pd.read_csv(PRODUCT_FILE['path'])
-
-    #     df.to_hdf(ALL_DATA_FILE['path'], key='products', mode='w')
-    #     print(f"len before: {len(df)}")
-
-    #     matcher = ProductMatcher(market_hub=self.__market_hub)
-
-    #     df = pd.read_hdf(ALL_DATA_FILE['path'], key='products')
-    #     print(df)
-
-
-    #     mask = (df['market_ID'] == 1)
-
-    #     df.loc[mask, 'category'] = df.loc[mask, 'normalized_name'].apply(
-    #         lambda x: self.__function(element=x, matcher=matcher)
-    #     )
 
 
 
-    #     print(df[df['market_ID'] == 1][['normalized_name', 'category']].head(20) )
 
 
-    #     # Write the updated DataFrame back to HDF5 file
-    #     df.to_hdf(ALL_DATA_FILE['path'], key='products', mode='w')
-        
-    #     df = pd.read_hdf(ALL_DATA_FILE['path'], key='products')
-    #     print(f"len after: {len(df)}")
+
+
+
 
 
 

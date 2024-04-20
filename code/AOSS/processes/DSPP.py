@@ -11,20 +11,16 @@ from queue import Empty
 script_directory = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(script_directory)
 
-parent_directory = os.path.abspath(os.path.join(script_directory, '..', '..', '..'))
+parent_directory = os.path.abspath(os.path.join(script_directory, '..', '..'))
 sys.path.append(parent_directory)
 
-#print(__file__)# Move up two directories to reach the parent directory (AOSS)
-parent_directory = os.path.abspath(os.path.join(script_directory, '..', '..', '..'))
-
-sys.path.append(parent_directory)
 os.chdir(parent_directory)
 
 
 from config_paths import *
-from AOSS.structure.marketing import ScrapeRequest
+from AOSS.processes.IPC import ScrapeRequest
 from AOSS.structure.shopping import MarketHub, Product
-from AOSS.components.scraping.base import ProductScraper
+from AOSS.components.scrape import ProductScraper
 
 
 
@@ -104,10 +100,6 @@ def __scrape_products(scraper: ProductScraper, request: ScrapeRequest):
     
     is_scraping.clear()
     
-    # with scraper_lock:
-    #     active_scraper = None
-
-
 
 
 
@@ -117,7 +109,7 @@ def process_requests(main_to_all: mpr.Queue, scraper_to_hub: mpr.Queue):
 
     if not is_scraping.is_set():
 
-        while len(requests) > 0:
+        while requests:
             request = requests.pop(0)
             scraper_found = False
 
@@ -147,16 +139,10 @@ def process_requests(main_to_all: mpr.Queue, scraper_to_hub: mpr.Queue):
         check_main(main_to_all=main_to_all)
    
     with product_lock:
-       # can_send = (products)
-
         finished = False
 
         while products:
             finished = True
-            
-            #length = len(products)
-
-            #while i <  length:
 
             while True:
                 if not scraper_to_hub.full():
@@ -168,7 +154,6 @@ def process_requests(main_to_all: mpr.Queue, scraper_to_hub: mpr.Queue):
                 
             products = products[5000:]
 
-            #products = products[5000:]
         
         if finished:
             while True:
@@ -184,42 +169,7 @@ def process_requests(main_to_all: mpr.Queue, scraper_to_hub: mpr.Queue):
 
 
 
-#     if is_scraping.is_set() and not requests:
-        
-#         while True:
-#             if not scraper_to_hub.full():
-#                 scraper_to_hub.put(processed_request.ID, block=False)
-#                 __check_main(main_to_all=main_to_all)
-#                 break
-#             else:
-#                 print("Pipe not ready for writing. Retrying...")
-#                 time.sleep(1.5)
-
-#         active_scraper = None
-#         processed_request = None
-
-# __check_main(main_to_all=main_to_all)
-
-
-# def __check_products(scraper_to_hub: mpr.Queue):
-#     global products
-
-#     with product_lock:
-#         if products:
-#             if not scraper_to_hub.full():
-#                 for product in products:
-#                     scraper_to_hub.put(obj=product, block=False)
-                
-#                 products.clear()
-#             else:
-#                 print("Pipe not ready for writing. Retrying...")
-#                 time.sleep(1.5)
-
-
-
-
-def start(main_to_all: mpr.Queue, scraper_to_hub: mpr.Queue,
-          hub_to_scraper: mpr.Queue):
+def start(main_to_all: mpr.Queue, scraper_to_hub: mpr.Queue, hub_to_scraper: mpr.Queue):
     
     signal.signal(signal.SIGINT, signal_handler)
     os.chdir(parent_directory)
@@ -255,5 +205,3 @@ def start(main_to_all: mpr.Queue, scraper_to_hub: mpr.Queue,
 
 if __name__ == "__main__":
     print("Start this script as a subprocess and provide some connections.")
-
-    #signal.signal(signal.SIGINT, signal_handler)

@@ -9,11 +9,12 @@ import time
 from datetime import datetime
 
 from AOSS.structure.shopping import ProductCategory
-from AOSS.components.processing import ProductCategorizer
+from AOSS.components.categorization import ProductCategorizer
 
 from AOSS.gui.shopping_list import ShoppingListFrame
 from AOSS.gui.market_explorer import MarketExplorerFrame
 from AOSS.gui.utils import AmountEntryFrame
+from AOSS.gui.category_search_mode_panel import CategorySearchModePanel
 
 
 from config_paths import *
@@ -180,18 +181,28 @@ class ProductSpecificationMenu(LabelFrame):
         # frame configuration
 
         self.main_details_menu.grid(row=0, column=0, sticky="NEW")
-        self.main_details_menu.rowconfigure(0, weight=1, minsize=50)
-        self.main_details_menu.rowconfigure(1, weight=1, minsize=50)
+        self.main_details_menu.rowconfigure(0, weight=1)
+        self.main_details_menu.rowconfigure(1, weight=1)
         self.main_details_menu.columnconfigure(0, weight=1)
-        self.main_details_menu.columnconfigure(1, weight=100)
+
+        # self.main_details_menu.rowconfigure(0, weight=1, minsize=50)
+        # self.main_details_menu.rowconfigure(1, weight=1, minsize=50)
+        # self.main_details_menu.columnconfigure(0, weight=1)
+        # self.main_details_menu.columnconfigure(1, weight=100)
     
 
         # name configuration
 
-        self.name_frame = Frame(self.main_details_menu, bg=BACKGROUND)
-        self.name_frame.grid(row=0, column=0, sticky="NSEW", pady=8, padx=3)
-        self.name_frame .rowconfigure(0, weight=1)
-        self.name_frame .columnconfigure(0, weight=1)
+        self.upper_wrapper_frame = Frame(self.main_details_menu, background=BACKGROUND)
+        self.upper_wrapper_frame.grid(row=0, column=0, sticky="NSEW")
+        self.upper_wrapper_frame.rowconfigure(0, weight=1, minsize=50)
+        self.upper_wrapper_frame.columnconfigure(0, weight=1)
+        self.upper_wrapper_frame.columnconfigure(1, weight=100)
+
+        self.name_frame = Frame(self.upper_wrapper_frame, bg=BACKGROUND)
+        self.name_frame.grid(row=0, column=0, sticky="NSEW", pady=8, padx=(3, 17))
+        self.name_frame.rowconfigure(0, weight=1)
+        self.name_frame.columnconfigure(0, weight=1)
 
         self.name_frame_label = Label(self.name_frame, text="Enter Name:", bg=BACKGROUND, font=("Arial", 12))
         
@@ -201,17 +212,22 @@ class ProductSpecificationMenu(LabelFrame):
         s = ttk.Style()
         s.configure('Rounded.TEntry', borderwidth=5, relief="flat", foreground="black", background="white")
 
-        # Create a rounded entry
-       # rounded_entry = ttk.Entry(root, style='Rounded.TEntry', font=('Arial', 12))
-
-        self.name_frame_entry = ttk.Entry(self.main_details_menu, style='Rounded.TEntry', font=("Arial", 13))
+        self.name_frame_entry = ttk.Entry(self.upper_wrapper_frame, style='Rounded.TEntry', font=("Arial", 13))
         self.name_frame_entry.grid(row=0, column=1, sticky="NSEW", pady=3, padx=8)
         self.name_frame_entry.bind("<KeyRelease>", self.show_product_name_matches)
         self.name_frame_entry.bind("<FocusOut>", self.destroy_product_name_matches)
         # amount configuration
+        
+        self.lower_wrapper_frame = Frame(self.main_details_menu, background=BACKGROUND)
+        self.lower_wrapper_frame.grid(row=1, column=0, sticky="NSEW")
+        self.lower_wrapper_frame.rowconfigure(0, weight=1, minsize=50)
+        self.lower_wrapper_frame.columnconfigure(0, weight=1)
+        self.lower_wrapper_frame.columnconfigure(1, weight=1, minsize=100)
+        self.lower_wrapper_frame.columnconfigure(2, weight=100)
 
-        self.amount_frame = Frame(self.main_details_menu, bg=self.BACKGROUND)
-        self.amount_frame.grid(row=1, column=0, sticky="NSEW", pady=8, padx=3)
+
+        self.amount_frame = Frame(self.lower_wrapper_frame, bg=self.BACKGROUND)
+        self.amount_frame.grid(row=0, column=0, sticky="NSEW", pady=8, padx=3)
         self.amount_frame.rowconfigure(0, weight=1)
         self.amount_frame.columnconfigure(0, weight=1)
 
@@ -219,15 +235,20 @@ class ProductSpecificationMenu(LabelFrame):
         self.amount_frame_label.grid(row=0, column=0, sticky="E")
         
         #self.amount_frame_entry = ttk.Entry(self.main_details_menu, style='Rounded.TEntry', font=("Arial", 13))
-        self.amount_frame_entry = AmountEntryFrame(self.main_details_menu)
-        self.amount_frame_entry.grid(row=1, column=1, sticky="NSEW", padx=8, pady=(0, 3))
+        self.amount_frame_entry = AmountEntryFrame(self.lower_wrapper_frame)
+        self.amount_frame_entry.grid(row=0, column=1, sticky="NSEW", padx=8, pady=(0, 3))
 
+        self.categories_menu = CategoriesMenu(self, bg=BACKGROUND)
 
+        self.category_search_mode_panel = CategorySearchModePanel(self.lower_wrapper_frame, on_select=self.categories_menu.set_mode)
+        self.category_search_mode_panel.grid(row=0, column=2, sticky="NSEW", padx=(0, 9))
+        # self.category_mode_label = Label(self.lower_wrapper_frame, text="Category Search:")
+        # self.category_mode_label.grid(row=0, column=2, sticky="NSEW")
 
 
         # ------ CATEGORIES - CONFIGURATION ------ #
 
-        self.categories_menu = CategoriesMenu(self, bg=BACKGROUND)
+        # self.categories_menu = CategoriesMenu(self, bg=BACKGROUND)
         self.categories_menu.grid(row=1, column=0, sticky="NEW", pady=(10, 5), padx=5)
 
         # ------- BUTTON_PANEL - CONFIGURATION ------ #
@@ -244,6 +265,8 @@ class ProductSpecificationMenu(LabelFrame):
 
         self.modal_window.load_products()
         self.modal_window.withdraw()
+
+
 
     def on_root_window_moved(self, event):
 
@@ -330,7 +353,8 @@ class ProductSpecificationMenu(LabelFrame):
             self.amount_frame_entry.entry.insert(0, 1)
 
             # here program sents the newly inserted item to the market explorer so that it can pre-explore it
-            item = self.shopping_list_f.insert_item(name=name, category=category, amount=amount)
+            item = self.shopping_list_f.insert_item(name=name, category=category, amount=amount,
+                                                    category_search_mode=self.category_search_mode_panel.selected_option.get())
             self.market_explorer_f.explore_product(item=item)
 
             self.market_explorer_f.search_button.config(state='normal')
@@ -366,7 +390,7 @@ class CategoriesMenu(Frame):
 
         # --- ButtonsPane Configuration --- #
 
-        self.buttons_pane = CategoryButtonsPane(self, parent_frame=self, bg=BACKGROUND, text="Categories", font=("Arial", 15, 'bold'))
+        self.buttons_pane = CategoryButtonsPanel(self, parent_frame=self, bg=BACKGROUND, text="Categories", font=("Arial", 15, 'bold'))
         self.buttons_pane.grid(row=0, column=0, sticky="NSEW", padx=5, pady=3)
 
         # --- DetailsPanel Configuration --- #
@@ -375,6 +399,31 @@ class CategoriesMenu(Frame):
         self.details_panel.configure(state='disabled')
         self.details_panel.grid(row=1, column=0, sticky="NEW", padx=5, pady=3)
 
+    
+    def set_mode(self, mode: str):
+        """
+            Sets the category search mode, accepted values of mode:
+                
+                a) Off - disables whole frame, user is unable to specify any category
+                b) Manual Mapping - sets the state to normal, user has to specify a category
+                c) TM-based Mapping - sets the state to normal, user has to specify a category
+        """
+
+
+        if mode == 'Off':
+            self.grid_remove()
+            
+        elif mode == 'Manual Mapping' or mode == 'TM-based Mapping':
+            self.grid()
+        #     self.enable_widgets()
+
+    def disable_widgets(self):
+        for widget in self.winfo_children():
+            widget.configure(state='disabled')
+
+    def enable_widgets(self):
+        for widget in self.winfo_children():
+            widget.configure(state='normal')
 
 
     def show_details(self, category: str, text: str):
@@ -390,14 +439,14 @@ class CategoriesMenu(Frame):
 
 
 
-class CategoryButtonsPane(LabelFrame):
+class CategoryButtonsPanel(LabelFrame):
     TEXT_WIDTH = 23
     FONT = ('Arial', 12)
     _BACKGROUND = BACKGROUND
 
 
     def __init__(self, *args, parent_frame: CategoriesMenu, **kw):
-        super(CategoryButtonsPane, self).__init__(*args, **kw)
+        super(CategoryButtonsPanel, self).__init__(*args, **kw)
 
         self.parent = parent_frame
 
@@ -410,11 +459,11 @@ class CategoryButtonsPane(LabelFrame):
 
         self.__variable.trace_add("write", callback=self.__notify)
 
-        self.__unspecified = Radiobutton(self, bg=self._BACKGROUND, text="0 - Neurčená", font=self.FONT,  width=self.TEXT_WIDTH, variable=self.__variable, value=0, anchor='w',
-                                         activebackground='grey')#highlightbackground='grey', highlightcolor='grey', highlightthickness='grey')
+        # self.__unspecified = Radiobutton(self, bg=self._BACKGROUND, text="0 - Neurčená", font=self.FONT,  width=self.TEXT_WIDTH, variable=self.__variable, value=0, anchor='w',
+        #                                  activebackground='grey')#highlightbackground='grey', highlightcolor='grey', highlightthickness='grey')
         
-        self.__unspecified.config(highlightbackground='grey', highlightcolor='grey')
-        self.__unspecified.grid(row=0, column=0, sticky="W")
+        # self.__unspecified.config(highlightbackground='grey', highlightcolor='grey')
+        # self.__unspecified.grid(row=0, column=0, sticky="W")
 
 
         self.__fruit_vegetables = Radiobutton(self, activebackground='grey', bg=self._BACKGROUND, text="1 - Ovocie a zelenina", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=1, anchor='w')
@@ -518,6 +567,8 @@ class ButtonPanel(Frame):
     
     def to_list(self):
         content = self.parent.name_frame_entry.get()
+        
+        # updating the search history
         if self.parent.insert_item() == 0:
             self.parent.modal_window.insert_product(content=content)
         

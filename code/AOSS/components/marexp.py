@@ -98,12 +98,33 @@ from typing import Dict
 
 
 class MarketExplorer:
+
+    @dataclass
+    class ExplorationParams:
+        """
+            a) int - ID of the target product to which products in markets are sought,
+                            explorations belonging to the same product will share this
+
+            b) str - a specific name of the product for which the exploration will be carried out
+
+            c) ProductCategory - this restricts exploration range to a specific category, if none
+                                then no filter is applied
+
+            d) int - required quantity of the product
+        """
+
+        target_id: int
+        product_name: str
+        product_category: ProductCategory = None
+        categorization: Literal['Manual Mapping', 'TM-based Mapping'] = 'Manual Mapping'
+        required_quantity: int = 0
+            
     
     @dataclass
     class Exploration:
         """
-            Exploration instance is a data class object which represents exploration results of
-             a market and containing explored products for the provided product list.
+            Exploration instance is a data class object which contains exploration results of
+             a market and its products for the provided product list.
 
             Attributes
             ----------
@@ -113,11 +134,13 @@ class MarketExplorer:
             b) products - a list of found products in which each maps the best match results to
                             an element in product list
 
-            c) expected_size - the expected amount of products that should be explored in the
+            c) total_expected_quantity - the expected amount of products that should be explored in the
                                market
-            d) total_price - total prices which is calculated as a sum of prices of all explored products
 
-            e) total_amount - automatically recalculated as a sum of 
+            d) total_remaining_quantity
+
+            e) total_price - total prices which is calculated as a sum of prices of all explored products
+
 
             Invariants
             ----------
@@ -128,11 +151,10 @@ class MarketExplorer:
         """
 
         market_ID: int
+
         # setting this only as [] would create a static variable, because of mutable list
-        
-        
         products: List[tuple[int, RegisteredProduct, float, int]] = field(default_factory=list)
-        total_quantity_left: int = 0
+        total_remaining_quantity: int = 0
         total_expected_quantity: int = 0
         total_price: float = 0
 
@@ -141,29 +163,14 @@ class MarketExplorer:
             for product in self.products:
                 expected_quantity = product[3]
                 quantity_left = product[1].quantity_left
-                self.total_quantity_left += (quantity_left if quantity_left <= expected_quantity else expected_quantity)
+                self.total_remaining_quantity += (quantity_left if quantity_left <= expected_quantity else expected_quantity)
                 self.total_price += product[1].price
-                #if product[1].quantity_left > product[3]:
-                 #   self.total_amount += product[3]
-                #else:
-                    #self.total_amount += product[1].quantity_left
-
-                #self.total_amount += (product[1].quantity_left % product[3])
                 self.total_expected_quantity += product[3]
             
             if self.total_expected_quantity > 0:
-
-                self.succession_rate = (self.total_quantity_left/self.total_expected_quantity) * 100
+                self.availability_rate = (self.total_remaining_quantity/self.total_expected_quantity) * 100
             else:
-                self.succession_rate = -1
-
-            # if self.expected_amount == -1:
-            #     self.expected_amount = len(self.products)
-
-            # if self.expected_amount == 0:
-            #     self.succession_rate = -1
-            # else:
-            #     self.succession_rate = round((len(self.products)/self.expected_amount) * 100, 2)   
+                self.availability_rate = -1
 
 
         def insert_product(self, target_ID: int, product: RegisteredProduct,
@@ -182,8 +189,8 @@ class MarketExplorer:
             
             self.total_price += product.price
             self.total_expected_quantity += quantity
-            self.total_quantity_left += (product.quantity_left if product.quantity_left <= quantity else quantity)
-            self.succession_rate = (self.total_quantity_left/self.total_expected_quantity) * 100
+            self.total_remaining_quantity += (product.quantity_left if product.quantity_left <= quantity else quantity)
+            self.availability_rate = (self.total_remaining_quantity/self.total_expected_quantity) * 100
       
 
 
@@ -204,7 +211,7 @@ class MarketExplorer:
         for index, market in enumerate(self.__markets):
             self.__explorations.append([])
 
-            for g in range(self.__limit):
+            for _ in range(self.__limit):
                 self.__explorations[index].append(MarketExplorer.Exploration(market_ID=market.ID(),
                                                                       total_price=0,
                                                                       products=[]))
@@ -219,7 +226,6 @@ class MarketExplorer:
 
     
     def clear_buffer(self):
-
         self.__explorations.clear()
 
 
@@ -231,7 +237,9 @@ class MarketExplorer:
             for g in range(self.__limit):
                 expl = self.__explorations[i][g]
                 expl.total_expected_quantity = size
-                expl.succession_rate = expl.total_expected_quantity/len(expl.products)
+                expl.availability_rate = expl.total_expected_quantity/len(expl.products)
+
+
 
     def remove_target(self, ID: int):
 
@@ -246,21 +254,10 @@ class MarketExplorer:
                             expl.total_expected_quantity -= product[3]
                             expl.total_price -= product[1].price
                             quatity_left = product[3] if product[3] <= product[1].quantity_left else product[1].quantity_left
-                            expl.total_quantity_left -= quatity_left
+                            expl.total_remaining_quantity -= quatity_left
                             break
                 else:
-                    raise ValueError("Provided ID not found!")
-
-        # for exploration in self.__explorations:
-
-        #     for product in exploration.products:
-
-        #         if product[0] == ID:
-        #             exploration.products.remove(product)
-        #             break   
-        #     else:
-        #         raise ValueError("Provided ID not found!")
-        
+                    raise ValueError("Provided ID not found!")     
 
 
 
@@ -274,7 +271,7 @@ class MarketExplorer:
 
 
 
-    def explore(self, product_list: List[ tuple[int, str, ProductCategory, int]]):
+    def explore(self, product_list: List[ExplorationParams]): # tuple[int, str, ProductCategory, int]]):
         """
             Parameters
             ---------
@@ -288,6 +285,7 @@ class MarketExplorer:
 
                     c) ProductCategory - this restricts exploration range to the specific category, if none
                                         then no filter is applied
+
                     d) int - required quantity of the product
             
             2) limit - specifies how many additional explorations will be executed
@@ -295,11 +293,11 @@ class MarketExplorer:
 
         for index, market in enumerate(self.__markets):
 
-            for target_ID, explored_product, category, quantity in product_list:
+            for params in product_list:
 
-                match_record = self.__matcher.match(text=explored_product,
+                match_record = self.__matcher.match(text=params.product_name,
                                                     markets=(market.ID(),),
-                                                    category=None,
+                                                    category=params.product_category,
                                                     limit=self.__limit,
                                                     sort_words=True)
                 
@@ -307,24 +305,11 @@ class MarketExplorer:
 
                     expl = self.__explorations[index][i]
                     lel=market.get_product(identifier=match_record[i].product_ID)
-                    expl.insert_product(target_ID=target_ID,
+                    expl.insert_product(target_ID=params.target_id,
                                         product=lel,
                                         match_ratio=match_record[i].ratio,
-                                        quantity=quantity)
-
-                    # expl.products.append((
-                    #                                 target_ID,
-                    #                                 market.get_product(identifier=match_record[i].product_ID),
-                    #                                 match_record[i].ratio))
-                    
-                    # expl.succession_rate = expl.total_expected_quantity/len(expl.products)
-                    
-                    # expl.total_price += match_record[i].price
-
-                
-
-
-
+                                        quantity=params.required_quantity)
+            
     # def explore(self, product_list: List[ tuple[int, str, ProductCategory, int]]):
     #     """
     #         Parameters

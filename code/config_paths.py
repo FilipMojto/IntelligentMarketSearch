@@ -1,16 +1,13 @@
 import json
 import os, sys
 
-#Set the starting point to the directory containing the script
 script_directory = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(script_directory)
 
-# Move up two directories to reach the parent directory (AOSS)
-
 os.chdir(script_directory)
-# parent_directory = os.path.abspath(os.path.join(script_directory, '..'))
-# sys.path.append(parent_directory)
 
+
+# ------ Project Config Globals ------ #
 
 CONFIG_FILE_PATH = "./.config.json"
 
@@ -20,13 +17,20 @@ with open(file=CONFIG_FILE_PATH, mode='r') as config_file:
 RESOURCES = PATHS["resources"]
 DATA = PATHS["resources"]["data"]
 
+
+
+# ----- File Paths Constants ----- #
+
 MARKET_FILE = DATA["markets"]
 PRODUCT_FILE = DATA["products"]
 CATEGORY_FILE = DATA["categories"]
 CATEGORY_MAP_FILE = DATA["category_mappings"]
-MARKET_HUB_FILE = DATA["market_hub"]
+MARKET_HUB_FILE = DATA["market_hubs"]
 SEARCHED_PRODUCTS_FILE = DATA["searched_products"]
 
+
+
+# ----- GUI Config Constants ----- #
 
 GUI = PATHS["resources"]["gui"]
 
