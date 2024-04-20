@@ -1,5 +1,3 @@
-# shopping.py
-
 # ------- Module Description ------- #
 
 """
@@ -174,7 +172,7 @@ class MarketView:
         self.__name = name
         self.__store_name = store_name
         self.__categories: Dict[int, str] = {}
-        self.__products: Dict[int, RegisteredProduct] = {}
+        self.__products: Dict[str, RegisteredProduct] = {}
 
         self.__product_file = product_file
         PathManager.check_if_exists(path=product_file, type='file')
@@ -279,7 +277,8 @@ class MarketView:
             raise TypeError("Unsupported type of identifier!")
 
  
-    
+
+
     
 # --- Market - Class Declaration&Definition --- #
 
@@ -308,38 +307,38 @@ class Market(MarketView):
         # --- Market Product Registration Attributes --- #
 
         self.__registration_buffer: List[tuple[Product, ProductCategory]] = []
-        self.__update_buffer: List[RegisteredProduct] = []
-        self.__delete_buffer: List[int] = []
+        self.__update_buffer: List[Product] = []
+        self.__removal_buffer: List[int] = []
         self.__buffer_limit = buffer
         self.__buffer_lock = threading.Lock()
 
-    def update_data(self):
-        products = self.products()
+    # def update_data(self):
+    #     products = self.products()
 
-        for product_ID, category in self.__registration_buffer:
-            registered_product = RegisteredProduct(
-                                    ID=self.__market_hub.assign_product_ID(),
-                                    name=product_ID.name,
-                                    normalized_name=product_ID.normalized_name,
-                                    price=product_ID.price,
-                                    approximation=product_ID.approximation,
-                                    quantity_left=product_ID.quantity_left,
-                                    normalized_category=category.name,
-                                    category_ID=product_ID.category_ID,
-                                    market_ID=self.__ID,
-                                    created_at=product_ID.created_at,
-                                    updated_at=product_ID.updated_at
-            )
+    #     for product_ID, category in self.__registration_buffer:
+    #         registered_product = RegisteredProduct(
+    #                                 ID=self.__market_hub.assign_product_ID(),
+    #                                 name=product_ID.name,
+    #                                 normalized_name=product_ID.normalized_name,
+    #                                 price=product_ID.price,
+    #                                 approximation=product_ID.approximation,
+    #                                 quantity_left=product_ID.quantity_left,
+    #                                 normalized_category=category.name,
+    #                                 category_ID=product_ID.category_ID,
+    #                                 market_ID=self.__ID,
+    #                                 created_at=product_ID.created_at,
+    #                                 updated_at=product_ID.updated_at
+    #         )
 
-            self.__registration_buffer.append(registered_product)
+    #         self.__registration_buffer.append(registered_product)
         
-        self.__registration_buffer = list(filter(lambda x : isinstance(x, RegisteredProduct), self.__registration_buffer))
+    #     self.__registration_buffer = list(filter(lambda x : isinstance(x, RegisteredProduct), self.__registration_buffer))
 
-        for product_ID in self.__update_buffer:
-            products[product_ID.ID] = product_ID
+    #     for product_ID in self.__update_buffer:
+    #         products[product_ID.ID] = product_ID
 
-        for product_ID in self.__delete_buffer:
-            del products[product_ID].ID
+    #     for product_ID in self.__removal_buffer:
+    #         del products[product_ID].ID
         
 
         
@@ -355,6 +354,13 @@ class Market(MarketView):
         with self.__buffer_lock:
             self.__buffer_limit = size
 
+    def is_registered(self, product_name: str):
+        for _product in self.__registration_buffer:
+            if (product_name == _product[0].name):
+                return True
+                
+        return product_name in self.products()
+            
 
 
     def register_product(self, product: Product, norm_category: ProductCategory = ProductCategory.NEURČENÁ):
@@ -378,6 +384,12 @@ class Market(MarketView):
             Please note, that in order to store newly added instances persistenly to a Product File
             method save_products() must be used. Products are saved in this manner automatically when
             the buffer limit is reached.
+
+            IllegalProductState exception is thrown in case of the following events:
+
+            a) Conflicting name with an unregistered product (stored in buffer)
+            b) Conflicting name with a registered product (stored locally in the source file)
+            c) The market doesn't provide such a category
         """
 
 
@@ -414,58 +426,71 @@ class Market(MarketView):
 
 
 
-    def update_product(self, product: RegisteredProduct):
+    def update_product(self, product: Product):
 
         if product.name in self.products(): 
             self.__update_buffer.append(product)
         else:
             raise IllegalProductState("Provided product not registered!")
         
-    # def remove_local_products(self):
-    #     "Clears the product file and removes all local products. Use carefully!"
 
-    #     with open(file=self.product_file(), mode='w', encoding='utf-8'):
-    #         pass
-        
-
+    
     def remove_products(self, identifiers: List[int]):
         _products = self.products()
         
       
         for id in identifiers:
             try:
-                self.__delete_buffer.append(_products[id].ID)
-                # _product = _products[id]
-                # self.__delete_buffer.append(_product.ID)
+                self.__removal_buffer.append(_products[id].ID)
             except KeyError:
                 raise IllegalProductState(message="Provided product not found in the dataset!")
 
 
 
 
-    def save_products(self):
+    def save_products(self, remove_if_outdated: bool = False):
 
         """
             This method stores all products stored in a buffer during runtime to the Product File.
             The buffer is cleared at the end of process.
         """
 
-        if self.__update_buffer or self.__delete_buffer:
+        if self.__update_buffer or self.__removal_buffer:
+            local_products_tree = []
+
 
             with open(file=self.product_file(), mode='r', encoding='utf-8') as product_f:
-                products = list(csv.DictReader(product_f))
+                for row in csv.DictReader(product_f):
+                    for el in local_products_tree:
+                        if el[0][0]['market_ID'] == row['market_ID']:
+                            el.append([row, False])
+                            break
+                    else:
+                        local_products_tree.append([[row, False]])
+
+            market_bound_LPT = None
+
+            for el in local_products_tree:
+                if int(el[0][0]['market_ID']) == self.ID():
+                    market_bound_LPT = el
+                    break
+
+
+                # local_products = [[row, False] for row in csv.DictReader(product_f)]
+                # local_products = list((csv.DictReader(product_f), False))
 
             # Update products based on the __update_buffer
             for upd_product in self.__update_buffer:
-                for product in products:
-                    if upd_product.name == product['name'] and self.ID() == int(product['market_ID']):
+                for local_product in market_bound_LPT:
+                    if upd_product.name == local_product[0]['name']:
 
-                        product['price'] = upd_product.price
-                        #product['category'] = upd_product.normalized_category
-                        product['approximation'] = upd_product.approximation
-                        product['quantity_left'] = upd_product.quantity_left
-                        product['updated_at'] = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+                        local_product[0]['price'] = upd_product.price
+                        local_product[0]['approximation'] = upd_product.approximation
+                        local_product[0]['quantity_left'] = upd_product.quantity_left
+                        local_product[0]['updated_at'] = datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+                        local_product[1] = True
                         break
+      
                 else:
                     raise TypeError("Not found!")
 
@@ -482,14 +507,22 @@ class Market(MarketView):
             
 
                 # if there are products to remove we exlude their rows from the dataset
-                if self.__delete_buffer:
-                    products = [row for row in products if int(row['ID']) not in self.__delete_buffer]
+                if self.__removal_buffer:
+                    market_bound_LPT = [row for row in market_bound_LPT if int(row[0]['ID']) not in self.__removal_buffer]
+                
+                if remove_if_outdated:
+                    
+                    market_bound_LPT = [row for row in market_bound_LPT if row[1] == True]
 
         
                 # Write the updated products
-                products_writer.writerows(products)
-        
-            self.__delete_buffer.clear()
+                # for el in local_products_tree:
+                #     products_writer.writerows(el[0])
+                for el in local_products_tree:
+                    for product_data, _ in el:
+                        products_writer.writerow(product_data)
+
+            self.__removal_buffer.clear()
             self.__update_buffer.clear()
 
                         
@@ -498,18 +531,18 @@ class Market(MarketView):
             for element in self.__registration_buffer:
 
                 if isinstance(element, tuple):
-                    product, category = element
+                    local_product, category = element
                     id = self.__market_hub.assign_product_ID(market=self)
                     file.write(str(id) + PRODUCT_FILE['delimiter'] +
-                            product.name + PRODUCT_FILE['delimiter'] +
-                            product.normalized_name + PRODUCT_FILE['delimiter'] +
-                            str(product.price) + PRODUCT_FILE['delimiter'] +
-                            str(int(product.approximation)) + PRODUCT_FILE['delimiter'] +
-                            str(product.quantity_left) + PRODUCT_FILE['delimiter'] +
+                            local_product.name + PRODUCT_FILE['delimiter'] +
+                            local_product.normalized_name + PRODUCT_FILE['delimiter'] +
+                            str(local_product.price) + PRODUCT_FILE['delimiter'] +
+                            str(int(local_product.approximation)) + PRODUCT_FILE['delimiter'] +
+                            str(local_product.quantity_left) + PRODUCT_FILE['delimiter'] +
                             category.name + PRODUCT_FILE['delimiter'] +
-                            str(product.category_ID) + PRODUCT_FILE['delimiter'] +
+                            str(local_product.category_ID) + PRODUCT_FILE['delimiter'] +
                             str(self.ID()) + PRODUCT_FILE['delimiter'] +
-                            product.created_at + PRODUCT_FILE['delimiter'] +
+                            local_product.created_at + PRODUCT_FILE['delimiter'] +
                                 datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\n')
                 elif isinstance(element, RegisteredProduct):
                     file.write(str(element.ID) + PRODUCT_FILE['delimiter'] +
@@ -583,8 +616,8 @@ class MarketHub(ProductIdentification):
             metadata = next(reader)
 
 
-            self.__market_ID = int(metadata['market_ID'])
-            self.__product_ID = int(metadata['product_ID'])
+            self.__next_market_ID = int(metadata['market_ID'])
+            self.__next_product_ID = int(metadata['product_ID'])
 
             if PathManager.check_if_exists(metadata['market_file']):
                 self.__market_file = metadata['market_file']
@@ -714,7 +747,7 @@ class MarketHub(ProductIdentification):
 
     def load_products(self):
         """
-            Loads all product data necessary for market hub full functionality. For the market hub instance
+            Loads all product data necessary for market hub full functionality. For a market hub instance
             this includes loading all product data in the form of Polars dataset. For each registered market this
             includes loading all of its registered products in the form dictionaries.            
         """
@@ -745,8 +778,8 @@ class MarketHub(ProductIdentification):
             reader = csv.DictReader(file)
             metadata = next(reader)
             
-            metadata['market_ID']= str(self.__market_ID)
-            metadata['product_ID'] = str(self.__product_ID)
+            metadata['market_ID']= str(self.__next_market_ID)
+            metadata['product_ID'] = str(self.__next_product_ID)
 
 
         with open(self.__src_file, mode='w', newline='', encoding='utf-8') as file:
@@ -773,8 +806,9 @@ class MarketHub(ProductIdentification):
         with open(self.__market_file, mode='w', newline='', encoding='utf-8') as file:
             file.writelines(lines)
 
-
         print("Data updated successfully!")
+
+        
 
     def save_markets(self):
         """
@@ -790,8 +824,8 @@ class MarketHub(ProductIdentification):
     
 
     def __get_market_ID(self):
-        old_val = self.__market_ID
-        self.__market_ID += 1
+        old_val = self.__next_market_ID
+        self.__next_market_ID += 1
         return old_val
 
  
@@ -909,8 +943,8 @@ class MarketHub(ProductIdentification):
         
         for market, _ in self.__markets:
             if market.ID() == market.ID():
-                old_value = self.__product_ID
-                self.__product_ID += 1
+                old_value = self.__next_product_ID
+                self.__next_product_ID += 1
                 return old_value
         else:
             raise InvalidMarketState("Provided market is not aggregated by this market hub! Register it first.")

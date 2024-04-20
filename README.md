@@ -120,6 +120,43 @@ Improvement of version 2.0.0 including various new functionality in GUI.
 
     - Fixed fonting when entering product quantity.
 
+### Version 2.2.0
+
+#### Release Date: 20.04.2024
+
+#### Description
+
+Brand new version which brings some new features enhancing product search.
+
+#### Features
+
+##### Full Refresh - reworked
+
+    - __Full Refresh Update__ now logically updates all local data without removing them first.
+
+##### Full Refresh Prompt Window Included
+
+    - In this version, user is now prompted to accept or reject the Full Refresh when it is required.
+
+##### Categorization Mode included
+
+    - Using categories to improve the search results is now more appealling. User is now able to specify categorization mode via GUI in the form of a Combobox widget. Combobox contains following options:
+
+    a) __Off__
+    b) __Manual Mapping__
+    c) __TM-based Mapping__
+
+    User can only specify a category if any of 2 last options is selected. Manual Mapping is based on manual categorization of products which was done by author. This method still contains some imperfections. TM-based mapping is based on the __training market__ and its products. Products from training market are categorized manually, others are categorized by their similarities to products in training market. This method has generally worse search results than manual mapping.
+
+##### Bug Fixes
+
+    a) Deleting a product from a product list using button caused errors, as it wasnt really removed from inner list. This is now fixed
+
+
+
+
+
+
 
 
         

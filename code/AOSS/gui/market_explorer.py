@@ -2,16 +2,15 @@ from tkinter import *
 from tkinter import ttk
 
 import threading
-import multiprocessing as mpr
 from typing import List, Dict
 #import math
 
 import config_paths as cfg
 
-from AOSS.gui.shopping_list import ShoppingListFrame, ShoppingListItem, ShoppingListDetails
+from AOSS.gui.shopping_list import ShoppingListFrame, ShoppingListItem
 from AOSS.gui.utils import CircularProgress
 from AOSS.structure.shopping import MarketHub, ProductCategory
-from AOSS.components.marrec import MarketExplorer
+from AOSS.components.marexp import MarketExplorer
 from AOSS.other.utils import TextEditor
 
 BACKGROUND = 'lightblue'
@@ -129,11 +128,6 @@ class ExplorationTable(Frame):
         for g in range(4):
             self.rowconfigure(g, weight=1)
 
-
-
-    
-       # self.cells[0][0][0].set(value="Name")
-       # self.cells[0][0][1].config(font=('Arial', 13, 'bold', 'underline'))
     
         self.cells[1][0][0].set(value="Total Price")
         self.cells[1][0][1].config(font=('Arial', 13, 'bold', 'underline'))
@@ -191,13 +185,8 @@ class ExplorerView(Frame):
         self.detailed_results_padding = Frame(self.detailed_results, bg=BACKGROUND)
         self.detailed_results_padding.grid(row=1, column=0, sticky="NSEW")
 
-        
+    
 
-
-        #self.label = Label(self, text="SO FAR EMPTY!")
-       # self.grid(row=0, column=0, sticky='NSEW')
-
-        
 
 
 class MarketExplorerFrame(LabelFrame):
@@ -215,8 +204,8 @@ class MarketExplorerFrame(LabelFrame):
         self.markets = market_hub.markets()
         self.market_explorer = MarketExplorer(market_hub=market_hub, limit=5)
 
-
-        self.product_items: List[ShoppingListItem] = []
+        self.product_items = shopping_list_frame.product_list.items
+        # self.product_items: List[ShoppingListItem] = []
         self.explorations: List[List[MarketExplorer.Exploration]] = []
 
         # ---- Frame Configuration ---- #
@@ -269,8 +258,10 @@ class MarketExplorerFrame(LabelFrame):
         self.explorer_view.detailed_results_table.insert_value(row=0, column=2, value="Price")
     
     
-    def delete_product(self):
-        item = self.shopping_list.product_list.remove_selected_item(return_=True)
+    def delete_product(self, item = None):
+
+        if item is None:
+            item = self.shopping_list.product_list.remove_selected_item(return_=True)
         
         if item is None:
             return
@@ -281,8 +272,8 @@ class MarketExplorerFrame(LabelFrame):
 
 
         self.market_explorer.remove_target(ID=item.details.ID)
-        self.product_items.remove(item)
-        
+        # self.product_items.remove(item)
+    
 
     def combobox_selected(self, event, box: ttk.Combobox):
         info = box.grid_info()
@@ -439,14 +430,19 @@ class MarketExplorerFrame(LabelFrame):
 
     def explore_product(self, item: ShoppingListItem):
 
-        self.product_items.append(item)
+        # self.product_items.append(item)
 
         category = None if item.details.category == 0 else ProductCategory(value=item.details.category)
-    
-        item_data = [(item.details.ID,
-                      TextEditor.standardize_str(item.details.name),
-                      category,
-                      item.details.amount)]
+        item_data = [MarketExplorer.ExplorationParams(target_id=item.details.ID,
+                                                      product_name=TextEditor.standardize_str(item.details.name),
+                                                      product_category=category,
+                                                      required_quantity=item.details.amount,
+                                                      categorization=item.details.category_search_mode)]
+        
+        # item_data = [(item.details.ID,
+        #               TextEditor.standardize_str(item.details.name),
+        #               category,
+        #               item.details.amount)]
         
         self.market_explorer.explore(product_list=item_data)
         #self.product_data.extend(item_data)
@@ -492,7 +488,7 @@ class MarketExplorerFrame(LabelFrame):
 
 
         
-        for index, expl in enumerate(self.explorations):
+        for expl in self.explorations:
             expl = expl[0]
 
             #if index % 5 == 0:
@@ -507,12 +503,12 @@ class MarketExplorerFrame(LabelFrame):
             
             self.explorer_view.table.insert_value(row=0, col=expl.market_ID, value=self.market_hub.market(identifier=expl.market_ID).name().lower())
             self.explorer_view.table.insert_value(row=1, col=expl.market_ID, value= round(expl.total_price, 2))
-            self.explorer_view.table.insert_value(row=2, col=expl.market_ID, value=round(expl.succession_rate, 2))
+            self.explorer_view.table.insert_value(row=2, col=expl.market_ID, value=round(expl.availability_rate, 2))
             
         self.explorations = self.market_explorer.get_explorations(metric='price')
         #self.market_explorer.clear_buffer()
 
-        for index, expl in enumerate(self.explorations):
+        for expl in self.explorations:
             expl = expl[0]
 
            # if index % 5 == 0:

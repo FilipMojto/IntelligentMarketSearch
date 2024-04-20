@@ -13,4 +13,4 @@ parent_directory = os.path.abspath(os.path.join(script_directory, '..'))
 sys.path.append(parent_directory)
 
 
-from main import *
+# from main import *

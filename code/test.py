@@ -1,28 +1,8 @@
-from AOSS.structure.shopping import MarketHub
-from AOSS.components.scraping.base import ProductScraper
-from AOSS.components.processing import process_scraped_products
 
-import config_paths as cfg
-
-def main():
-    # with MarketHub(src_file=cfg.MARKET_HUB_FILE['path']) as hub:
-    #     hub.remove_local_products()
+from config_paths import *
+from AOSS.components.categorization import get_mapped_category
 
 
-    #     # scraper = ProductScraper(hub.market(identifier=1))
-    #     # products = scraper.scrape_all(console_log=True)
+print(get_mapped_category(query_string_ID=41, mappings_file=CATEGORY_MAP_FILE['path'],
+                    categories_file=CATEGORY_FILE['path']))
 
-    #     # products[]
-
-
-    #     pass
-        #products = process_scraped_products(products=products)
-
-
-
-
-
-
-
-if __name__ == "__main__":
-    main()

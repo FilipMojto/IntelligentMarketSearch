@@ -558,6 +558,12 @@ class ProductScraper:
                         print(f"Category {category_name} not supported by current market! Skipping...")
                     continue
 
+                category_ID = None
+                for key, value in self.__categories.items():
+                    if value == category_name:
+                        category_ID = key
+                        break
+
                 quantity_left=item.get('quantity_left')
 
                 if quantity_left is None:
@@ -568,7 +574,7 @@ class ProductScraper:
                     price=int(item.get('baseprice', -1)) / 100,
                     approximation=0,
                     quantity_left=quantity_left,
-                    category_ID=category_name,
+                    category_ID=category_ID,
                     created_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),
                     updated_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'))
 

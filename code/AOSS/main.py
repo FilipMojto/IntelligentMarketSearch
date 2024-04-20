@@ -17,7 +17,7 @@ parent_directory = os.path.abspath(os.path.join(script_directory, '..'))
 sys.path.append(parent_directory)
 
 MAIN_TERMINATION_SIGNAL = "-end"
-GUI_TERMINATION_SIGNAL = 1
+# GUI_TERMINATION_SIGNAL = 1
 
 
 
@@ -25,9 +25,10 @@ GUI_TERMINATION_SIGNAL = 1
 
 from config_paths import *
 
-import AOSS.structure.marketing as mrk
-import AOSS.components.scraping.scrape as scrp
-import AOSS.gui.application as app
+from AOSS.processes.IPC import GUI_TERMINATION_SIGNAL
+from AOSS.processes.DPMP import start as dpmp_start
+from AOSS.processes.DSPP import start as dspp_start
+from AOSS.processes.GUIP import start as gui_start
 
 main_to_all = mpr.Queue(maxsize=5)
 gui_to_main = mpr.Queue(maxsize=5)
@@ -97,18 +98,18 @@ def launch_subprocesses():
     #hub_to_scraper, scraper_to_hub = mpr.Pipe()
     
     
-    market_hub = mpr.Process(target=mrk.start, args=(shared_termination_signal, hub_to_scraper, scraper_to_hub, hub_to_qui,
+    market_hub = mpr.Process(target=dpmp_start, args=(shared_termination_signal, hub_to_scraper, scraper_to_hub, hub_to_qui,
                                                      gui_to_hub, product_file_lock))
     
     market_hub.start()
     processes.append(market_hub)
 
-    scraper = mpr.Process(target=scrp.start, args=(shared_termination_signal, scraper_to_hub, hub_to_scraper))
+    scraper = mpr.Process(target=dspp_start, args=(shared_termination_signal, scraper_to_hub, hub_to_scraper))
     scraper.start()
     processes.append(scraper)
     
 
-    gui = mpr.Process(target=app.start, args=(shared_termination_signal, gui_to_main, hub_to_qui, gui_to_hub, product_file_lock))
+    gui = mpr.Process(target=gui_start, args=(shared_termination_signal, gui_to_main, hub_to_qui, gui_to_hub, product_file_lock))
     gui.start()
     processes.append(gui)
 

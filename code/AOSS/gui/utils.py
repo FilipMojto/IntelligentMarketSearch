@@ -57,6 +57,7 @@ class AmountEntryFrame(tk.Frame):
     ENTRY_FONT = ('Arial', 13)
     VALUE_MIN = 1
     VALUE_MAX = 9999
+    BORDER_WIDTH = 1
 
     def on_digit_input(self, event):
         try:
@@ -94,7 +95,7 @@ class AmountEntryFrame(tk.Frame):
 
         
 
-        self.entry = tk.Entry(self, font=self.ENTRY_FONT,bg='whitesmoke', borderwidth=0, width=1)
+        self.entry = tk.Entry(self, font=self.ENTRY_FONT,bg='whitesmoke', borderwidth=self.BORDER_WIDTH, width=1)
         self.entry.insert(0, 1)
         self.entry.pack(side='left', ipady=5, pady=(2), padx=(2, 0), fill='both', expand=True)
 

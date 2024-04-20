@@ -9,8 +9,8 @@ from tkinter import font
 import config_paths
 
 from AOSS.structure.shopping import MarketHub, ProductCategory
-from AOSS.components.marrec import MarketExplorer, Market
-from AOSS.components.processing import ProductCategorizer
+from code.AOSS.components.marexp import MarketExplorer, Market
+from code.AOSS.components.categorization import ProductCategorizer
 from AOSS.other.utils import TextEditor
 
 

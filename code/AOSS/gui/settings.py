@@ -4,7 +4,7 @@ from tkinter import ttk
 import multiprocessing as mpr
 #import ttkbootstrap as tb
 
-from AOSS.structure.marketing import UPDATE_INTERVAL_SIGNAL, UPDATE_STOP_SIGNAL
+from AOSS.processes.IPC import UPDATE_INTERVAL_SIGNAL, UPDATE_STOP_SIGNAL
 
 class SettingsPanel(LabelFrame):
 

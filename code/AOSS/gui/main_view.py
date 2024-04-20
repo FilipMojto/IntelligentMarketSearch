@@ -2,27 +2,51 @@ from tkinter import *
 
 import multiprocessing as mpr
 
+import os, sys
+
+# Set the starting point to the directory containing the script
+script_directory = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(script_directory)
+
+# Move up two directories to reach the parent directory (AOSS)
+parent_directory = os.path.abspath(os.path.join(script_directory, '..', '..'))
+sys.path.append(parent_directory)
+
 import config_paths as cfg
-from AOSS.gui.product_specification import ProductSpecificationMenu
+
 from AOSS.gui.shopping_list import ShoppingListFrame
+
+from AOSS.gui.product_specification import ProductSpecificationMenu
+
 from AOSS.gui.market_explorer import MarketExplorerFrame
 from AOSS.gui.settings import SettingsFrame
 
 from AOSS.structure.shopping import MarketHub
 
 
-class MainMenu(Frame):
-    pass
+
 
 
 class MainView(Frame):
 
-    def __init__(self, *args, root: Tk, market_hub: MarketHub, gui_to_hub: mpr.Queue, **kw):
+    def on_key_press(self, event, main_view):
+
+        key_pressed = event.keysym
+
+        if key_pressed == "Delete":
+            main_view.market_explorer_window.delete_product()
+
+
+
+    def __init__(self, *args, root: Tk, market_hub, gui_to_hub: mpr.Queue, app_version: str, **kw):
         super(MainView, self).__init__(*args, **kw)
+        
+
+
         self.root = root
         self.market_hub = market_hub
 
-        self.main_menu_panel = MainMenu(self, parent=self, bg='skyblue')
+        self.main_menu_panel = MainMenu(self, app_version=app_version, parent=self, bg='skyblue')
         self.main_menu_panel.pack(side='left', fill='y', expand=False)
 
         self.main_window = Frame(self, bg='lightblue', width=50)
@@ -33,16 +57,19 @@ class MainView(Frame):
         self.list_frame = Frame(self.main_window, bg='skyblue')
         self.list_frame.pack(side='left', fill='both', expand=True)
 
+        self.market_explorer_window = None
+
         self.shopping_list_window = ShoppingListFrame(self.list_frame,
                                                       text='Shopping List',
                                                       font=('Arial', 17, 'bold'),
-                                                      bg='skyblue'
-                                                      )
+                                                      bg='skyblue',
+    
+                                                      on_delete=lambda item: self.market_explorer_window.delete_product(item))
         self.shopping_list_window.pack(side='right', fill='y', expand=False, pady=6, padx=(3, 5))
         
-        # market_hub = MarketHub(src_file=cfg.MARKET_HUB_FILE['path'])
-        # market_hub.load_markets()
-        # market_hub.load_products()
+        market_hub = MarketHub(src_file=cfg.MARKET_HUB_FILE['path'])
+        market_hub.load_markets()
+        market_hub.load_products()
 
 
 
@@ -67,7 +94,7 @@ class MainView(Frame):
         self.specification_window.pack(side='right', fill='both', expand=True, pady=6, padx=(0, 3))
 
 
-        #self.explorer_frame = Frame(self.main_window)
+        # self.explorer_frame = Frame(self.main_window)
 
        
         self.settings_frame = SettingsFrame(self.main_window, gui_to_hub=gui_to_hub)
@@ -84,7 +111,7 @@ class MainMenu(Frame):
     BUTTON_Y_PAD = 2
 
 
-    def __init__(self, *args, parent: MainView, **kw):
+    def __init__(self, *args, parent: MainView, app_version: str, **kw):
         super(MainMenu, self).__init__(*args, **kw)
         
         self.parent = parent
@@ -98,7 +125,7 @@ class MainMenu(Frame):
         self.columnconfigure(0, weight=1)
 
 
-        self.app_name_label = Label(self, text="AOSS v1.0.1", font=('Arial', 17, 'bold'), bg='deepskyblue')
+        self.app_name_label = Label(self, text="AOSS v" + app_version, font=('Arial', 17, 'bold'), bg='deepskyblue')
         self.app_name_label.pack(side='top', fill='x', expand=False, pady=(51, 20))
         
         ##self.shopping_list_option = Frame(self, bg='aqua')
@@ -212,3 +239,4 @@ class MainMenu(Frame):
         self.selected_option = self.settings_option
 
         self.parent.main_window.config(bg='skyblue')
+

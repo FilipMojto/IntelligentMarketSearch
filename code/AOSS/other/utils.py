@@ -3,8 +3,11 @@ import threading
 from typing import List, Literal
 import hashlib
 from unidecode import unidecode
+import csv
 
 import os
+
+from config_paths import *
 
 class PathManager:
     
@@ -153,3 +156,28 @@ class ThreadPool:
 
 
 
+def get_mapped_category(query_string_ID: int | str, mappings_file: str, categories_file: str):
+    if isinstance(query_string_ID, str):
+        query_string_ID = int(query_string_ID)
+
+    with open(file=mappings_file, mode='r', encoding='utf-8') as mappings_file:
+        next(mappings_file)
+
+        reader = csv.reader(mappings_file)
+
+        for row in reader:
+            if int(row[CATEGORY_MAP_FILE['columns']['ID']['index']]) == query_string_ID:
+
+                with open(file=categories_file, mode='r', encoding='utf-8') as category_file:
+                    
+                    next(category_file)
+
+                    CF_reader = csv.reader(category_file)
+
+                    for CF_reader_row in CF_reader:
+
+                        if (CF_reader_row[CATEGORY_FILE['columns']['ID']['index']] ==
+                        row[CATEGORY_MAP_FILE['columns']['category_ID']['index']]):
+                            return CF_reader_row[CATEGORY_FILE['columns']['name']['index']].upper()
+                        
+                

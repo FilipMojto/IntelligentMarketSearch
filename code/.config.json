@@ -136,9 +136,9 @@
                 }
             },
             
-            "market_hub": {
-                "name": "market_hub.csv",
-                "path": "../resources/data/market_hub.csv",
+            "market_hubs": {
+                "name": "market_hubs.csv",
+                "path": "../resources/data/market_hubs.csv",
                 "header": true,
                 "delimiter": ",",
                 "columns": {

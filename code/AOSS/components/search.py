@@ -1,5 +1,7 @@
 import rapidfuzz.fuzz as fuzz
-from typing import List
+from typing import List, Literal
+from dataclasses import dataclass
+import polars.exceptions
 
 import os, sys
 
@@ -12,9 +14,10 @@ sys.path.append(parent_dir)
 
 
 from AOSS.structure.shopping import MarketHub, ProductCategory
+from AOSS.other.utils import get_mapped_category
 from config_paths import *
-from dataclasses import dataclass
-import polars.exceptions
+
+
 
 
 # class ProductMatcher:
@@ -197,9 +200,15 @@ class ProductMatcher:
     def set_subset(self, market_ID: int):
         self.__subset = self.__product_df.filter(self.__product_df['market_ID'] == market_ID)
 
+    # Define a function to apply your mapping logic
+    def filter_category(self, row, category: ProductCategory):
     
+        mapped_category = get_mapped_category(query_string_ID=row,
+                                            mappings_file=CATEGORY_MAP_FILE['path'],
+                                            categories_file=CATEGORY_FILE['path'])
+        return mapped_category == category.name
 
-    def match(self, text: str, markets: tuple[int] = None, category: ProductCategory = None, limit: int = 10,
+    def match(self, text: str, markets: tuple[int] = None, category: ProductCategory = None, categorization: Literal['ManualMapping', 'TM-based Mapping' ] = 'ManualMapping', limit: int = 10,
               min_match: float = 0, for_each: bool = False, sort_words: bool = False, use_subset: bool = False):
         
         
@@ -214,6 +223,7 @@ class ProductMatcher:
             - min_match (float, optional): The minimum match ratio required.
             - for_each (bool, optional): If True, apply the limit separately for each market.
             - sort_words (bool, optional): If True, it sorts words first and then finds match ratio
+            - use_subset (bool, optional): If True, custom subset set by set_subset() method is used
 
             Returns:
             - List of matches based on the specified criteria.
@@ -248,7 +258,14 @@ class ProductMatcher:
 
         # filtering products by their category
         if category is not None:
-            df = df.filter(df['category'] == category.name)
+            if categorization == 'ManualMapping':
+                df = df.filter(polars.col("query_string_ID").apply(lambda row: self.filter_category(row, category=category)))
+                
+                # df = df.filter(get_mapped_category(query_string_ID=df['query_string_ID'],
+                #                                    mappings_file=CATEGORY_MAP_FILE['path'],
+                #                                    categories_file=CATEGORY_FILE['path']) == category.name)
+            elif categorization == 'TM-based Mapping':    
+                df = df.filter(df['category'] == category.name)
 
 
         try:    
