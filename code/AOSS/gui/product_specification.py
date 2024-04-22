@@ -8,7 +8,7 @@ import threading
 import time
 from datetime import datetime
 
-from AOSS.structure.shopping import ProductCategory
+from AOSS.structure.shopping import ProductCategory, ProductWeightUnit
 from AOSS.components.categorization import ProductCategorizer
 
 from AOSS.gui.shopping_list import ShoppingListFrame
@@ -152,6 +152,7 @@ class SearchedProductWindow(Toplevel):
 class ProductSpecificationMenu(LabelFrame):
 
     BACKGROUND = 'lightblue'
+    FONT = ('Arial', 13)
 
 
     def __init__(self, *args, root: Tk, shopping_list_frame: ShoppingListFrame,
@@ -171,25 +172,22 @@ class ProductSpecificationMenu(LabelFrame):
         self.rowconfigure(0, weight=1, minsize=110)
         self.rowconfigure(1, weight=3, minsize=50)
         self.rowconfigure(2, weight=5, minsize=55)
-        self.columnconfigure(0, weight=1)
+        self.columnconfigure(0, weight=1, minsize=630)
 
         # ------ MAIN_DETAILS_MENU - CONFIGURATION ------ #
 
-        self.main_details_menu = Frame(self, bg=BACKGROUND)
-        self.main_details_menu.grid(row=0, column=0, sticky="NEW", pady=(15, 5))
+        self.main_details_menu = Frame(self, bg=self.BACKGROUND)
+        self.main_details_menu.grid(row=0, column=0, sticky="NEW", pady=(17, 7), padx=5)
 
         # frame configuration
 
         self.main_details_menu.grid(row=0, column=0, sticky="NEW")
         self.main_details_menu.rowconfigure(0, weight=1)
         self.main_details_menu.rowconfigure(1, weight=1)
+        self.main_details_menu.rowconfigure(2, weight=1)
         self.main_details_menu.columnconfigure(0, weight=1)
 
-        # self.main_details_menu.rowconfigure(0, weight=1, minsize=50)
-        # self.main_details_menu.rowconfigure(1, weight=1, minsize=50)
-        # self.main_details_menu.columnconfigure(0, weight=1)
-        # self.main_details_menu.columnconfigure(1, weight=100)
-    
+
 
         # name configuration
 
@@ -200,11 +198,11 @@ class ProductSpecificationMenu(LabelFrame):
         self.upper_wrapper_frame.columnconfigure(1, weight=100)
 
         self.name_frame = Frame(self.upper_wrapper_frame, bg=BACKGROUND)
-        self.name_frame.grid(row=0, column=0, sticky="NSEW", pady=8, padx=(3, 17))
+        self.name_frame.grid(row=0, column=0, sticky="NSEW", pady=8, padx=(3, 35))
         self.name_frame.rowconfigure(0, weight=1)
         self.name_frame.columnconfigure(0, weight=1)
 
-        self.name_frame_label = Label(self.name_frame, text="Enter Name:", bg=BACKGROUND, font=("Arial", 12))
+        self.name_frame_label = Label(self.name_frame, text="Enter Name:", bg=BACKGROUND, font=self.FONT)
         
         
         self.name_frame_label.grid(row=0, column=0, sticky="E")
@@ -212,36 +210,76 @@ class ProductSpecificationMenu(LabelFrame):
         s = ttk.Style()
         s.configure('Rounded.TEntry', borderwidth=5, relief="flat", foreground="black", background="white")
 
-        self.name_frame_entry = ttk.Entry(self.upper_wrapper_frame, style='Rounded.TEntry', font=("Arial", 13))
+        self.name_frame_entry = ttk.Entry(self.upper_wrapper_frame, style='Rounded.TEntry', font=self.FONT)
         self.name_frame_entry.grid(row=0, column=1, sticky="NSEW", pady=3, padx=8)
         self.name_frame_entry.bind("<KeyRelease>", self.show_product_name_matches)
         self.name_frame_entry.bind("<FocusOut>", self.destroy_product_name_matches)
         # amount configuration
         
-        self.lower_wrapper_frame = Frame(self.main_details_menu, background=BACKGROUND)
-        self.lower_wrapper_frame.grid(row=1, column=0, sticky="NSEW")
-        self.lower_wrapper_frame.rowconfigure(0, weight=1, minsize=50)
-        self.lower_wrapper_frame.columnconfigure(0, weight=1)
-        self.lower_wrapper_frame.columnconfigure(1, weight=1, minsize=100)
-        self.lower_wrapper_frame.columnconfigure(2, weight=100)
+        self.middle_wrapper_frame = Frame(self.main_details_menu, background=self.BACKGROUND)
+        self.middle_wrapper_frame.grid(row=1, column=0, sticky="NSEW", pady=5)
+        self.middle_wrapper_frame.rowconfigure(0, weight=1, minsize=50)
+        self.middle_wrapper_frame.columnconfigure(0, weight=1)
+        self.middle_wrapper_frame.columnconfigure(1, weight=1, minsize=100)
+        self.middle_wrapper_frame.columnconfigure(2, weight=1)
+        self.middle_wrapper_frame.columnconfigure(3, weight=1)
+        self.middle_wrapper_frame.columnconfigure(4, weight=1)
+        self.middle_wrapper_frame.columnconfigure(5, weight=1)
 
-
-        self.amount_frame = Frame(self.lower_wrapper_frame, bg=self.BACKGROUND)
-        self.amount_frame.grid(row=0, column=0, sticky="NSEW", pady=8, padx=3)
+        self.amount_frame = Frame(self.middle_wrapper_frame, bg=self.BACKGROUND)
+        self.amount_frame.grid(row=0, column=0, sticky="NSEW", pady=8, padx=(3, 17))
         self.amount_frame.rowconfigure(0, weight=1)
         self.amount_frame.columnconfigure(0, weight=1)
 
-        self.amount_frame_label = Label(self.amount_frame, text="Enter Amount:", bg=BACKGROUND, font=("Arial", 13))
+        self.amount_frame_label = Label(self.amount_frame, text="Enter Amount:", bg=BACKGROUND, font=self.FONT)
         self.amount_frame_label.grid(row=0, column=0, sticky="E")
-        
+
+
+
         #self.amount_frame_entry = ttk.Entry(self.main_details_menu, style='Rounded.TEntry', font=("Arial", 13))
-        self.amount_frame_entry = AmountEntryFrame(self.lower_wrapper_frame)
+        self.amount_frame_entry = AmountEntryFrame(self.middle_wrapper_frame)
         self.amount_frame_entry.grid(row=0, column=1, sticky="NSEW", padx=8, pady=(0, 3))
+        
+        self.weight_unit_label_wrapper = Frame(self.middle_wrapper_frame, bg='red')
+        self.weight_unit_label_wrapper.grid(row=0, column=2, sticky="NSEW")
+        self.weight_unit_label_wrapper.rowconfigure(0, weight=1)
+        self.weight_unit_label_wrapper.columnconfigure(0, weight=1)
+
+        self.weight_unit_label = Label(self.weight_unit_label_wrapper, text="Weight Unit:", bg=self.BACKGROUND,
+                                       font=self.FONT)
+        self.weight_unit_label.grid(row=0, column=0, sticky="NSEW")
+
+        self.weight_unit_box = ttk.Combobox(self.weight_unit_label_wrapper, state='readonly', font=self.FONT, width=8)
+        self.weight_unit_box['values'] = ['NONE', 'GRAMS', 'LITRES']
+        self.weight_unit_box.current(0)
+    
+        self.weight_unit_box.grid(row=0, column=3, sticky="NSEW")
+
+        self.weight_label_wrapper = Frame(self.middle_wrapper_frame, background=self.BACKGROUND)
+        self.weight_label_wrapper.grid(row=0, column=4, sticky="NSEW")
+        self.weight_label_wrapper.rowconfigure(0, weight=1)
+        self.weight_label_wrapper.columnconfigure(0, weight=1)
+
+        self.weight_label = Label(self.weight_label_wrapper, text='Weight:', background=self.BACKGROUND,
+                                  font=self.FONT)
+        self.weight_label.grid(row=0, column=0, sticky="NSE")
+
+        self.weight_entry = Entry(self.middle_wrapper_frame, font=self.FONT, width=15)
+        self.weight_entry.grid(row=0, column=5, sticky="NSEW", padx=8)
+
+
+
+
+        self.lower_wrapper_frame = Frame(self.main_details_menu, background=BACKGROUND)
+        self.lower_wrapper_frame.grid(row=2, column=0, sticky="NSEW")
+
+        self.lower_wrapper_frame.rowconfigure(0, weight=1, minsize=50)
+        self.lower_wrapper_frame.columnconfigure(0, weight=1)
 
         self.categories_menu = CategoriesMenu(self, bg=BACKGROUND)
 
         self.category_search_mode_panel = CategorySearchModePanel(self.lower_wrapper_frame, on_select=self.categories_menu.set_mode)
-        self.category_search_mode_panel.grid(row=0, column=2, sticky="NSEW", padx=(0, 9))
+        self.category_search_mode_panel.grid(row=0, column=0, sticky="NSW", padx=(0, 9))
         # self.category_mode_label = Label(self.lower_wrapper_frame, text="Category Search:")
         # self.category_mode_label.grid(row=0, column=2, sticky="NSEW")
 
@@ -253,11 +291,11 @@ class ProductSpecificationMenu(LabelFrame):
 
         # ------- BUTTON_PANEL - CONFIGURATION ------ #
 
-        self.button_panel = ButtonPanel(self, parent_frame=self)
+        self.button_panel = ButtonPanel(self, bg=self.BACKGROUND, parent_frame=self)
         self.button_panel.grid(row=2, column=0, sticky="NEW", pady=5, padx=5)
 
 
-        
+    
 
         # Create a modal window positioned beneath the Entry widget
         self.modal_window = SearchedProductWindow(self.root, row_limit=5, max_char_limit=50)
@@ -337,7 +375,7 @@ class ProductSpecificationMenu(LabelFrame):
 
         
 
-        category = self.categories_menu.buttons_pane.get_option()
+        category = self.categories_menu.buttons_panel.get_option()
 
         try:
             amount = int(self.amount_frame_entry.entry.get())
@@ -354,7 +392,9 @@ class ProductSpecificationMenu(LabelFrame):
 
             # here program sents the newly inserted item to the market explorer so that it can pre-explore it
             item = self.shopping_list_f.insert_item(name=name, category=category, amount=amount,
-                                                    category_search_mode=self.category_search_mode_panel.selected_option.get())
+                                                    category_search_mode=self.category_search_mode_panel.selected_option.get(),
+                                                    weight_unit=ProductWeightUnit[self.weight_unit_box.get()],
+                                                    weight=float(self.weight_entry.get()))
             self.market_explorer_f.explore_product(item=item)
 
             self.market_explorer_f.search_button.config(state='normal')
@@ -390,8 +430,8 @@ class CategoriesMenu(Frame):
 
         # --- ButtonsPane Configuration --- #
 
-        self.buttons_pane = CategoryButtonsPanel(self, parent_frame=self, bg=BACKGROUND, text="Categories", font=("Arial", 15, 'bold'))
-        self.buttons_pane.grid(row=0, column=0, sticky="NSEW", padx=5, pady=3)
+        self.buttons_panel = CategoryButtonsPanel(self, parent_frame=self, bg=BACKGROUND, text="Categories", font=("Arial", 15, 'bold'))
+        self.buttons_panel.grid(row=0, column=0, sticky="NSEW", padx=5, pady=3)
 
         # --- DetailsPanel Configuration --- #
 
@@ -411,11 +451,9 @@ class CategoriesMenu(Frame):
 
 
         if mode == 'Off':
-            self.grid_remove()
-            
+            self.buttons_panel.set_state('disabled')
         elif mode == 'Manual Mapping' or mode == 'TM-based Mapping':
-            self.grid()
-        #     self.enable_widgets()
+            self.buttons_panel.set_state('normal')
 
     def disable_widgets(self):
         for widget in self.winfo_children():
@@ -444,11 +482,16 @@ class CategoryButtonsPanel(LabelFrame):
     FONT = ('Arial', 12)
     _BACKGROUND = BACKGROUND
 
+    RADIOBUTTON_1_VAL = "0 - Neurčená"
+
 
     def __init__(self, *args, parent_frame: CategoriesMenu, **kw):
         super(CategoryButtonsPanel, self).__init__(*args, **kw)
 
         self.parent = parent_frame
+
+        self.state = 'disabled'
+
 
         
 
@@ -459,54 +502,65 @@ class CategoryButtonsPanel(LabelFrame):
 
         self.__variable.trace_add("write", callback=self.__notify)
 
-        # self.__unspecified = Radiobutton(self, bg=self._BACKGROUND, text="0 - Neurčená", font=self.FONT,  width=self.TEXT_WIDTH, variable=self.__variable, value=0, anchor='w',
-        #                                  activebackground='grey')#highlightbackground='grey', highlightcolor='grey', highlightthickness='grey')
+        self.__unspecified = Radiobutton(self, bg=self._BACKGROUND, text=self.RADIOBUTTON_1_VAL, font=self.FONT,  width=self.TEXT_WIDTH, variable=self.__variable, value=0, anchor='w',
+                                         activebackground='grey')#highlightbackground='grey', highlightcolor='grey', highlightthickness='grey')
         
-        # self.__unspecified.config(highlightbackground='grey', highlightcolor='grey')
-        # self.__unspecified.grid(row=0, column=0, sticky="W")
+        self.__unspecified.config(highlightbackground='grey', highlightcolor='grey')
+        self.__unspecified.grid(row=0, column=0, sticky="W")
 
 
-        self.__fruit_vegetables = Radiobutton(self, activebackground='grey', bg=self._BACKGROUND, text="1 - Ovocie a zelenina", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=1, anchor='w')
+        self.__fruit_vegetables = Radiobutton(self, activebackground='grey', state=self.state, bg=self._BACKGROUND, text="1 - Ovocie a zelenina", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=1, anchor='w')
         self.__fruit_vegetables.grid(row=0, column=1, sticky="W")
 
-        self.__baked_products = Radiobutton(self, bg=self._BACKGROUND, activebackground='grey', text="2 - Pečivo", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=2, anchor='w')
+        self.__baked_products = Radiobutton(self, bg=self._BACKGROUND, state=self.state, activebackground='grey', text="2 - Pečivo", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=2, anchor='w')
         self.__baked_products.grid(row=1, column=0, sticky="W")
 
-        self.__meat_and_frost = Radiobutton(self, bg=self._BACKGROUND, activebackground='grey', text="3 - Mäso a mrazené potraviny", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=3, anchor='w')
+        self.__meat_and_frost = Radiobutton(self, bg=self._BACKGROUND, state=self.state, activebackground='grey', text="3 - Mäso a mrazené potraviny", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=3, anchor='w')
         self.__meat_and_frost.grid(row=1, column=1, sticky="W")
 
-        self.__smoked_paste = Radiobutton(self, bg=self._BACKGROUND,  activebackground='grey', text="4 - Udeniny, natierky a pastety", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=4, anchor='w')
+        self.__smoked_paste = Radiobutton(self, bg=self._BACKGROUND, state=self.state,  activebackground='grey', text="4 - Udeniny, natierky a pastety", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=4, anchor='w')
         self.__smoked_paste.grid(row=2, column=0, sticky="W")
 
-        self.__dairies = Radiobutton(self, bg=self._BACKGROUND, activebackground='grey', text="5 - Mliečne výrobky", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=5, anchor='w')
+        self.__dairies = Radiobutton(self, bg=self._BACKGROUND, state=self.state, activebackground='grey', text="5 - Mliečne výrobky", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=5, anchor='w')
         self.__dairies.grid(row=2, column=1, sticky="W")
 
-        self.__durables_eggs = Radiobutton(self, bg=self._BACKGROUND, activebackground='grey', text="6 - Trvanlivé potraviny, vajcia", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=6, anchor='w')
+        self.__durables_eggs = Radiobutton(self, bg=self._BACKGROUND, state=self.state, activebackground='grey', text="6 - Trvanlivé potraviny, vajcia", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=6, anchor='w')
         self.__durables_eggs.grid(row=3, column=0, sticky="W")
 
-        self.__sweets = Radiobutton(self, bg=self._BACKGROUND, activebackground='grey', text="7 - Sladkosti", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=7, anchor='w')
+        self.__sweets = Radiobutton(self, bg=self._BACKGROUND, state=self.state, activebackground='grey', text="7 - Sladkosti", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=7, anchor='w')
         self.__sweets.grid(row=3, column=1, sticky="W")
 
-        self.__snacks_seeds = Radiobutton(self, bg=self._BACKGROUND,  activebackground='grey', text="8 - Slané, snacky a semienka", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=8, anchor='w')
+        self.__snacks_seeds = Radiobutton(self, bg=self._BACKGROUND, state=self.state, activebackground='grey', text="8 - Slané, snacky a semienka", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=8, anchor='w')
         self.__snacks_seeds.grid(row=4, column=0, sticky="W")
 
-        self.__non_alcoholic_drinks = Radiobutton(self, bg=self._BACKGROUND, activebackground='grey', text="9 - Nealkoholické nápoje", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=9, anchor='w')
+        self.__non_alcoholic_drinks = Radiobutton(self, bg=self._BACKGROUND, state=self.state, activebackground='grey', text="9 - Nealkoholické nápoje", font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=9, anchor='w')
         self.__non_alcoholic_drinks.grid(row=4, column=1, sticky="W")
 
-        self.__alcohol = Radiobutton(self, bg=self._BACKGROUND, text="10 - Alkohol", activebackground='grey', font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=10, anchor='w')
+        self.__alcohol = Radiobutton(self, bg=self._BACKGROUND, text="10 - Alkohol", state=self.state, activebackground='grey', font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=10, anchor='w')
         self.__alcohol.grid(row=5, column=0, sticky="W")
 
-        self.__hot_drinks = Radiobutton(self, bg=self._BACKGROUND, text="11 - Horúce nápoje", activebackground='grey', font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=11, anchor='w')
+        self.__hot_drinks = Radiobutton(self, bg=self._BACKGROUND, text="11 - Horúce nápoje", state=self.state, activebackground='grey', font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=11, anchor='w')
         self.__hot_drinks.grid(row=5, column=1, sticky="W")
 
-        self.__prepared_food = Radiobutton(self, bg=self._BACKGROUND, text="12 - Hotové či instatné jedlá", activebackground='grey', font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=12, anchor='w')
+        self.__prepared_food = Radiobutton(self, bg=self._BACKGROUND, text="12 - Hotové či instatné jedlá", state=self.state, activebackground='grey', font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=12, anchor='w')
         self.__prepared_food.grid(row=6, column=0, sticky="W")
 
-        self.__healthy_products = Radiobutton(self, bg=self._BACKGROUND, text="13 - Zdravé potraviny", activebackground='grey', font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=13, anchor='w')
+        self.__healthy_products = Radiobutton(self, bg=self._BACKGROUND, text="13 - Zdravé potraviny", state=self.state, activebackground='grey', font=self.FONT, width=self.TEXT_WIDTH, variable=self.__variable, value=13, anchor='w')
         self.__healthy_products.grid(row=6, column=1, sticky="W")        
 
 
-    
+
+    def set_state(self, state):
+        self.state = state
+
+
+        for rb in self.winfo_children():
+            if isinstance(rb, Radiobutton) and rb.cget('text') != self.RADIOBUTTON_1_VAL:
+                
+                rb.config(state=self.state)
+
+   
+
     def get_option(self) -> int:
         return self.__variable.get()
 
@@ -527,6 +581,8 @@ class CategoryButtonsPanel(LabelFrame):
 
 
 class ButtonPanel(Frame):
+
+
     def __init__(self, *args, parent_frame: ProductSpecificationMenu, **kw):
         super(ButtonPanel, self).__init__(*args, **kw)
 
@@ -543,13 +599,13 @@ class ButtonPanel(Frame):
         self.style_1 = ttk.Style()
         self.style_1.configure("TButton", font=("Arial", 13), background="skyblue", foreground="black")
 
-        self.clear_button = ttk.Button(self,
-                                   text='   clear',
-                                   style="TButton",
-                                   command=self.parent.clear_all_data,
-                                   image=self.eraser_icon,
-                                   compound='left')
-        self.clear_button.grid(row=0, column=0, sticky="NSEW")
+        # self.clear_button = ttk.Button(self,
+        #                            text='   clear',
+        #                            style="TButton",
+        #                            command=self.parent.clear_all_data,
+        #                            image=self.eraser_icon,
+        #                            compound='left')
+        # self.clear_button.grid(row=0, column=0, sticky="NSEW")
 
         self.cart_icon = PhotoImage(file=SHOPPING_CART_ICON_2).subsample(17, 17)
 

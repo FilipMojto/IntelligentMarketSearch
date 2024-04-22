@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 #import threading
 from typing import List, Literal
-
+import json
 import os, sys
 import requests
 
@@ -399,8 +399,6 @@ class ProductScraper:
             A list of tuples in which each tuple maps the scraped product to its market.
         """
 
-        # if isinstance(categories[0], str) and any(category not in self.__market.categories() for category in categories):
-        #     raise ValueError("Provided category is not supported by the market!")
         
         _return = False
 
@@ -428,45 +426,12 @@ class ProductScraper:
                         market_categories.append(value)
 
 
-            #     #try:
-            #     for name, ID in self.__categories.items():
-
-            #         if identifier == ID:
-            #             market_categories[name] = ID
-            #             break
-            #     else:                    
-            #         raise ValueError("Provided category ID not supported by this market!")
-
-            #         #categories_str[self.__categories[category]] =  category
-            #         # categories_str.append(self.__categories[category])
-            #         # category_ID = category
-            #     # except KeyError:
-            #     #     raise ValueError("Provided category not supported by this market!")
-            # elif mode == 'index':
-
-            #     # searching for a category by an index
-            #     for index, (ID, name) in enumerate(self.__categories.items()):
-            #         if index == identifier:
-            #             market_categories[ID] = name
-            #             #categories_str.append(name)
-
-            #             #category_name = name
-            #             #category_ID = ID
-            #             break
-            #     else:
-            #         raise IndexError("Provided category index is invalid!")
-                    
-
-            #     #category_name = self.__market.categories()[category]
-            # else:
-            #     raise TypeError("Unsupported type of category! Must be either string or integer!")
-
-
-        #url = self.__url + ProductScraper._MARKET_CATEGORY_URL + category_name
         response = requests.get(self.__url)
 
         if response.status_code == 200:
             data = response.json()
+
+
 
             for item in data['items']:
                 
@@ -494,12 +459,118 @@ class ProductScraper:
                 if quantity_left is None:
                     quantity_left = 0
                 
+                # from description weight unit and weight value may be
+                # extracted
+                description = item.get('description')
+                modified_description = ""
+
+                weight_unit = "unknown"
+                weight_value: float = -1
+
+                name = item.get('name')
+                name_splits: List = name.split(" ")
+
+                if item['id'] == '63be747b1cbfb298235d56a9' or item['id'] == '64afa2cc054021ac79bc0341':
+                    pass
+
+                try:
+                    weight_unit = name_splits[len(name_splits) - 1]
+                    weight_value = float(name_splits[len(name_splits) - 2].replace(",", "."))               
+                except ValueError:
+                    last: str = name_splits[len(name_splits) - 1]
+                    i = 0
+
+                    for i in range(len(last)):
+                        if not last[i].isdigit():
+                            break
+                    
+                    try:
+                        weight_value = float(last[: i].replace(",", "."))
+                        weight_unit = last[i:]
+
+                        if weight_unit not in ['l', 'L', 'ml', 'g', 'kg', 'ks']:
+                            raise ValueError
+                        
+                    except ValueError:
+                        
+                        
+                        try:
+                            weight_value = float(name_splits[len(name_splits) - 2][1:].replace(",", "."))
+                            weight_unit = name_splits[len(name_splits) - 1][:-1]
+                        except ValueError:
+                            try:
+                                last_splits = last.split("x")
+                                first = int(last_splits[0])
+
+                                i = 0
+
+                                for i in range(len(last_splits[1])):
+                                    if not last_splits[1][i].isdigit():
+                                        break
+            
+                                weight_value = first * float(last_splits[1][: i].replace(",", "."))
+                                weight_unit = last_splits[1][i:]
+                            except ValueError:
+                                pass
+
+            
+
+
+
+                # if description != "":
+                #     split_index = -1
+
+                #     for index, char in enumerate(description):
+                #         if char == "\n":
+                #             split_index = index
+                #             break
+                    
+                #     if split_index != -1:
+                #         description = description[split_index + 1:]
+
+                        
+
+                #     first_comma_encountered = False
+
+                #     for index, char in enumerate(description):
+                #         if not first_comma_encountered and char == ',' and description[index + 1].isdigit():
+                #             modified_description += '.'
+                #             first_comma_encountered = True
+                #         else:
+                #             modified_description += char
+                        
+                #     weight_attr = description.split(",")[0].split(" ")
+
+                #     weight_value = float(weight_attr[0])
+                #     weight_unit = weight_attr[1]
+                
+                if weight_unit == "l" or weight_unit == "L":
+                    weight_unit = "litre"
+                elif weight_unit == "ml":
+                    weight_value /= 1000
+                    weight_unit = "litre"
+                elif weight_unit == "g":
+                    weight_unit = "gram"
+                elif weight_unit == "kg":
+                    weight_value /= 1000
+                    weight_unit = "gram"
+                elif weight_unit == "ks":
+                    pass
+                else:
+                    weight_unit = "unknown"
+                    pass
+            
+
+
+
 
 
                 new_product = Product(
                     name=item.get('name', 'unknown'),
                     price=int(item.get('baseprice', -1)) / 100,
                     approximation=0,
+                    weight_unit=weight_unit,
+                    weight=weight_value,
                     quantity_left=quantity_left,
                     category_ID=category_ID,
                     created_at=datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S'),

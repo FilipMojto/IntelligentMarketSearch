@@ -487,6 +487,8 @@ def start(main_to_all: mpr.Queue, hub_to_scraper: mpr.Queue, scraper_to_hub: mpr
                     hub_to_gui.put(obj=(UPDATE_PRODUCTS_SIGNAL,), block=False)
 
                     while gui_to_hub.empty() or gui_to_hub.get(block=False)[0] != UPDATE_PRODUCTS_SIGNAL:
+                        check_main(main_to_all=main_to_all, timeout=0.0001)
+                        
                         time.sleep(1)
 
 

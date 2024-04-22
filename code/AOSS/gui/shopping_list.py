@@ -1,10 +1,10 @@
 from tkinter import *
 from tkinter import ttk
 
-from typing import List
+from typing import List, Literal
 
 import config_paths as cfg
-from AOSS.structure.shopping import ProductCategory
+from AOSS.structure.shopping import ProductCategory, ProductWeightUnit
 
 # class BoundableFrame(Frame):
 #     def __init__(self,*args, **kw):
@@ -19,19 +19,33 @@ from AOSS.structure.shopping import ProductCategory
 # --- ShoppingListItem - Class Declaration&Definition --- #
 
 class ShoppingListDetails(LabelFrame):
+    
     """
         This class represents a single product item in the user's shopping list.
     """
 
-    def __init__(self, *args, name: str, category: int, amount: int, ID: int,
+    FONT = ('Arial', 11)
+    FONT_BOLD = ('Arial', 11, 'bold')
+
+    def __init__(self, *args, name: str, category: int, amount: int,
+                 weight_unit: ProductWeightUnit = ProductWeightUnit.NONE, weight: float,
+                  ID: int,
                   category_search_mode: str, on_widget_click: callable = None, **kw):
         super(ShoppingListDetails, self).__init__(*args, **kw)
+
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
+        self.rowconfigure(2, weight=1)
+        self.rowconfigure(3, weight=1)
+
+        self.columnconfigure(0, weight=1)
+
 
         self.name = name
         self.name_text = StringVar()
         self.name_text.set(f"Name: {name}")
 
-        self.name_label = Label(self, textvariable=self.name_text, font=('Arial', 11))
+        self.name_label = Label(self, textvariable=self.name_text, font=self.FONT)
         self.name_label.grid(row=0, column=0, sticky="NSW")
         self.name_label.bind("<Button-1>", on_widget_click)
 
@@ -47,34 +61,62 @@ class ShoppingListDetails(LabelFrame):
         self.amount_text = IntVar()
         self.amount_text.set(f"Amount: {amount}")
 
+        self.weight_unit = weight_unit.name
+        self.weight_unit_text = StringVar()
+        self.weight_unit_text.set(f"Weight Unit: {self.weight_unit}")
+
+
+
+        self.weight = weight
+        self.weight_text = DoubleVar()
+        self.weight_text.set(f"Weight: {weight}")
+
+
+
         
-        self.frame = Frame(self)
-        self.frame.grid(row=1, column=0, sticky="NSEW")
-        self.frame.rowconfigure(0, weight=1)
-        self.frame.columnconfigure(0, weight=1)
-        self.frame.columnconfigure(1, weight=1)
-        self.frame.bind("<Button-1>", on_widget_click)
+
+    
+
+        
+        self.second_line = Frame(self)
+        self.second_line.grid(row=1, column=0, sticky="NSEW")
+        self.second_line.rowconfigure(0, weight=1)
+        self.second_line.columnconfigure(0, weight=1)
+        self.second_line.columnconfigure(1, weight=1)
+        self.second_line.bind("<Button-1>", on_widget_click)
         
 
 
-        self.category_label = Label(self.frame, textvariable=self.category_text, font=('Arial', 11))
+        self.category_label = Label(self.second_line, textvariable=self.category_text, font=self.FONT)
         self.category_label.grid(row=0, column=0, sticky="W")
         self.category_label.bind("<Button-1>", on_widget_click)
 
 
 
-        self.amount_label = Label(self.frame, textvariable=self.amount_text, font=('Arial', 11))
+        self.amount_label = Label(self.second_line, textvariable=self.amount_text, font=self.FONT)
         self.amount_label.grid(row=0, column=1, sticky="E")
         self.amount_label.bind("<Button-1>", on_widget_click)
 
+
+        self.third_line = Frame(self)
+        self.third_line.grid(row=2, column=0, sticky="NSEW")
+        self.third_line.rowconfigure(0, weight=1)
+        self.third_line.columnconfigure(0, weight=1)
+        self.third_line.columnconfigure(1, weight=1)
+
+        self.weight_unit_label = Label(self.third_line, textvariable=self.weight_unit_text, font=self.FONT)
+        self.weight_unit_label.grid(row=0, column=0, sticky="W")
+
+        self.weight_label = Label(self.third_line, textvariable=self.weight_text, font=self.FONT)
+        self.weight_label.grid(row=0, column=1, sticky="E")
         
 
         self.ID = ID
         self.ID_text = StringVar()
         self.ID_text.set(ID)
 
-        self.ID_label = Label(self, textvariable=self.ID_text, font=('Arial', 11, 'bold'))
-        self.ID_label.grid(row=2, column=0, sticky="NSEW")
+        self.ID_label = Label(self, textvariable=self.ID_text, font=self.FONT_BOLD)
+        self.ID_label.grid(row=3, column=0, sticky="NSEW")
         self.ID_label.bind("<Button-1>", on_widget_click)
 
         if callable:
@@ -83,11 +125,7 @@ class ShoppingListDetails(LabelFrame):
             self.ID_label.bind("<Button-1>", on_widget_click)
 
 
-        self.rowconfigure(0, weight=1)
-        self.rowconfigure(1, weight=1)
-        self.rowconfigure(2, weight=1)
-
-        self.columnconfigure(0, weight=1)
+        
 
 
 class ShoppingListItem(Frame):
@@ -96,10 +134,16 @@ class ShoppingListItem(Frame):
         This class represents a single product item in the user's shopping list.
     """
 
-    def __init__(self, *args, name: str, category: str, amount: int, category_search_mode: str, ID: int, on_widget_click: callable = None, **kw):
+    def __init__(self, *args, name: str, category: str, amount: int, category_search_mode: str,
+                 weight_unit: ProductWeightUnit = ProductWeightUnit.NONE, weight: float,
+                  ID: int, on_widget_click: callable = None, **kw):
         super(ShoppingListItem, self).__init__(*args, **kw)
 
-        self.details = ShoppingListDetails(self,  name=name, category_search_mode=category_search_mode, category=category, amount=amount, ID=ID, on_widget_click=self.on_item_clicked, bd=1)
+        self.details = ShoppingListDetails(self,  name=name,
+                                           category_search_mode=category_search_mode, category=category,
+                                           amount=amount,
+                                           weight_unit=weight_unit, weight=weight,
+                                           ID=ID, on_widget_click=self.on_item_clicked, bd=1)
 
         self.details.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
         self.details.bind("<Button-1>", self.on_item_clicked)
@@ -239,7 +283,8 @@ class ShoppingListFrame(LabelFrame):
 
 
 
-    def insert_item(self, name: str, category: int, amount: int, category_search_mode: str):
+    def insert_item(self, name: str, category: int, amount: int, category_search_mode: str,
+                    weight_unit: ProductWeightUnit, weight: float):
 
         """
             Inserts a new ShoppingListItem instance into the shopping list.
@@ -256,6 +301,8 @@ class ShoppingListFrame(LabelFrame):
                                 category=category,
                                 amount=amount,
                                 category_search_mode=category_search_mode,
+                                weight_unit=weight_unit,
+                                weight=weight,
                                 ID=self.product_list.assign_ID(),
                                 on_widget_click=self.product_list.remove_click_texture,
                                 width=240, bg='lightgrey')

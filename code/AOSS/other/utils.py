@@ -14,6 +14,8 @@ class PathManager:
     @staticmethod
     def check_if_exists(path: str, type: Literal['directory', 'file'] = None) -> bool:
         if not os.path.exists(path):
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            print("Current directory:", current_dir)
             raise ValueError("Specified path doesn't exist!")
         
         if type is not None:

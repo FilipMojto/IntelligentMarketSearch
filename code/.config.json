@@ -63,28 +63,37 @@
                         "index": 4,
                         "type": "bool"
                     },
-                    "quantity_left": {
+                    "weight_unit": {
                         "index": 5,
-                        "type": "integer"
-                    },
-                    "category": {
-                        "index": 6,
                         "type": "string"
                     },
-                    "query_string_ID": {
+                    "weight": {
+                        "index": 6,
+                        "type": "float"
+                    },
+                    
+                    "quantity_left": {
                         "index": 7,
                         "type": "integer"
                     },
-                    "market_ID": {
+                    "category": {
                         "index": 8,
+                        "type": "string"
+                    },
+                    "query_string_ID": {
+                        "index": 9,
+                        "type": "integer"
+                    },
+                    "market_ID": {
+                        "index": 10,
                         "type": "integer"
                     },
                     "created_at": {
-                        "index": 9,
+                        "index": 11,
                         "type": "timestamp"
                     },
                     "updated_at": {
-                        "index": 10,
+                        "index": 12,
                         "type": "timestamp"
                     }                    
                 }

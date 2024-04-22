@@ -15,6 +15,7 @@ sys.path.append(script_directory)
 # Move up two directories to reach the parent directory (AOSS)
 parent_directory = os.path.abspath(os.path.join(script_directory, '..', '..'))
 sys.path.append(parent_directory)
+os.chdir(parent_directory)
 
 
 from config_paths import *
@@ -25,20 +26,12 @@ from AOSS.structure.shopping import MarketHub
 
 class Application(tkinter.Tk):
 
-
-
-    # def on_key_press(self, event, main_view: MainView):
-
-    #     key_pressed = event.keysym
-
-    #     if key_pressed == "Delete":
-    #         main_view.market_explorer_window.delete_product()
-
             
     def __init__(self, *args, lock: mpr.Lock = None, gui_to_hub: mpr.Queue = None, **kw) -> None:
         super(Application, self).__init__(*args, **kw)
         
-
+        print(os.path.abspath(__file__))
+        print(os.getcwd())
         self.market_hub = MarketHub(src_file=MARKET_HUB_FILE['path'])
         self.market_hub.load_markets()
 
@@ -49,13 +42,12 @@ class Application(tkinter.Tk):
             self.market_hub.load_products()
 
         self.title("AOSS Application " + __VERSION__)
-        self.geometry("1070x570")
+        self.geometry("1220x630")
 
         
         self.main_view = MainView(self, root=self, app_version=__VERSION__, market_hub=self.market_hub, gui_to_hub=gui_to_hub, bg='lightblue')
         self.main_view.pack(side='left', fill='both', expand=True, padx=10)
 
-        # self.bind("<Key>", lambda event, main_view=self.main_view: self.on_key_press(event, main_view))
         
         self.bind("<Key>", lambda event, main_view=self.main_view: main_view.on_key_press(event, main_view))
 

@@ -36,6 +36,7 @@ from datetime import datetime
 # ------- My Imports ------- #
 
 from config_paths import *
+from config import PF_FIELDNAMES
 from AOSS.other.utils import PathManager, TextEditor
 from AOSS.other.exceptions import IllegalProductState, InvalidMarketState
 
@@ -54,7 +55,11 @@ class ProductCategory(Enum):
     ALKOHOL = 11
     ZDRAVE_POTRAVINY = 12
     HOTOVE_INSTANTNE = 13
-    
+
+class ProductWeightUnit(Enum):
+    NONE = 1
+    GRAMS = 2
+    LITRES = 3
 
 @dataclass
 class Product:
@@ -83,6 +88,8 @@ class Product:
     _: KW_ONLY
     price: float = -1
     approximation: int = -1
+    weight_unit: Literal['unknown', 'gram', 'litre'] = 'unknown'
+    weight: float = -1
     category_ID: int = -1
     quantity_left: int = -1
     created_at: str
@@ -103,7 +110,6 @@ class RegisteredProduct(Product):
 
     @staticmethod
     def to_obj(row: str):
-        
         attributes = row.split(PRODUCT_FILE['delimiter'])
 
         if len(attributes) != PRODUCT_FILE['col_count']:
@@ -114,6 +120,8 @@ class RegisteredProduct(Product):
             name=attributes[PRODUCT_FILE['columns']['name']['index']],
             price=float(attributes[ PRODUCT_FILE['columns']['price']['index']]),
             approximation=int(attributes[PRODUCT_FILE['columns']['approximation']['index']]),
+            weight_unit=attributes[PRODUCT_FILE['columns']['weight_unit']['index']],
+            weight=float(attributes[PRODUCT_FILE['columns']['weight']['index']]),
             category_ID=int(attributes[PRODUCT_FILE['columns']['query_string_ID']['index']]),
             normalized_category=ProductCategory[attributes[PRODUCT_FILE['columns']['category']['index']]],
             market_ID=attributes[PRODUCT_FILE['columns']['market_ID']['index']],
@@ -131,6 +139,8 @@ class RegisteredProduct(Product):
             name=row['name'],
             price=float(row['price']),
             approximation=int(row['approximation']),
+            weight_unit=row['weight_unit'],
+            weight=float(row['weight']),
             quantity_left=int(row['quantity_left']),
             category_ID=row['query_string_ID'],
             normalized_category=ProductCategory[row['category']],
@@ -143,7 +153,6 @@ class RegisteredProduct(Product):
 
 class ProductIdentification(ABC):
        
-    
     @abstractmethod
     def assign_product_ID(self, market):
         pass
@@ -167,7 +176,7 @@ class MarketView:
 
     """
 
-    def __init__(self, ID:int, name: str, store_name: str, product_file: str,  category_file: str): #hash_file: tuple[str, bool], category_file: tuple[str, bool]):
+    def __init__(self, ID:int, name: str, store_name: str, product_file: str,  category_file: str):
         self.__ID = ID
         self.__name = name
         self.__store_name = store_name
@@ -180,7 +189,6 @@ class MarketView:
         self.__category_file = category_file
         PathManager.check_if_exists(category_file, type='file')
         
-
 
 
         # we load categories from provided file
@@ -207,7 +215,6 @@ class MarketView:
             for product in products:
 
                 if int(product['market_ID']) == self.__ID:
-
                     _product = RegisteredProduct.to_obj_from_dict(row=product)
                     self.__products[_product.name] = _product
                 
@@ -260,19 +267,8 @@ class MarketView:
             for product in self.__products.values():
                 if product.ID == identifier:
                     return product
-            
-                #return self.__products[identifier]
-                # if value.ID == identifier:
-                #     return value
-            
         elif isinstance(identifier, str):
             return self.__products[identifier]
-            # for value in self.__products.values():
-
-            #     if value.name == identifier:
-            #         return value
-            # else:
-            #     return None
         else:
             raise TypeError("Unsupported type of identifier!")
 
@@ -311,35 +307,6 @@ class Market(MarketView):
         self.__removal_buffer: List[int] = []
         self.__buffer_limit = buffer
         self.__buffer_lock = threading.Lock()
-
-    # def update_data(self):
-    #     products = self.products()
-
-    #     for product_ID, category in self.__registration_buffer:
-    #         registered_product = RegisteredProduct(
-    #                                 ID=self.__market_hub.assign_product_ID(),
-    #                                 name=product_ID.name,
-    #                                 normalized_name=product_ID.normalized_name,
-    #                                 price=product_ID.price,
-    #                                 approximation=product_ID.approximation,
-    #                                 quantity_left=product_ID.quantity_left,
-    #                                 normalized_category=category.name,
-    #                                 category_ID=product_ID.category_ID,
-    #                                 market_ID=self.__ID,
-    #                                 created_at=product_ID.created_at,
-    #                                 updated_at=product_ID.updated_at
-    #         )
-
-    #         self.__registration_buffer.append(registered_product)
-        
-    #     self.__registration_buffer = list(filter(lambda x : isinstance(x, RegisteredProduct), self.__registration_buffer))
-
-    #     for product_ID in self.__update_buffer:
-    #         products[product_ID.ID] = product_ID
-
-    #     for product_ID in self.__removal_buffer:
-    #         del products[product_ID].ID
-        
 
         
     def load_products(self):
@@ -453,6 +420,10 @@ class Market(MarketView):
         """
             This method stores all products stored in a buffer during runtime to the Product File.
             The buffer is cleared at the end of process.
+
+            Parameters:
+
+                a) remove_if_outdated - all products which have not been updated are automatically removed
         """
 
         if self.__update_buffer or self.__removal_buffer:
@@ -497,10 +468,10 @@ class Market(MarketView):
             # Save the updated products back to the CSV file
             with open(file=self.product_file(), mode='w', encoding='utf-8', newline='') as product_f:
                 
-                fieldnames = ('ID','name','normalized_name','price','approximation','quantity_left',
-                              'category', 'query_string_ID','market_ID','created_at','updated_at')
+                # fieldnames = ('ID','name','normalized_name','price','approximation','quantity_left',
+                #               'category', 'query_string_ID','market_ID','created_at','updated_at')
                 
-                products_writer = csv.DictWriter(product_f, fieldnames=fieldnames)
+                products_writer = csv.DictWriter(product_f, fieldnames=PF_FIELDNAMES)
 
                 # Write the header
                 products_writer.writeheader()
@@ -511,7 +482,6 @@ class Market(MarketView):
                     market_bound_LPT = [row for row in market_bound_LPT if int(row[0]['ID']) not in self.__removal_buffer]
                 
                 if remove_if_outdated:
-                    
                     market_bound_LPT = [row for row in market_bound_LPT if row[1] == True]
 
         
@@ -538,6 +508,8 @@ class Market(MarketView):
                             local_product.normalized_name + PRODUCT_FILE['delimiter'] +
                             str(local_product.price) + PRODUCT_FILE['delimiter'] +
                             str(int(local_product.approximation)) + PRODUCT_FILE['delimiter'] +
+                            local_product.weight_unit + PRODUCT_FILE['delimiter'] +
+                            str(local_product.weight) + PRODUCT_FILE['delimiter'] +
                             str(local_product.quantity_left) + PRODUCT_FILE['delimiter'] +
                             category.name + PRODUCT_FILE['delimiter'] +
                             str(local_product.category_ID) + PRODUCT_FILE['delimiter'] +
@@ -550,6 +522,8 @@ class Market(MarketView):
                             element.normalized_name + PRODUCT_FILE['delimiter'] +
                             str(element.price) + PRODUCT_FILE['delimiter'] +
                             str(int(element.approximation)) + PRODUCT_FILE['delimiter'] +
+                            element.weight_unit + PRODUCT_FILE['delimiter'] +
+                            str(element.weight) + PRODUCT_FILE['delimiter'] +
                             str(element.quantity_left) + PRODUCT_FILE['delimiter'] +
                             element.normalized_category + PRODUCT_FILE['delimiter'] +
                             str(element.category) + PRODUCT_FILE['delimiter'] +

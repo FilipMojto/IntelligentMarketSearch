@@ -1,11 +1,9 @@
 
 import sys, os
 import signal
-import threading
-import multiprocessing as mpr, multiprocessing.connection as mpr_conn
+import multiprocessing as mpr
 from typing import List
 import queue
-from dataclasses import dataclass
 
 # Set the starting point to the directory containing the script
 script_directory = os.path.dirname(os.path.abspath(__file__))
@@ -17,9 +15,6 @@ parent_directory = os.path.abspath(os.path.join(script_directory, '..'))
 sys.path.append(parent_directory)
 
 MAIN_TERMINATION_SIGNAL = "-end"
-# GUI_TERMINATION_SIGNAL = 1
-
-
 
 
 
@@ -43,8 +38,6 @@ processes: List[mpr.Process] = []
 
 def terminate(signal):
     signal.value = 1
-    #main_to_all.put(MAIN_TERMINATION_SIGNAL)
-    #main_to_all.send("-quit")
 
     for process in processes:
         process.join()
@@ -52,14 +45,6 @@ def terminate(signal):
     processes.clear()
     exit(0)
 
-#def send_termination_signals():
-    
-    
-    # for process in processes:
-    #     process.join()
-
-    # processes.clear()
-    # print("All processes terminated.")
 
 
 def signal_handler(signum, frame):
@@ -68,8 +53,6 @@ def signal_handler(signum, frame):
     if signum == 2:
         print("Ctrl + C received. Terminating subprocesses.")
         terminate()
-
-
 
 
 
@@ -87,15 +70,6 @@ def launch_subprocesses():
 
     manager = mpr.Manager()
     shared_termination_signal = manager.Value('i', 0)
-    
-        
-    
-
-    # main_to_all = mpr.Pipe()
-    # hub_to_scraper = mpr.Queue(maxsize=5)
-    # scraper_to_hub = mpr.Queue(maxsize=5)
-    
-    #hub_to_scraper, scraper_to_hub = mpr.Pipe()
     
     
     market_hub = mpr.Process(target=dpmp_start, args=(shared_termination_signal, hub_to_scraper, scraper_to_hub, hub_to_qui,
@@ -116,25 +90,6 @@ def launch_subprocesses():
     while True:
         check_gui(signal=shared_termination_signal)
 
-
-    # try:
-    #     for process in processes:
-    #         process.join()
-    # except KeyboardInterrupt:
-    #     print("KeyboardInterrupt received. Terminating processes...")
-        #terminate()
-        # # Send termination signal to each process
-        # for process in processes:
-        #     main_to_all[0].send("-quit")
-
-        # # Wait for each process to terminate
-        # for process in processes:
-        #     process.join()
-
-        # print("All processes terminated.")
-
-    #terminate()
-    #print("Main process terminated!")
 
 
 

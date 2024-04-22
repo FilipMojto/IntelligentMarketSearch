@@ -1,15 +1,23 @@
 import json
 import os, sys
 
-script_directory = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(script_directory)
+# script_directory = os.path.dirname(os.path.abspath(__file__))
+# sys.path.append(script_directory)
 
-os.chdir(script_directory)
+# os.chdir(script_directory)
 
+def get_config_path():
+    if getattr(sys, 'frozen', False):
+        # If the script is run as an executable (e.g., PyInstaller bundle)
+        return os.path.join(os.path.dirname(sys.executable), "..\\config.json")
+    else:
+        # If the script is run as a Python script
+        script_directory = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(script_directory, ".config.json")
 
 # ------ Project Config Globals ------ #
 
-CONFIG_FILE_PATH = "./.config.json"
+CONFIG_FILE_PATH = get_config_path()
 
 with open(file=CONFIG_FILE_PATH, mode='r') as config_file:
     PATHS = json.load(config_file)

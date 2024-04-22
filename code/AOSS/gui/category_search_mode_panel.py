@@ -20,7 +20,7 @@ class CategorySearchModePanel(Frame):
         self.selected_option = StringVar()
         self.options = ttk.Combobox(self, textvariable=self.selected_option, font=self.FONT, state='readonly')
         self.options['values'] = CategorySearchModePanel.OPTIONS
-        self.options.pack(side='left', pady=3, fill='y', expand=True)
+        self.options.pack(side='left', pady=3, fill='both', expand=True)
 
         self.options.current(0)
         self.options.bind("<<ComboboxSelected>>", lambda event, name=self.selected_option: on_select(name.get()))
