@@ -1,6 +1,6 @@
 __ALL__ = ['Application']
 __AUTHOR__ = "Evening Programmer"
-__VERSION__ = "2.2.0"
+__VERSION__ = "2.3.0"
 
 
 import tkinter
@@ -25,6 +25,9 @@ from AOSS.structure.shopping import MarketHub
 
 
 class Application(tkinter.Tk):
+    NAME = 'IMS'
+    WIDTH = '1220'
+    HEIGHT = '640'
 
             
     def __init__(self, *args, lock: mpr.Lock = None, gui_to_hub: mpr.Queue = None, **kw) -> None:
@@ -41,11 +44,12 @@ class Application(tkinter.Tk):
         else:
             self.market_hub.load_products()
 
-        self.title("AOSS Application " + __VERSION__)
-        self.geometry("1220x630")
+        self.title(self.NAME + " Application " + __VERSION__)
+        self.geometry("+50+50") 
+        self.geometry(self.WIDTH + 'x' + self.HEIGHT)
 
         
-        self.main_view = MainView(self, root=self, app_version=__VERSION__, market_hub=self.market_hub, gui_to_hub=gui_to_hub, bg='lightblue')
+        self.main_view = MainView(self, root=self, app_name=self.NAME, app_version=__VERSION__, market_hub=self.market_hub, gui_to_hub=gui_to_hub, bg='lightblue')
         self.main_view.pack(side='left', fill='both', expand=True, padx=10)
 
         

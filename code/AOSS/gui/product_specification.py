@@ -25,6 +25,7 @@ class SearchedProductWindow(Toplevel):
 
     WIDTH = 38
     FONT = ("Arial", 13, 'italic')
+    CLOSE_BUTTON_FONT = ("Arial", 12, 'bold')
 
     def __init__(self, *args, row_limit, min_char_limit = 10, max_char_limit, **kw):
         super(SearchedProductWindow, self).__init__(*args, **kw)
@@ -42,7 +43,7 @@ class SearchedProductWindow(Toplevel):
         self.listbox.bind("<Leave>", self.on_leave)
         self.listbox.pack(side='left')
 
-        self.close_window_button = Button(self, text='-', padx=2, pady=0, height=1)
+        self.close_window_button = Button(self, text='x', font=self.CLOSE_BUTTON_FONT, padx=2, pady=0, height=1)
         self.close_window_button.pack(side='top')
 
         self.products: Dict[str, List[int, str, str]] = {}
@@ -250,8 +251,9 @@ class ProductSpecificationMenu(LabelFrame):
         self.weight_unit_label.grid(row=0, column=0, sticky="NSEW")
 
         self.weight_unit_box = ttk.Combobox(self.weight_unit_label_wrapper, state='readonly', font=self.FONT, width=8)
-        self.weight_unit_box['values'] = ['NONE', 'GRAMS', 'LITRES']
+        self.weight_unit_box['values'] = ['---', 'GRAMS', 'LITRES']
         self.weight_unit_box.current(0)
+        self.weight_unit_box.bind("<<ComboboxSelected>>", self.handle_combobox_selection)
     
         self.weight_unit_box.grid(row=0, column=3, sticky="NSEW")
 
@@ -264,7 +266,7 @@ class ProductSpecificationMenu(LabelFrame):
                                   font=self.FONT)
         self.weight_label.grid(row=0, column=0, sticky="NSE")
 
-        self.weight_entry = Entry(self.middle_wrapper_frame, font=self.FONT, width=15)
+        self.weight_entry = Entry(self.middle_wrapper_frame, font=self.FONT, width=15, state='disabled')
         self.weight_entry.grid(row=0, column=5, sticky="NSEW", padx=8)
 
 
@@ -292,7 +294,7 @@ class ProductSpecificationMenu(LabelFrame):
         # ------- BUTTON_PANEL - CONFIGURATION ------ #
 
         self.button_panel = ButtonPanel(self, bg=self.BACKGROUND, parent_frame=self)
-        self.button_panel.grid(row=2, column=0, sticky="NEW", pady=5, padx=5)
+        self.button_panel.grid(row=2, column=0, sticky="NEW")
 
 
     
@@ -304,6 +306,13 @@ class ProductSpecificationMenu(LabelFrame):
         self.modal_window.load_products()
         self.modal_window.withdraw()
 
+    def handle_combobox_selection(self, event):
+        if self.weight_unit_box.current() == 0:
+            self.weight_entry.delete(0, 'end')
+            self.weight_entry.config(state='disabled')
+            
+        else:
+            self.weight_entry.config(state='normal')
 
 
     def on_root_window_moved(self, event):
@@ -317,7 +326,7 @@ class ProductSpecificationMenu(LabelFrame):
 
 
     def show_product_name_matches(self, event):
-        self.modal_window.deiconify()
+        
 
         x, y = self.name_frame_entry.winfo_rootx(), self.name_frame_entry.winfo_rooty()
         _, h = self.name_frame_entry.winfo_width(), self.name_frame_entry.winfo_height()
@@ -325,6 +334,11 @@ class ProductSpecificationMenu(LabelFrame):
         self.modal_window.geometry(f"+{x}+{y + h}")
         
         self.modal_window.show_matches(content=self.name_frame_entry.get())
+
+        if self.modal_window.listbox.size() > 0:
+            self.modal_window.deiconify()
+        else:
+            self.modal_window.withdraw()
 
     def get_selected_product(self):
         time.sleep(0.1)
@@ -385,7 +399,18 @@ class ProductSpecificationMenu(LabelFrame):
             elif amount > self.shopping_list_f.product_list.ITEM_LIMIT:
                 raise ValueError(f"Product amount above allowed limit: {self.shopping_list_f.product_list.ITEM_LIMIT}")
             
+            weight_unit=ProductWeightUnit[self.weight_unit_box.get() if self.weight_unit_box.get() != '---' else 'NONE']
+            weight=self.weight_entry.get()
 
+            if weight_unit != ProductWeightUnit.NONE:
+                try:
+                    weight = float(weight)
+                except ValueError:
+                    messagebox.showerror(title="Product Specification", message='Invalid weight value, must be a digit or float!')
+                    return
+            else:
+                weight = -1
+                
             self.name_frame_entry.delete(0, END)
             self.amount_frame_entry.entry.delete(0, END)
             self.amount_frame_entry.entry.insert(0, 1)
@@ -393,8 +418,8 @@ class ProductSpecificationMenu(LabelFrame):
             # here program sents the newly inserted item to the market explorer so that it can pre-explore it
             item = self.shopping_list_f.insert_item(name=name, category=category, amount=amount,
                                                     category_search_mode=self.category_search_mode_panel.selected_option.get(),
-                                                    weight_unit=ProductWeightUnit[self.weight_unit_box.get()],
-                                                    weight=float(self.weight_entry.get()))
+                                                    weight_unit=weight_unit,
+                                                    weight=weight)
             self.market_explorer_f.explore_product(item=item)
 
             self.market_explorer_f.search_button.config(state='normal')
@@ -451,7 +476,9 @@ class CategoriesMenu(Frame):
 
 
         if mode == 'Off':
+            self.buttons_panel.set_option(0)
             self.buttons_panel.set_state('disabled')
+            
         elif mode == 'Manual Mapping' or mode == 'TM-based Mapping':
             self.buttons_panel.set_state('normal')
 
@@ -564,6 +591,9 @@ class CategoryButtonsPanel(LabelFrame):
     def get_option(self) -> int:
         return self.__variable.get()
 
+    def set_option(self, value: int):
+        self.__variable.set(value=value)
+
     def __notify(self, *args):
 
         new_value = self.__variable.get()
@@ -619,7 +649,7 @@ class ButtonPanel(Frame):
                                      compound='left',
                                      padding=(0, 8))
         
-        self.to_cart_button.grid(row=0, column=1, sticky="SNEW")
+        self.to_cart_button.grid(row=0, column=1, sticky="SNEW", padx=5, pady=7)
     
     def to_list(self):
         content = self.parent.name_frame_entry.get()

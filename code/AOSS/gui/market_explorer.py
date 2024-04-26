@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 
 import threading
 from typing import List, Dict
@@ -157,22 +158,47 @@ class ExplorationTable(Frame):
 
 
 class ExplorerView(Frame):
+    BACKGROUND = 'lightblue'
+    FONT = ('Arial', 13)
+
     def __init__(self, *args, market_hub: MarketHub, **kw):
         super(ExplorerView, self).__init__(*args, **kw)
 
         self.rowconfigure(0, weight=1)
-        self.rowconfigure(1, weight=10)
+        self.rowconfigure(1, weight=1)
+        self.rowconfigure(2, weight=10)
         self.columnconfigure(0, weight=1)
 
+        self.expl_table_control_panel = Frame(self, background=self.BACKGROUND)
+        self.expl_table_control_panel.grid(row=0, column=0, sticky="NSEW")
+
+        style = ttk.Style()
+        style.configure('Custom.TCombobox', font=("Helvetica", 20)) 
+
+        self.expl_table_ordering_options = ttk.Combobox(self.expl_table_control_panel, background=self.BACKGROUND,
+                                                         font=self.FONT, state='readonly',
+                                                         width=17)
+        self.expl_table_ordering_options.config(style='Custom.TCombobox')
+
+
+        self.expl_table_ordering_options['values'] = ['Podľa ceny', 'Podľa miery dostupnosti']
+        self.expl_table_ordering_options.current(0)
+        self.expl_table_ordering_options.pack(side='right', ipady=10, padx=5, pady=(5, 2))
+
+        self.expl_table_ordering_options_label = Label(self.expl_table_control_panel, background=self.BACKGROUND, text='Hodnotenie:', font=self.FONT)
+        self.expl_table_ordering_options_label.pack(side='right', pady=(5, 2))
+
+
+
         self.table = ExplorationTable(self, bg='black', market_hub=market_hub)
-        self.table.grid(row=0, column=0, sticky="NSEW", padx=5, pady=(54, 5))
+        self.table.grid(row=1, column=0, sticky="NSEW", padx=5, pady=(0, 5))
 
         self.detailed_results = LabelFrame(self,
                                            bg=BACKGROUND,
                                            text='Product Details',
                                            font=('Arial', 15, 'bold'))
         
-        self.detailed_results.grid(row=1, column=0, sticky="NSEW", pady=(58, 5))
+        self.detailed_results.grid(row=2, column=0, sticky="NSEW", pady=(58, 5))
         self.detailed_results.rowconfigure(0, weight=1, minsize=50)
         self.detailed_results.rowconfigure(1, weight=200)
         self.detailed_results.columnconfigure(0, weight=1)
@@ -211,45 +237,38 @@ class MarketExplorerFrame(LabelFrame):
         # ---- Frame Configuration ---- #
 
         self.rowconfigure(0, weight=11)
-        self.rowconfigure(1, weight=10, minsize=20)
+        self.rowconfigure(1, weight=200)
+        self.rowconfigure(2, weight=10, minsize=60)
         self.columnconfigure(0, weight=1)
 
         # ---- ExplorerView Configuration ---- #
 
         self.explorer_view = ExplorerView(self, market_hub=market_hub, bg=BACKGROUND)
-        self.explorer_view.grid(row=0, column=0, sticky="NSEW", pady=(15, 0))
+        self.explorer_view.grid(row=0, column=0, sticky="NSEW", pady=(15, 70))
+
+
+        self.padding = Frame(self, background='skyblue')
+        self.padding.grid(row=1, column=0, sticky="NSEW")
 
         # ---- ControlPanel Configuration ---- #
 
-        self.control_panel = Frame(self, bg='skyblue')
+        self.control_panel = Frame(self, bg='lightblue')
     
-        self.control_panel.grid(row=1, column=0, sticky="NSEW")#,pady=(20, 0))
+        self.control_panel.grid(row=2, column=0, sticky="NSEW")#,pady=(20, 0))
         self.control_panel.rowconfigure(0, weight=1)
         self.control_panel.columnconfigure(0, weight=1)
         self.control_panel.columnconfigure(1, weight=1)
         self.control_panel.grid_propagate(0)
         
 
-        # self.delete_button = ttk.Button(self.control_panel,
-        #                             text="delete",
-        #                             style='TButton',
-        #                             command=self.delete_product,
-        #                             padding=(0, 7))
-        #                             #width=200)
-                                    
-        # self.delete_button.grid(row=0, column=0, sticky="EW", padx=3, pady=(0, 8))
-        # self.delete_button.grid_propagate(False)
-
         self.search_button = ttk.Button(self.control_panel,
                                     text="   search",
                                     style='TButton',
                                     command=self.explore_markets,
-                                    state='disabled',
-                                    #width=1800,
                                     padding=(0, 7),
                                     image=self.search_icon,
                                     compound='left')
-        self.search_button.grid(row=0, column=1, sticky="EWS", padx=3, pady=(8, 6))
+        self.search_button.grid(row=0, column=1, sticky="EWS", padx=5, pady=(8, 6))
 
         self.search_bar = CircularProgress(self.control_panel, width=30, height=30)
 
@@ -530,6 +549,10 @@ class MarketExplorerFrame(LabelFrame):
 
 
     def explore_markets(self):
+        if not self.product_items:
+            messagebox.showerror(title="Empty list", message="Nákupný zoznam neobsahuje žiadne položky!")
+            return
+
         self.search_button.config(text="")
         #self.search_button.set
 

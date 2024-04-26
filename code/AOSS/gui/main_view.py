@@ -38,7 +38,8 @@ class MainView(Frame):
 
 
 
-    def __init__(self, *args, root: Tk, market_hub, gui_to_hub: mpr.Queue, app_version: str, **kw):
+    def __init__(self, *args, root: Tk, market_hub, gui_to_hub: mpr.Queue,
+                 app_name: str, app_version: str, **kw):
         super(MainView, self).__init__(*args, **kw)
         
 
@@ -46,7 +47,7 @@ class MainView(Frame):
         self.root = root
         self.market_hub = market_hub
 
-        self.main_menu_panel = MainMenu(self, app_version=app_version, parent=self, bg='skyblue')
+        self.main_menu_panel = MainMenu(self, app_name=app_name, app_version=app_version, parent=self, bg='skyblue')
         self.main_menu_panel.pack(side='left', fill='y', expand=False)
 
         self.main_window = Frame(self, bg='lightblue', width=50)
@@ -111,7 +112,7 @@ class MainMenu(Frame):
     BUTTON_Y_PAD = 2
 
 
-    def __init__(self, *args, parent: MainView, app_version: str, **kw):
+    def __init__(self, *args, parent: MainView, app_name: str, app_version: str, **kw):
         super(MainMenu, self).__init__(*args, **kw)
         
         self.parent = parent
@@ -125,7 +126,7 @@ class MainMenu(Frame):
         self.columnconfigure(0, weight=1)
 
 
-        self.app_name_label = Label(self, text="AOSS v" + app_version, font=('Arial', 17, 'bold'), bg='deepskyblue')
+        self.app_name_label = Label(self, text=app_name + " v" + app_version, font=('Arial', 17, 'bold'), bg='deepskyblue')
         self.app_name_label.pack(side='top', fill='x', expand=False, pady=(51, 20))
         
         ##self.shopping_list_option = Frame(self, bg='aqua')

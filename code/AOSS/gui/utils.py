@@ -64,6 +64,12 @@ class AmountEntryFrame(tk.Frame):
             char = event.char
 
             if char == '\b':
+                if len(self.entry.get()) == 1:
+             
+                    self.config(bg=self.INVALID_STATE_BG)
+                    self.entry.insert(index=0, string=self.entry.get())
+                else:
+                    self.config(bg=self.DEF_BG)
                 return
             
             if char.isdigit():
