@@ -27,8 +27,10 @@ from typing import Literal
 
 class Application(tkinter.Tk):
     NAME = 'IMS'
+    BETA = True
     WIDTH = '1220'
     HEIGHT = '640'
+
     
     LANGUAGE: Literal['EN', 'SK'] = 'EN'
     MAIN_MENU_ITEMS_EN = ('Shopping List', 'Market Explorer', 'Settings', 'Exit')
@@ -58,7 +60,7 @@ class Application(tkinter.Tk):
         self.geometry(self.WIDTH + 'x' + self.HEIGHT)
 
         
-        self.main_view = MainWindow(self, root=self, app_name=self.NAME, app_version=__VERSION__,
+        self.main_view = MainWindow(self, root=self, app_name=self.NAME, app_version=__VERSION__, is_beta=self.BETA,
                                     language=language,
                                     market_hub=self.market_hub, gui_to_hub=gui_to_hub, bg='lightblue',
                                     main_menu_items=self.cur_main_menu_items)

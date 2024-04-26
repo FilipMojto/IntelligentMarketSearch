@@ -165,8 +165,12 @@ class ExplorationTable(Frame):
 class ExplorerView(Frame):
     BACKGROUND = 'lightblue'
     FONT = ('Arial', 13)
-    EXPL_TABLE_ORDERING_OPTIONS_EN = ('By Price', 'By Availability Rate')
-    EXPL_TABLE_ORDERING_OPTIONS_SK = ('Podľa ceny', 'Podľa miery dostupnosti')
+    
+    EXPL_TABLE_ORDERING_LABEL_EN = 'Evaluate by: '
+    EXPL_TABLE_ORDERING_LABEL_SK = 'Vyhodnoť podľa: '
+    
+    EXPL_TABLE_ORDERING_OPTIONS_EN = ('Price', 'Availability Rate')
+    EXPL_TABLE_ORDERING_OPTIONS_SK = ('Ceny', 'Miery dostupnosti')
     PRODUCT_DETAIL_TITLE_EN = 'Product Details'
     PRODUCT_DETAIL_TITLE_SK = 'Detaily o produkte'
 
@@ -177,7 +181,9 @@ class ExplorerView(Frame):
         self.cur_expl_table_ordering_options = (self.EXPL_TABLE_ORDERING_OPTIONS_EN if self.language == 'EN' else
                                                 self.EXPL_TABLE_ORDERING_OPTIONS_SK)
         self.cur_product_detail_title = self.PRODUCT_DETAIL_TITLE_EN if self.language == 'EN' else self.PRODUCT_DETAIL_TITLE_SK
-
+        self.cur_expl_table_ordering_label = (self.EXPL_TABLE_ORDERING_LABEL_EN if self.language == 'EN' else
+                                          self.EXPL_TABLE_ORDERING_LABEL_SK)
+        
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
         self.rowconfigure(2, weight=10)
@@ -199,7 +205,7 @@ class ExplorerView(Frame):
         self.expl_table_ordering_options.current(0)
         self.expl_table_ordering_options.pack(side='right', ipady=10, padx=5, pady=(5, 4))
 
-        self.expl_table_ordering_options_label = Label(self.expl_table_control_panel, background=self.BACKGROUND, text='Hodnotenie:', font=self.FONT)
+        self.expl_table_ordering_options_label = Label(self.expl_table_control_panel, background=self.BACKGROUND, text=self.cur_expl_table_ordering_label, font=self.FONT)
         self.expl_table_ordering_options_label.pack(side='right', pady=(5, 2))
 
 

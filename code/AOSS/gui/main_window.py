@@ -44,7 +44,7 @@ class MainWindow(Frame):
 
 
     def __init__(self, *args, root: Tk, market_hub, gui_to_hub: mpr.Queue,
-                 app_name: str, app_version: str, main_menu_items: List[str],
+                 app_name: str, app_version: str, is_beta: bool = False, main_menu_items: List[str],
                  language: Literal['EN', 'SK'] = 'EN', **kw):
         super(MainWindow, self).__init__(*args, **kw)
         
@@ -56,8 +56,8 @@ class MainWindow(Frame):
         self.root = root
         self.market_hub = market_hub
 
-        self.main_menu_panel = MainMenu(self, app_name=app_name, app_version=app_version, items=main_menu_items,
-                                        parent=self, bg='skyblue')
+        self.main_menu_panel = MainMenu(self, app_name=app_name, app_version=app_version, is_beta=is_beta,
+                                         items=main_menu_items, parent=self, bg='skyblue')
         self.main_menu_panel.pack(side='left', fill='y', expand=False)
 
         self.main_window = Frame(self, bg='lightblue', width=50)
@@ -126,7 +126,7 @@ class MainMenu(Frame):
     BUTTON_Y_PAD = 2
 
 
-    def __init__(self, *args, parent: MainWindow, app_name: str, app_version: str,
+    def __init__(self, *args, parent: MainWindow, app_name: str, app_version: str, is_beta: bool = False,
                  items: List[str], **kw):
         super(MainMenu, self).__init__(*args, **kw)
         
@@ -147,9 +147,29 @@ class MainMenu(Frame):
         self.rowconfigure(1, weight=1)
         self.columnconfigure(0, weight=1)
 
+        app_title = app_name + " v" + app_version
 
-        self.app_name_label = Label(self, text=app_name + " v" + app_version, font=('Arial', 17, 'bold'), bg='deepskyblue')
-        self.app_name_label.pack(side='top', fill='x', expand=False, pady=(51, 20))
+        self.app_name_text_wrapper = Frame(self, bg='deepskyblue')
+        self.app_name_text_wrapper.pack(side='top', fill='x', expand=False, pady=(51, 30))
+
+        self.app_name_text = Text(self.app_name_text_wrapper, width=5, height=1, font=('Arial', 17, 'bold'), bg='deepskyblue')
+        self.app_name_text.insert("end", "      ")
+
+        if not is_beta:
+            self.app_name_text.insert("end", "      ")
+
+        self.app_name_text.tag_config("black", foreground='black')
+        self.app_name_text.tag_config("red", foreground='red')
+        self.app_name_text.insert("end", app_title, "black")
+
+        if is_beta:
+            self.app_name_text.insert("end", ' BETA', 'red')
+        
+        self.app_name_text.config(state='disabled')
+
+        # self.app_name_label = Label(self, text=app_title, font=('Arial', 17, 'bold'),  bg='deepskyblue')
+        self.app_name_text.pack(side='top', fill='x', expand=False, pady=10)
+        
         
         ##self.shopping_list_option = Frame(self, bg='aqua')
        # self.shopping_list_option.pack(side='top', fill='x', expand=False, pady=(6, self.BUTTON_Y_PAD))

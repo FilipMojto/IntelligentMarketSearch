@@ -43,7 +43,8 @@ class SearchedProductWindow(Toplevel):
         self.listbox.bind("<Leave>", self.on_leave)
         self.listbox.pack(side='left')
 
-        self.close_window_button = Button(self, text='x', font=self.CLOSE_BUTTON_FONT, padx=2, pady=0, height=1)
+        self.close_window_button = Button(self, background='red', text='x', foreground='white',
+                                           font=self.CLOSE_BUTTON_FONT, padx=2, pady=0, height=1)
         self.close_window_button.pack(side='top')
 
         self.products: Dict[str, List[int, str, str]] = {}
@@ -195,7 +196,8 @@ class ProductSpecificationMenu(LabelFrame):
         
         self.rowconfigure(0, weight=1, minsize=110)
         self.rowconfigure(1, weight=3, minsize=50)
-        self.rowconfigure(2, weight=5, minsize=55)
+        self.rowconfigure(2, weight=200)
+        self.rowconfigure(3, weight=1)
         self.columnconfigure(0, weight=1, minsize=630)
 
         # ------ MAIN_DETAILS_MENU - CONFIGURATION ------ #
@@ -264,7 +266,7 @@ class ProductSpecificationMenu(LabelFrame):
         self.amount_frame_entry = AmountEntryFrame(self.middle_wrapper_frame)
         self.amount_frame_entry.grid(row=0, column=1, sticky="NSEW", padx=8, pady=(0, 3))
         
-        self.weight_unit_label_wrapper = Frame(self.middle_wrapper_frame, bg='red')
+        self.weight_unit_label_wrapper = Frame(self.middle_wrapper_frame, bg='lightblue')
         self.weight_unit_label_wrapper.grid(row=0, column=2, sticky="NSEW")
         self.weight_unit_label_wrapper.rowconfigure(0, weight=1)
         self.weight_unit_label_wrapper.columnconfigure(0, weight=1)
@@ -316,10 +318,16 @@ class ProductSpecificationMenu(LabelFrame):
         # self.categories_menu = CategoriesMenu(self, bg=BACKGROUND)
         self.categories_menu.grid(row=1, column=0, sticky="NEW", pady=(10, 5), padx=5)
 
+
+        # ------- PADDING - CONFIGURATION ------ #
+        self.padding = Frame(self, background='skyblue')
+        self.padding.grid(row=2, column=0, sticky="NSEW")
+
+
         # ------- BUTTON_PANEL - CONFIGURATION ------ #
 
-        self.button_panel = ButtonPanel(self, bg=self.BACKGROUND, parent_frame=self, language=self.language)
-        self.button_panel.grid(row=2, column=0, sticky="NEW")
+        self.button_panel = ButtonPanel(self, bg='lightblue', parent_frame=self, language=self.language)
+        self.button_panel.grid(row=3, column=0, sticky="NEW")
 
 
     
@@ -656,7 +664,7 @@ class ButtonPanel(Frame):
 
         self.eraser_icon = PhotoImage(file=ERASER_ICON).subsample(17, 17)
         
-        self.rowconfigure(0, weight=1, minsize=20)
+        self.rowconfigure(0, weight=1)
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
 
@@ -676,9 +684,10 @@ class ButtonPanel(Frame):
                                      command=self.to_list,
                                      image=self.cart_icon,
                                      compound='left',
-                                     padding=(0, 8))
+                                     padding=4
+                                     )
         
-        self.to_cart_button.grid(row=0, column=1, sticky="SNEW", padx=5, pady=7)
+        self.to_cart_button.grid(row=0, column=1, sticky="SNEW", padx=5, pady=(6, 5))
     
     def to_list(self):
         content = self.parent.name_frame_entry.get()
