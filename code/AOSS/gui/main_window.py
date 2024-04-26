@@ -1,8 +1,8 @@
 from tkinter import *
 
 import multiprocessing as mpr
-
 import os, sys
+from typing import List, Literal
 
 # Set the starting point to the directory containing the script
 script_directory = os.path.dirname(os.path.abspath(__file__))
@@ -22,12 +22,14 @@ from AOSS.gui.market_explorer import MarketExplorerFrame
 from AOSS.gui.settings import SettingsFrame
 
 from AOSS.structure.shopping import MarketHub
+from AOSS.other.exceptions import InvalidApplicationState
 
 
 
+class MainWindow(Frame):
 
-
-class MainView(Frame):
+    SECTION_TITLES_EN = ('Specify Product', 'Explore Markets', 'Shopping List', 'Adjust Settings')
+    SECTION_TITLES_SK = ('Špecifikuj produkt', 'Hľadaj obchody', 'Nákupný zoznam', 'Zmeniť nastavenia')
 
     def on_key_press(self, event, main_view):
 
@@ -35,19 +37,27 @@ class MainView(Frame):
 
         if key_pressed == "Delete":
             main_view.market_explorer_window.delete_product()
-
+    
+    def change_language(self, language: Literal['EN', 'SK']):
+        self.language = language
+    
 
 
     def __init__(self, *args, root: Tk, market_hub, gui_to_hub: mpr.Queue,
-                 app_name: str, app_version: str, **kw):
-        super(MainView, self).__init__(*args, **kw)
+                 app_name: str, app_version: str, main_menu_items: List[str],
+                 language: Literal['EN', 'SK'] = 'EN', **kw):
+        super(MainWindow, self).__init__(*args, **kw)
         
+        self.language = language
+        self.cur_section_titles = self.SECTION_TITLES_EN if self.language == 'EN' else self.SECTION_TITLES_SK
+
 
 
         self.root = root
         self.market_hub = market_hub
 
-        self.main_menu_panel = MainMenu(self, app_name=app_name, app_version=app_version, parent=self, bg='skyblue')
+        self.main_menu_panel = MainMenu(self, app_name=app_name, app_version=app_version, items=main_menu_items,
+                                        parent=self, bg='skyblue')
         self.main_menu_panel.pack(side='left', fill='y', expand=False)
 
         self.main_window = Frame(self, bg='lightblue', width=50)
@@ -61,10 +71,10 @@ class MainView(Frame):
         self.market_explorer_window = None
 
         self.shopping_list_window = ShoppingListFrame(self.list_frame,
-                                                      text='Shopping List',
+                                                      text=self.cur_section_titles[0],
                                                       font=('Arial', 17, 'bold'),
                                                       bg='skyblue',
-    
+                                                      language=self.language,
                                                       on_delete=lambda item: self.market_explorer_window.delete_product(item))
         self.shopping_list_window.pack(side='right', fill='y', expand=False, pady=6, padx=(3, 5))
         
@@ -79,26 +89,29 @@ class MainView(Frame):
                                                     root=self.list_frame,
                                                     market_hub=self.market_hub,
                                                     shopping_list_frame=self.shopping_list_window,
-                                                    text='Explore Markets',
-                                                    font=("Arial", 17, 'bold'))
+                                                    text=self.cur_section_titles[1],
+                                                    font=("Arial", 17, 'bold'),
+                                                    language=self.language)
         
 
 
 
         self.specification_window = ProductSpecificationMenu(self.list_frame,
-                                                text='Specify Product',
+                                                text=self.cur_section_titles[2],
                                                 font=('Arial', 17, 'bold'),
                                                 root=self.root,
                                                 shopping_list_frame=self.shopping_list_window,
                                                 market_explorer_frame=self.market_explorer_window,
-                                                bg='skyblue')
+                                                bg='skyblue',
+                                                language=self.language)
         self.specification_window.pack(side='right', fill='both', expand=True, pady=6, padx=(0, 3))
 
 
         # self.explorer_frame = Frame(self.main_window)
 
        
-        self.settings_frame = SettingsFrame(self.main_window, gui_to_hub=gui_to_hub)
+        self.settings_frame = SettingsFrame(self.main_window, gui_to_hub=gui_to_hub, section_title=self.cur_section_titles[3],
+                                            on_language_change=self.change_language)
 
         #market_explorer_window 
     
@@ -109,17 +122,26 @@ class MainView(Frame):
 
 class MainMenu(Frame):
 
+    ITEM_COUNT = 4
     BUTTON_Y_PAD = 2
 
 
-    def __init__(self, *args, parent: MainView, app_name: str, app_version: str, **kw):
+    def __init__(self, *args, parent: MainWindow, app_name: str, app_version: str,
+                 items: List[str], **kw):
         super(MainMenu, self).__init__(*args, **kw)
         
         self.parent = parent
+
+        if self.ITEM_COUNT > len(items):
+            raise InvalidApplicationState(message=f"Invalid amount of provided main menu items! At least {self.ITEM_COUNT} required!")
+        
+        self.items = items
+
+            
         
 
 
-        #self.parent = parent
+  
         # ----- Layout Configuration ------ #
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
@@ -132,10 +154,11 @@ class MainMenu(Frame):
         ##self.shopping_list_option = Frame(self, bg='aqua')
        # self.shopping_list_option.pack(side='top', fill='x', expand=False, pady=(6, self.BUTTON_Y_PAD))
 
-        self.shopping_list_icon = PhotoImage(file=cfg.SHOPPING_CART_ICON).subsample(13, 13)
+        
         
         # ----- Specification Option Configuration ----- #
-        self.shopping_list_option = Button(self, pady=10, padx=9, bg='aqua', text="Shopping List", font=('Arial', 15, 'bold'),
+        self.shopping_list_icon = PhotoImage(file=cfg.SHOPPING_CART_ICON).subsample(13, 13)
+        self.shopping_list_option = Button(self, pady=10, padx=9, bg='aqua', text=self.items[0], font=('Arial', 15, 'bold'),
                                            image=self.shopping_list_icon,
                                            compound='right',
                                            anchor='e',
@@ -143,46 +166,34 @@ class MainMenu(Frame):
                                            command=self.to_shopping_list)
         self.shopping_list_option.pack(side='top', fill='x', expand=False, pady=(0,2))
         
-        #self.shopping_list_l = Label(self.shopping_list_option, image=self.shopping_list_icon, compound='right', bg='aqua')
-        #self.shopping_list_l.pack(side='left', fill='y', expand=False)
 
-        #self.shopping_list_option.pack(side='top', fill='x', expand=False, pady=(6, self.BUTTON_Y_PAD))  # Set the height to 50 (adjust as needed)
-        # self.shopping_list_option.rowconfigure(0, weight=1)
-        # self.shopping_list_option.columnconfigure(0, weight=1)
-        # self.shopping_list_option_label = Label(self.shopping_list_option, text="Shopping List", font=('Arial', 15, 'bold'))
-        # self.shopping_list_option_label.pack(side='top', expand=False)  
-
-        self.magnifier_icon = PhotoImage(file=cfg.MAGNIFIER_ICON).subsample(19, 19)
         # ----- Explorer Option Configuration ----- #
-        self.explorer_option = Button(self,  pady=12, padx=12, bg='aqua', text="Market Explorer ", font=('Arial', 15, 'bold'),
+        self.magnifier_icon = PhotoImage(file=cfg.MAGNIFIER_ICON).subsample(19, 19)
+        self.explorer_option = Button(self,  pady=12, padx=12, bg='aqua', text=self.items[1] + " ", font=('Arial', 15, 'bold'),
                                       image=self.magnifier_icon,
                                       compound='right',
                                       anchor='e',
                                       command=self.to_market_explorer)
         self.explorer_option.pack(side='top', fill='x', expand=False, pady=self.BUTTON_Y_PAD)
 
-       # self.explorer_option.grid(row=1, column=0, sticky="NEW")
-        # self.explorer_option_label = Button(self.explorer_option, text="Market Explorer", font=('Arial', 15, 'bold'))
-        # self.explorer_option_label.pack(side='top')
 
-        self.gear_icon = PhotoImage(file=cfg.GEAR_ICON).subsample(19, 19)
+        
 
         # ----- Settings Option Configuration ----- #
-        self.settings_option = Button(self, pady=12, padx=12, bg='aqua', text="Settings ", font=('Arial', 15, 'bold'),
+        self.gear_icon = PhotoImage(file=cfg.GEAR_ICON).subsample(19, 19)
+        self.settings_option = Button(self, pady=12, padx=12, bg='aqua', text=self.items[2] + " ", font=('Arial', 15, 'bold'),
                                       image=self.gear_icon,
                                       compound='right',
                                       anchor='e',
                                       command=self.to_settings_panel)
         self.settings_option.pack(side='top', fill='x', expand=False, pady=self.BUTTON_Y_PAD)
 
-       # self.explorer_option.grid(row=1, column=0, sticky="NEW")
-        # self.settings_option_label = Label(self.settings_option, text="Settings", font=('Arial', 15, 'bold'))
-        # self.settings_option_label.pack(side='top')
+
 
         # ----- Exit Option Configuration ----- #
 
         self.exit_icon = PhotoImage(file=cfg.EXIT_ICON).subsample(19, 19)
-        self.exit_option = Button(self, pady=12, padx=12, bg='aqua', text="Exit ", font=('Arial', 15, 'bold'),
+        self.exit_option = Button(self, pady=12, padx=12, bg='aqua', text=self.items[3] + " ", font=('Arial', 15, 'bold'),
                                   image=self.exit_icon,
                                   compound='right',
                                   anchor='e',
@@ -191,9 +202,6 @@ class MainMenu(Frame):
 
         self.selected_option = self.shopping_list_option
 
-        # # self.explorer_option.grid(row=1, column=0, sticky="NEW")
-        # self.exit_option_label = Label(self.exit_option, text="Exit", font=('Arial', 15, 'bold'))
-        # self.exit_option_label.pack(side='top')  
     
     def exit(self):
         self.quit()

@@ -19,8 +19,9 @@ os.chdir(parent_directory)
 
 
 from config_paths import *
-from main_view import MainView
+from AOSS.gui.main_window import MainWindow
 from AOSS.structure.shopping import MarketHub
+from typing import Literal
 
 
 
@@ -28,13 +29,21 @@ class Application(tkinter.Tk):
     NAME = 'IMS'
     WIDTH = '1220'
     HEIGHT = '640'
-
+    
+    LANGUAGE: Literal['EN', 'SK'] = 'EN'
+    MAIN_MENU_ITEMS_EN = ('Shopping List', 'Market Explorer', 'Settings', 'Exit')
+    MAIN_MENU_ITEMS_SK = ('Nákupný zoznam', 'Hľadanie obchodov', 'Nastavenia', 'Odísť')
+    
             
-    def __init__(self, *args, lock: mpr.Lock = None, gui_to_hub: mpr.Queue = None, **kw) -> None:
+    def __init__(self, *args, lock: mpr.Lock = None, gui_to_hub: mpr.Queue = None,
+                 language: Literal['EN', 'SK'] = 'SK', **kw) -> None:
         super(Application, self).__init__(*args, **kw)
         
-        print(os.path.abspath(__file__))
-        print(os.getcwd())
+        self.LANGUAGE = language
+        self.cur_main_menu_items = self.MAIN_MENU_ITEMS_EN if self.LANGUAGE == 'EN' else self.MAIN_MENU_ITEMS_SK
+
+        
+
         self.market_hub = MarketHub(src_file=MARKET_HUB_FILE['path'])
         self.market_hub.load_markets()
 
@@ -49,7 +58,10 @@ class Application(tkinter.Tk):
         self.geometry(self.WIDTH + 'x' + self.HEIGHT)
 
         
-        self.main_view = MainView(self, root=self, app_name=self.NAME, app_version=__VERSION__, market_hub=self.market_hub, gui_to_hub=gui_to_hub, bg='lightblue')
+        self.main_view = MainWindow(self, root=self, app_name=self.NAME, app_version=__VERSION__,
+                                    language=language,
+                                    market_hub=self.market_hub, gui_to_hub=gui_to_hub, bg='lightblue',
+                                    main_menu_items=self.cur_main_menu_items)
         self.main_view.pack(side='left', fill='both', expand=True, padx=10)
 
         

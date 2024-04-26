@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 
 import threading
-from typing import List, Dict
+from typing import List, Dict, Literal
 #import math
 
 import config_paths as cfg
@@ -82,10 +82,15 @@ class Table(Frame):
 class ExplorationTable(Frame):
 
     ROW_COUNT = 4
+    COLUMN_NAMES_EN = ('Total Price', 'Availability Rate', 'Recommended')
+    COLUMN_NAMES_SK = ('Celková cena', 'Miera dostupnosti', 'Odporúčanie')
 
-    def __init__(self, *args, market_hub: MarketHub, **kw):
+    def __init__(self, *args, market_hub: MarketHub, language: Literal['EN', 'SK'] = 'EN', **kw):
         super(ExplorationTable, self).__init__(*args, **kw)
         
+        self.language = language
+        self.cur_column_names = self.COLUMN_NAMES_EN if self.language == 'EN' else self.COLUMN_NAMES_SK
+
         self.market_hub = market_hub
         self.markets = market_hub.markets()
 
@@ -130,13 +135,13 @@ class ExplorationTable(Frame):
             self.rowconfigure(g, weight=1)
 
     
-        self.cells[1][0][0].set(value="Total Price")
-        self.cells[1][0][1].config(font=('Arial', 13, 'bold', 'underline'))
+        self.cells[1][0][0].set(value=self.cur_column_names[0])
+        self.cells[1][0][1].config(font=('Arial', 13, 'bold'))
 
-        self.cells[2][0][0].set(value="Succession Rate")
-        self.cells[2][0][1].config(font=('Arial', 13, 'bold', 'underline'))
+        self.cells[2][0][0].set(value=self.cur_column_names[1])
+        self.cells[2][0][1].config(font=('Arial', 13, 'bold'))
 
-        self.cells[3][0][0].set(value="Recommended")
+        self.cells[3][0][0].set(value=self.cur_column_names[2])
         self.cells[3][0][1].config(font=('Arial', 13, 'bold', 'underline'))
 
 
@@ -160,9 +165,18 @@ class ExplorationTable(Frame):
 class ExplorerView(Frame):
     BACKGROUND = 'lightblue'
     FONT = ('Arial', 13)
+    EXPL_TABLE_ORDERING_OPTIONS_EN = ('By Price', 'By Availability Rate')
+    EXPL_TABLE_ORDERING_OPTIONS_SK = ('Podľa ceny', 'Podľa miery dostupnosti')
+    PRODUCT_DETAIL_TITLE_EN = 'Product Details'
+    PRODUCT_DETAIL_TITLE_SK = 'Detaily o produkte'
 
-    def __init__(self, *args, market_hub: MarketHub, **kw):
+    def __init__(self, *args, market_hub: MarketHub, language: Literal['EN', 'SK'] = 'EN', **kw):
+
         super(ExplorerView, self).__init__(*args, **kw)
+        self.language = language
+        self.cur_expl_table_ordering_options = (self.EXPL_TABLE_ORDERING_OPTIONS_EN if self.language == 'EN' else
+                                                self.EXPL_TABLE_ORDERING_OPTIONS_SK)
+        self.cur_product_detail_title = self.PRODUCT_DETAIL_TITLE_EN if self.language == 'EN' else self.PRODUCT_DETAIL_TITLE_SK
 
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
@@ -181,21 +195,21 @@ class ExplorerView(Frame):
         self.expl_table_ordering_options.config(style='Custom.TCombobox')
 
 
-        self.expl_table_ordering_options['values'] = ['Podľa ceny', 'Podľa miery dostupnosti']
+        self.expl_table_ordering_options['values'] = self.cur_expl_table_ordering_options
         self.expl_table_ordering_options.current(0)
-        self.expl_table_ordering_options.pack(side='right', ipady=10, padx=5, pady=(5, 2))
+        self.expl_table_ordering_options.pack(side='right', ipady=10, padx=5, pady=(5, 4))
 
         self.expl_table_ordering_options_label = Label(self.expl_table_control_panel, background=self.BACKGROUND, text='Hodnotenie:', font=self.FONT)
         self.expl_table_ordering_options_label.pack(side='right', pady=(5, 2))
 
 
 
-        self.table = ExplorationTable(self, bg='black', market_hub=market_hub)
+        self.table = ExplorationTable(self, bg='black', market_hub=market_hub, language=self.language)
         self.table.grid(row=1, column=0, sticky="NSEW", padx=5, pady=(0, 5))
 
         self.detailed_results = LabelFrame(self,
                                            bg=BACKGROUND,
-                                           text='Product Details',
+                                           text=self.cur_product_detail_title,
                                            font=('Arial', 15, 'bold'))
         
         self.detailed_results.grid(row=2, column=0, sticky="NSEW", pady=(58, 5))
@@ -204,7 +218,7 @@ class ExplorerView(Frame):
         self.detailed_results.columnconfigure(0, weight=1)
 
         self.detailed_results_table = Table(self.detailed_results, rows=4, columns=3)
-        self.detailed_results_table.grid(row=0, column=0, sticky="NSEW", padx=5)
+        self.detailed_results_table.grid(row=0, column=0, sticky="NSEW", padx=5, pady=5)
         self.detailed_results_table.col_proportion(values=(2, 40, 1))
 
 
@@ -216,9 +230,20 @@ class ExplorerView(Frame):
 
 
 class MarketExplorerFrame(LabelFrame):
+    BUTTON_TEXTS_EN = ('   search',)
+    BUTTON_TEXTS_SK = ('   hľadať',)
+    PRODUCT_DETAILS_COLS_NAMES_EN = ('Market', 'Product', 'Price')
+    PRODUCT_DETAILS_COLS_NAMES_SK = ('Obchod', 'Produkt', 'Cena')
+
     def __init__(self, *args, root: Tk, market_hub: MarketHub, shopping_list_frame: ShoppingListFrame,
+                 language: Literal['EN', 'SK'] = 'EN',
                  **kw):
         super(MarketExplorerFrame, self).__init__(*args, **kw)
+        
+        self.language = language
+        self.cur_button_texts = self.BUTTON_TEXTS_EN if self.language == 'EN' else self.BUTTON_TEXTS_SK
+        self.cur_product_details_cols_names = (self.PRODUCT_DETAILS_COLS_NAMES_EN if self.language == 'EN' else
+                                               self.PRODUCT_DETAILS_COLS_NAMES_SK)
 
         self.accept_icon = PhotoImage(file=cfg.ACCEPT_ICON).subsample(18, 18)
         self.decline_icon = PhotoImage(file=cfg.DECLINE_ICON).subsample(18, 18)
@@ -243,7 +268,7 @@ class MarketExplorerFrame(LabelFrame):
 
         # ---- ExplorerView Configuration ---- #
 
-        self.explorer_view = ExplorerView(self, market_hub=market_hub, bg=BACKGROUND)
+        self.explorer_view = ExplorerView(self, market_hub=market_hub, bg=BACKGROUND, language=self.language)
         self.explorer_view.grid(row=0, column=0, sticky="NSEW", pady=(15, 70))
 
 
@@ -262,7 +287,7 @@ class MarketExplorerFrame(LabelFrame):
         
 
         self.search_button = ttk.Button(self.control_panel,
-                                    text="   search",
+                                    text=self.cur_button_texts[0],
                                     style='TButton',
                                     command=self.explore_markets,
                                     padding=(0, 7),
@@ -272,9 +297,9 @@ class MarketExplorerFrame(LabelFrame):
 
         self.search_bar = CircularProgress(self.control_panel, width=30, height=30)
 
-        self.explorer_view.detailed_results_table.insert_value(row=0, column=0, value="Market")
-        self.explorer_view.detailed_results_table.insert_value(row=0, column=1, value="Product")
-        self.explorer_view.detailed_results_table.insert_value(row=0, column=2, value="Price")
+        self.explorer_view.detailed_results_table.insert_value(row=0, column=0, value=self.cur_product_details_cols_names[0])
+        self.explorer_view.detailed_results_table.insert_value(row=0, column=1, value=self.cur_product_details_cols_names[1])
+        self.explorer_view.detailed_results_table.insert_value(row=0, column=2, value=self.cur_product_details_cols_names[2])
     
     
     def delete_product(self, item = None):

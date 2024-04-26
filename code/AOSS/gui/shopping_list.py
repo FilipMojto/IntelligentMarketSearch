@@ -26,12 +26,19 @@ class ShoppingListDetails(LabelFrame):
 
     FONT = ('Arial', 11)
     FONT_BOLD = ('Arial', 11, 'bold')
+    LABELS_EN = ('Name:', 'Category:', 'Amount:', 'Weight Unit:', 'Weight:')
+    LABELS_SK = ('Meno:', 'Kategória:', 'Množstvo', 'Jednotka:', 'Váha:')
 
     def __init__(self, *args, name: str, category: int, amount: int,
                  weight_unit: ProductWeightUnit = ProductWeightUnit.NONE, weight: float,
                   ID: int,
+                  language: Literal['EN', 'SK'] = 'EN',
                   category_search_mode: str, on_widget_click: callable = None, **kw):
         super(ShoppingListDetails, self).__init__(*args, **kw)
+
+        self.language = language
+        self.cur_labels = self.LABELS_EN if self.language == 'EN' else self.LABELS_SK
+
 
         self.rowconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
@@ -43,7 +50,7 @@ class ShoppingListDetails(LabelFrame):
 
         self.name = name
         self.name_text = StringVar()
-        self.name_text.set(f"Name: {name}")
+        self.name_text.set(f"{self.cur_labels[0]} {name}")
 
         self.name_label = Label(self, textvariable=self.name_text, font=self.FONT)
         self.name_label.grid(row=0, column=0, sticky="NSW")
@@ -54,22 +61,22 @@ class ShoppingListDetails(LabelFrame):
 
         self.category = category
         self.category_text = StringVar()
-        self.category_text.set(f"Category: {category}")
+        self.category_text.set(f"{self.cur_labels[1]} {category}")
 
 
         self.amount = amount
         self.amount_text = IntVar()
-        self.amount_text.set(f"Amount: {amount}")
+        self.amount_text.set(f"{self.cur_labels[2]} {amount}")
 
         self.weight_unit = weight_unit.name
         self.weight_unit_text = StringVar()
-        self.weight_unit_text.set(f"Weight Unit: {self.weight_unit}")
+        self.weight_unit_text.set(f"{self.cur_labels[3]} {self.weight_unit}")
 
 
 
         self.weight = weight
         self.weight_text = DoubleVar()
-        self.weight_text.set(f"Weight: {weight}")
+        self.weight_text.set(f"{self.cur_labels[4]} {weight}")
 
 
 
@@ -136,14 +143,15 @@ class ShoppingListItem(Frame):
 
     def __init__(self, *args, name: str, category: str, amount: int, category_search_mode: str,
                  weight_unit: ProductWeightUnit = ProductWeightUnit.NONE, weight: float,
-                  ID: int, on_widget_click: callable = None, **kw):
+                  ID: int, on_widget_click: callable = None, language: Literal['EN', 'SK'] = 'EN', **kw):
         super(ShoppingListItem, self).__init__(*args, **kw)
 
         self.details = ShoppingListDetails(self,  name=name,
                                            category_search_mode=category_search_mode, category=category,
                                            amount=amount,
                                            weight_unit=weight_unit, weight=weight,
-                                           ID=ID, on_widget_click=self.on_item_clicked, bd=1)
+                                           ID=ID, on_widget_click=self.on_item_clicked, bd=1,
+                                           language=language)
 
         self.details.grid(row=0, column=0, sticky="NSEW", padx=2, pady=2)
         self.details.bind("<Button-1>", self.on_item_clicked)
@@ -221,8 +229,15 @@ class ShoppingList(Frame):
 class ShoppingListFrame(LabelFrame):
     WIDTH = 268
 
-    def __init__(self, *args, on_delete, **kw):
+    BUTTON_TEXTS_EN = ('remove',)
+    BUTTON_TEXTS_SK = ('odstrániť',)
+
+    def __init__(self, *args, on_delete, language: Literal['EN', 'SK'] = 'EN', **kw):
         super(ShoppingListFrame, self).__init__(*args, **kw)
+        
+        self.language = language
+        self.cur_button_texts = self.BUTTON_TEXTS_EN if self.language == 'EN' else self.BUTTON_TEXTS_SK
+
         self.config(width=self.WIDTH)
         self.pack_propagate(0)
         
@@ -253,7 +268,7 @@ class ShoppingListFrame(LabelFrame):
         self.style_1.configure("TButton", font=("Arial", 15), background="skyblue", foreground="black")
 
         self.delete_product_button = ttk.Button(self,
-                                            text='remove',
+                                            text=self.cur_button_texts[0],
                                             style="TButton",
                                             width=27,
                                             padding=(0, 6),
@@ -305,7 +320,8 @@ class ShoppingListFrame(LabelFrame):
                                 weight=weight,
                                 ID=self.product_list.assign_ID(),
                                 on_widget_click=self.product_list.remove_click_texture,
-                                width=240, bg='lightgrey')
+                                width=240, bg='lightgrey',
+                                language=self.language)
 
         item.pack(side="top", fill="x", expand=False, padx=2, pady=2)
 

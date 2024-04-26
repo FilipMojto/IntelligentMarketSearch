@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 
 import csv
-from typing import List, Dict
+from typing import List, Dict, Literal
 import threading
 import time
 from datetime import datetime
@@ -154,14 +154,37 @@ class ProductSpecificationMenu(LabelFrame):
 
     BACKGROUND = 'lightblue'
     FONT = ('Arial', 13)
+    ENTRY_LABELS_EN = ('Enter Name:', 'Enter Amount:', 'Weight Unit:', 'Weight:', 'Category Search:')
+    ENTRY_LABELS_SK = ('Zadaj meno:', 'Uveď množstvo:', 'Jednotka váhy:', 'Váha:', 'Kategórie:')
+    WEIGHT_UNITS_VALUES_EN = ('---', 'GRAMS', 'LITRES')
+    WEIGHT_UNITS_VALUES_SK = ('---', 'GRAMY', 'LITRE')
+    CATEGORY_SEARCH_VALES_EN = ('Off', 'Manual Mapping', 'TM-based Mapping')
+    CATEGORY_SEARCH_VALES_SK = ('Vypnuté', 'Manuálne mapovanie', 'Mapovanie založené na TO')
+
+    @staticmethod
+    def map_weight_unit(weight_unit: str):
+        """
+            Maps weigh unit value in Slovak language to its English counterpart.
+        """
+        
+        for index, unit in enumerate(ProductSpecificationMenu.WEIGHT_UNITS_VALUES_SK):
+            if unit == weight_unit:
+                return ProductSpecificationMenu.WEIGHT_UNITS_VALUES_EN[index]
+
 
 
     def __init__(self, *args, root: Tk, shopping_list_frame: ShoppingListFrame,
-                   market_explorer_frame: MarketExplorerFrame, **kw):
+                   market_explorer_frame: MarketExplorerFrame,
+                    language: Literal['EN', 'SK'] = 'EN', **kw):
         super(ProductSpecificationMenu, self).__init__(*args, **kw)
         
 
         #self.config(background=BACKGROUND)
+        self.language = language
+        self.cur_entry_labels = self.ENTRY_LABELS_EN if self.language == 'EN' else self.ENTRY_LABELS_SK
+        self.cur_weight_units_values = self.WEIGHT_UNITS_VALUES_EN if self.language == 'EN' else self.WEIGHT_UNITS_VALUES_SK
+        self.cur_category_search_values = self.CATEGORY_SEARCH_VALES_EN if self.language == 'EN' else self.CATEGORY_SEARCH_VALES_SK
+
 
         self.root = root
         self.root.bind("<Configure>", self.on_root_window_moved)
@@ -203,7 +226,7 @@ class ProductSpecificationMenu(LabelFrame):
         self.name_frame.rowconfigure(0, weight=1)
         self.name_frame.columnconfigure(0, weight=1)
 
-        self.name_frame_label = Label(self.name_frame, text="Enter Name:", bg=BACKGROUND, font=self.FONT)
+        self.name_frame_label = Label(self.name_frame, text=self.cur_entry_labels[0], bg=BACKGROUND, font=self.FONT)
         
         
         self.name_frame_label.grid(row=0, column=0, sticky="E")
@@ -227,12 +250,12 @@ class ProductSpecificationMenu(LabelFrame):
         self.middle_wrapper_frame.columnconfigure(4, weight=1)
         self.middle_wrapper_frame.columnconfigure(5, weight=1)
 
-        self.amount_frame = Frame(self.middle_wrapper_frame, bg=self.BACKGROUND)
-        self.amount_frame.grid(row=0, column=0, sticky="NSEW", pady=8, padx=(3, 17))
-        self.amount_frame.rowconfigure(0, weight=1)
-        self.amount_frame.columnconfigure(0, weight=1)
+        self.amount_frame_wrapper = Frame(self.middle_wrapper_frame, bg=self.BACKGROUND)
+        self.amount_frame_wrapper.grid(row=0, column=0, sticky="NSEW", pady=8, padx=(3, 17))
+        self.amount_frame_wrapper.rowconfigure(0, weight=1)
+        self.amount_frame_wrapper.columnconfigure(0, weight=1)
 
-        self.amount_frame_label = Label(self.amount_frame, text="Enter Amount:", bg=BACKGROUND, font=self.FONT)
+        self.amount_frame_label = Label(self.amount_frame_wrapper, text=self.cur_entry_labels[1], bg=BACKGROUND, font=self.FONT)
         self.amount_frame_label.grid(row=0, column=0, sticky="E")
 
 
@@ -246,12 +269,12 @@ class ProductSpecificationMenu(LabelFrame):
         self.weight_unit_label_wrapper.rowconfigure(0, weight=1)
         self.weight_unit_label_wrapper.columnconfigure(0, weight=1)
 
-        self.weight_unit_label = Label(self.weight_unit_label_wrapper, text="Weight Unit:", bg=self.BACKGROUND,
+        self.weight_unit_label = Label(self.weight_unit_label_wrapper, text=self.cur_entry_labels[2], bg=self.BACKGROUND,
                                        font=self.FONT)
         self.weight_unit_label.grid(row=0, column=0, sticky="NSEW")
 
         self.weight_unit_box = ttk.Combobox(self.weight_unit_label_wrapper, state='readonly', font=self.FONT, width=8)
-        self.weight_unit_box['values'] = ['---', 'GRAMS', 'LITRES']
+        self.weight_unit_box['values'] = self.cur_weight_units_values
         self.weight_unit_box.current(0)
         self.weight_unit_box.bind("<<ComboboxSelected>>", self.handle_combobox_selection)
     
@@ -262,7 +285,7 @@ class ProductSpecificationMenu(LabelFrame):
         self.weight_label_wrapper.rowconfigure(0, weight=1)
         self.weight_label_wrapper.columnconfigure(0, weight=1)
 
-        self.weight_label = Label(self.weight_label_wrapper, text='Weight:', background=self.BACKGROUND,
+        self.weight_label = Label(self.weight_label_wrapper, text=self.cur_entry_labels[3], background=self.BACKGROUND,
                                   font=self.FONT)
         self.weight_label.grid(row=0, column=0, sticky="NSE")
 
@@ -278,9 +301,11 @@ class ProductSpecificationMenu(LabelFrame):
         self.lower_wrapper_frame.rowconfigure(0, weight=1, minsize=50)
         self.lower_wrapper_frame.columnconfigure(0, weight=1)
 
-        self.categories_menu = CategoriesMenu(self, bg=BACKGROUND)
+        self.categories_menu = CategoriesMenu(self, parent=self, bg=BACKGROUND)
 
-        self.category_search_mode_panel = CategorySearchModePanel(self.lower_wrapper_frame, on_select=self.categories_menu.set_mode)
+        self.category_search_mode_panel = CategorySearchModePanel(self.lower_wrapper_frame, on_select=self.categories_menu.set_mode,
+                                                                  label_text=self.cur_entry_labels[4],
+                                                                  options=self.cur_category_search_values)
         self.category_search_mode_panel.grid(row=0, column=0, sticky="NSW", padx=(0, 9))
         # self.category_mode_label = Label(self.lower_wrapper_frame, text="Category Search:")
         # self.category_mode_label.grid(row=0, column=2, sticky="NSEW")
@@ -293,7 +318,7 @@ class ProductSpecificationMenu(LabelFrame):
 
         # ------- BUTTON_PANEL - CONFIGURATION ------ #
 
-        self.button_panel = ButtonPanel(self, bg=self.BACKGROUND, parent_frame=self)
+        self.button_panel = ButtonPanel(self, bg=self.BACKGROUND, parent_frame=self, language=self.language)
         self.button_panel.grid(row=2, column=0, sticky="NEW")
 
 
@@ -399,7 +424,12 @@ class ProductSpecificationMenu(LabelFrame):
             elif amount > self.shopping_list_f.product_list.ITEM_LIMIT:
                 raise ValueError(f"Product amount above allowed limit: {self.shopping_list_f.product_list.ITEM_LIMIT}")
             
-            weight_unit=ProductWeightUnit[self.weight_unit_box.get() if self.weight_unit_box.get() != '---' else 'NONE']
+            weight_unit = self.weight_unit_box.get()
+
+            if self.language == 'SK':
+                weight_unit = self.map_weight_unit(weight_unit=weight_unit)
+
+            weight_unit=ProductWeightUnit[weight_unit if weight_unit != '---' else 'NONE']
             weight=self.weight_entry.get()
 
             if weight_unit != ProductWeightUnit.NONE:
@@ -444,9 +474,10 @@ class CategoriesMenu(Frame):
     
     """
 
-    def __init__(self, *args, **kw):
+    def __init__(self, *args, parent: ProductSpecificationMenu,  **kw):
         super(CategoriesMenu, self).__init__(*args, **kw)
 
+        self.parent = parent
         # --- Frame Configuration --- #
 
         self.rowconfigure(0, weight=2, minsize=100)
@@ -475,11 +506,11 @@ class CategoriesMenu(Frame):
         """
 
 
-        if mode == 'Off':
+        if mode == self.parent.cur_category_search_values[0]:
             self.buttons_panel.set_option(0)
             self.buttons_panel.set_state('disabled')
             
-        elif mode == 'Manual Mapping' or mode == 'TM-based Mapping':
+        elif mode == self.parent.cur_category_search_values[1] or mode == self.parent.cur_category_search_values[2]:
             self.buttons_panel.set_state('normal')
 
     def disable_widgets(self):
@@ -611,10 +642,15 @@ class CategoryButtonsPanel(LabelFrame):
 
 
 class ButtonPanel(Frame):
+    BUTTON_TEXTS_EN = ("   to List",)
+    BUTTON_TEXTS_SK = ("   vložiť",)
 
+    def __init__(self, *args, parent_frame: ProductSpecificationMenu, language: Literal['EN', 'SK'] = 'EN', **kw):
 
-    def __init__(self, *args, parent_frame: ProductSpecificationMenu, **kw):
         super(ButtonPanel, self).__init__(*args, **kw)
+
+        self.language = language
+        self.cur_button_texts = self.BUTTON_TEXTS_EN if self.language =='EN' else self.BUTTON_TEXTS_SK
 
         self.parent = parent_frame
 
@@ -629,20 +665,13 @@ class ButtonPanel(Frame):
         self.style_1 = ttk.Style()
         self.style_1.configure("TButton", font=("Arial", 13), background="skyblue", foreground="black")
 
-        # self.clear_button = ttk.Button(self,
-        #                            text='   clear',
-        #                            style="TButton",
-        #                            command=self.parent.clear_all_data,
-        #                            image=self.eraser_icon,
-        #                            compound='left')
-        # self.clear_button.grid(row=0, column=0, sticky="NSEW")
 
         self.cart_icon = PhotoImage(file=SHOPPING_CART_ICON_2).subsample(17, 17)
 
         
 
         self.to_cart_button = ttk.Button(self,
-                                         text="   to List",
+                                         text=self.cur_button_texts[0],
                                          style="TButton",
                                      command=self.to_list,
                                      image=self.cart_icon,
