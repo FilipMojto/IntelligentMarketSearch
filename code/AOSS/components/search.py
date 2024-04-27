@@ -13,7 +13,7 @@ sys.path.append(parent_dir)
 
 
 
-from AOSS.structure.shopping import MarketHub, ProductCategory
+from AOSS.structure.shopping import MarketHub, ProductCategory, ProductWeightUnit
 from AOSS.other.utils import get_mapped_category
 from config_paths import *
 
@@ -209,7 +209,8 @@ class ProductMatcher:
         return mapped_category == category.name
 
     def match(self, text: str, markets: tuple[int] = None, category: ProductCategory = None, categorization: Literal['ManualMapping', 'TM-based Mapping' ] = 'ManualMapping', limit: int = 10,
-              min_match: float = 0, for_each: bool = False, sort_words: bool = False, use_subset: bool = False):
+              min_match: float = 0, for_each: bool = False, sort_words: bool = False, use_subset: bool = False,
+              weight_unit: ProductWeightUnit = ProductWeightUnit.NONE, weight: float = -1):
         
         
         """
@@ -255,6 +256,14 @@ class ProductMatcher:
         # filtering products belonging to a subset of markets
         if markets is not None and markets:
             df = df.filter(self.__product_df['market_ID'].is_in(markets))
+
+        # weight_str = str(weight)
+
+        if weight_unit != ProductWeightUnit.NONE and weight > 0:
+            df = df.filter(
+                (polars.col('weight_unit') == weight_unit.name) & (polars.col('weight') == weight)
+            )
+
 
         # filtering products by their category
         if category is not None:

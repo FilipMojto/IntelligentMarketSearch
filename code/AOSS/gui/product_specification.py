@@ -218,7 +218,7 @@ class ProductSpecificationMenu(LabelFrame):
         # name configuration
 
         self.upper_wrapper_frame = Frame(self.main_details_menu, background=BACKGROUND)
-        self.upper_wrapper_frame.grid(row=0, column=0, sticky="NSEW")
+        self.upper_wrapper_frame.grid(row=0, column=0, sticky="NSEW", pady=(5, 0))
         self.upper_wrapper_frame.rowconfigure(0, weight=1, minsize=50)
         self.upper_wrapper_frame.columnconfigure(0, weight=1)
         self.upper_wrapper_frame.columnconfigure(1, weight=100)
@@ -291,14 +291,14 @@ class ProductSpecificationMenu(LabelFrame):
                                   font=self.FONT)
         self.weight_label.grid(row=0, column=0, sticky="NSE")
 
-        self.weight_entry = Entry(self.middle_wrapper_frame, font=self.FONT, width=15, state='disabled')
+        self.weight_entry = ttk.Entry(self.middle_wrapper_frame, font=self.FONT, width=15, state='disabled')
         self.weight_entry.grid(row=0, column=5, sticky="NSEW", padx=8)
 
 
 
 
         self.lower_wrapper_frame = Frame(self.main_details_menu, background=BACKGROUND)
-        self.lower_wrapper_frame.grid(row=2, column=0, sticky="NSEW")
+        self.lower_wrapper_frame.grid(row=2, column=0, sticky="NSEW", pady=(0, 5))
 
         self.lower_wrapper_frame.rowconfigure(0, weight=1, minsize=50)
         self.lower_wrapper_frame.columnconfigure(0, weight=1)

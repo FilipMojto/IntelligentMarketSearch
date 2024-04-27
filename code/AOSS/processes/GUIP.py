@@ -121,7 +121,7 @@ def start(main_to_all: mpr.Queue = None, gui_to_main: mpr.Queue = None, hub_to_g
                         
                         loading_screen.info_text.config(text=PR[PRP.UPDATING_DATA])
                     
-                        reply = messagebox.askquestion(title="Warning", message="Complete data updated required. Proceed?")
+                        reply = messagebox.askquestion(title="Warning", message="Full Data Refresh required. Proceed?")
                         gui_to_hub.put(obj=(PRP.UPDATING_DATA, 1 if reply == 'yes' else 0))
 
 

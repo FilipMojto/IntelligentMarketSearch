@@ -21,3 +21,9 @@ class InvalidMarketState(Exception):
     def __init__(self, message="Invalid market state!"):
         self.message = message
         super().__init__(self.message)
+
+
+class InvalidApplicationState(Exception):
+    def __init__(self, message="Invalid application state!") -> None:
+        self.message = message
+        super().__init__(self.message)

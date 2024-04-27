@@ -5,7 +5,7 @@ __VERSION__ = "0.0.1"
 from typing import List, Literal
 from dataclasses import dataclass, field
 
-from AOSS.structure.shopping import MarketHub, Market, RegisteredProduct, ProductCategory
+from AOSS.structure.shopping import MarketHub, RegisteredProduct, ProductCategory, ProductWeightUnit
 from AOSS.components.search import ProductMatcher
 
 # class MarketExplorer:
@@ -118,6 +118,8 @@ class MarketExplorer:
         product_category: ProductCategory = None
         categorization: Literal['Manual Mapping', 'TM-based Mapping'] = 'Manual Mapping'
         required_quantity: int = 0
+        weight_unit: ProductWeightUnit = ProductWeightUnit.NONE
+        weight: float = -1
             
     
     @dataclass
@@ -299,8 +301,10 @@ class MarketExplorer:
                                                     markets=(market.ID(),),
                                                     category=params.product_category,
                                                     limit=self.__limit,
-                                                    sort_words=True)
-                
+                                                    sort_words=True,
+                                                    weight_unit=params.weight_unit,
+                                                    weight=params.weight)
+
                 for i in range(self.__limit):
 
                     expl = self.__explorations[index][i]

@@ -88,7 +88,7 @@ class Product:
     _: KW_ONLY
     price: float = -1
     approximation: int = -1
-    weight_unit: Literal['unknown', 'gram', 'litre'] = 'unknown'
+    weight_unit: ProductWeightUnit = ProductWeightUnit.NONE
     weight: float = -1
     category_ID: int = -1
     quantity_left: int = -1
@@ -508,7 +508,7 @@ class Market(MarketView):
                             local_product.normalized_name + PRODUCT_FILE['delimiter'] +
                             str(local_product.price) + PRODUCT_FILE['delimiter'] +
                             str(int(local_product.approximation)) + PRODUCT_FILE['delimiter'] +
-                            local_product.weight_unit + PRODUCT_FILE['delimiter'] +
+                            local_product.weight_unit.name + PRODUCT_FILE['delimiter'] +
                             str(local_product.weight) + PRODUCT_FILE['delimiter'] +
                             str(local_product.quantity_left) + PRODUCT_FILE['delimiter'] +
                             category.name + PRODUCT_FILE['delimiter'] +
@@ -516,20 +516,20 @@ class Market(MarketView):
                             str(self.ID()) + PRODUCT_FILE['delimiter'] +
                             local_product.created_at + PRODUCT_FILE['delimiter'] +
                                 datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') + '\n')
-                elif isinstance(element, RegisteredProduct):
-                    file.write(str(element.ID) + PRODUCT_FILE['delimiter'] +
-                            element.name + PRODUCT_FILE['delimiter'] +
-                            element.normalized_name + PRODUCT_FILE['delimiter'] +
-                            str(element.price) + PRODUCT_FILE['delimiter'] +
-                            str(int(element.approximation)) + PRODUCT_FILE['delimiter'] +
-                            element.weight_unit + PRODUCT_FILE['delimiter'] +
-                            str(element.weight) + PRODUCT_FILE['delimiter'] +
-                            str(element.quantity_left) + PRODUCT_FILE['delimiter'] +
-                            element.normalized_category + PRODUCT_FILE['delimiter'] +
-                            str(element.category) + PRODUCT_FILE['delimiter'] +
-                            str(self.__ID) + PRODUCT_FILE['delimiter'] +
-                            element.created_at + PRODUCT_FILE['delimiter'] +
-                                element.updated_at)
+                # elif isinstance(element, RegisteredProduct):
+                #     file.write(str(element.ID) + PRODUCT_FILE['delimiter'] +
+                #             element.name + PRODUCT_FILE['delimiter'] +
+                #             element.normalized_name + PRODUCT_FILE['delimiter'] +
+                #             str(element.price) + PRODUCT_FILE['delimiter'] +
+                #             str(int(element.approximation)) + PRODUCT_FILE['delimiter'] +
+                #             element.weight_unit.name + PRODUCT_FILE['delimiter'] +
+                #             str(element.weight) + PRODUCT_FILE['delimiter'] +
+                #             str(element.quantity_left) + PRODUCT_FILE['delimiter'] +
+                #             element.normalized_category + PRODUCT_FILE['delimiter'] +
+                #             str(element.category) + PRODUCT_FILE['delimiter'] +
+                #             str(self.__ID) + PRODUCT_FILE['delimiter'] +
+                #             element.created_at + PRODUCT_FILE['delimiter'] +
+                #                 element.updated_at)
                 else:
                     raise TypeError("Uknown type for registered buffer element!")
             

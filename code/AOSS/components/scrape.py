@@ -23,7 +23,7 @@ sys.path.append(script_directory)
 parent_directory = os.path.abspath(os.path.join(script_directory, '..', '..'))
 sys.path.append(parent_directory)
 
-from AOSS.structure.shopping import Market, Product
+from AOSS.structure.shopping import Market, Product, ProductWeightUnit
 
 #from AOSS.other.utils import ThreadPool
 from AOSS.structure.shopping import Market
@@ -459,11 +459,7 @@ class ProductScraper:
                 if quantity_left is None:
                     quantity_left = 0
                 
-                # from description weight unit and weight value may be
-                # extracted
-                description = item.get('description')
-                modified_description = ""
-
+  
                 weight_unit = "unknown"
                 weight_value: float = -1
 
@@ -545,19 +541,21 @@ class ProductScraper:
                 #     weight_unit = weight_attr[1]
                 
                 if weight_unit == "l" or weight_unit == "L":
-                    weight_unit = "litre"
+                    weight_unit = ProductWeightUnit.LITRES #"litre"
                 elif weight_unit == "ml":
                     weight_value /= 1000
-                    weight_unit = "litre"
+                    weight_unit = ProductWeightUnit.LITRES #"litre"
                 elif weight_unit == "g":
-                    weight_unit = "gram"
+                    weight_unit = ProductWeightUnit.GRAMS #"gram"
                 elif weight_unit == "kg":
                     weight_value /= 1000
-                    weight_unit = "gram"
+                    weight_unit = ProductWeightUnit.GRAMS #"gram"
                 elif weight_unit == "ks":
+                    weight_unit = ProductWeightUnit.NONE
                     pass
                 else:
-                    weight_unit = "unknown"
+                    weight_unit = ProductWeightUnit.NONE
+         
                     pass
             
 

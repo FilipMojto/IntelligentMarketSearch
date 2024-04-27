@@ -68,9 +68,9 @@ class ShoppingListDetails(LabelFrame):
         self.amount_text = IntVar()
         self.amount_text.set(f"{self.cur_labels[2]} {amount}")
 
-        self.weight_unit = weight_unit.name
+        self.weight_unit = weight_unit
         self.weight_unit_text = StringVar()
-        self.weight_unit_text.set(f"{self.cur_labels[3]} {self.weight_unit}")
+        self.weight_unit_text.set(f"{self.cur_labels[3]} {self.weight_unit.name}")
 
 
 

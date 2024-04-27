@@ -487,7 +487,9 @@ class MarketExplorerFrame(LabelFrame):
                                                       product_name=TextEditor.standardize_str(item.details.name),
                                                       product_category=category,
                                                       required_quantity=item.details.amount,
-                                                      categorization=item.details.category_search_mode)]
+                                                      categorization=item.details.category_search_mode,
+                                                      weight_unit=item.details.weight_unit,
+                                                      weight=item.details.weight)]
         
         # item_data = [(item.details.ID,
         #               TextEditor.standardize_str(item.details.name),
